@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  engineType = "binary"
+  previewFeatures = ["fullTextSearchPostgres", "nativeDistinct", "postgresqlExtensions", "relationJoins", "schemaEngineDriverAdapters", "shardKeys", "strictUndefinedChecks", "views"]
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+
+
+
+// reperesents an instance of a user in Kinde
+model Account {
+
+  id        String  @default(uuid())  // internal Account ID
+  kindeId   String  @unique             // Kinde's User ID (UUIDv4)
+  // Business Data that Kinde DOES NOT handle
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationships (The reason we need this table at all)
+  kyc           KycProfile?        // Kinde doesn't store ID Card images
+  sellerProfile SellerDetails?     // Kinde doesn't store Tax IDs or Ratings
+  addresses     Address[]          // Kinde isn't an Address Book
+  // bids          Bid[]              // (From Bidding Domain)
+  // orders        Order[]            // (From Shipping Domain)
+  @@id([id])
+}
+
+
+model KycProfile {
+  id            String    @id @default(uuid())
+  userId        String    @unique // Links to User.id (Kinde ID)
+  
+  // This status controls "Bidding Eligibility"
+  status        KycStatus @default(PENDING)
+  
+  // Secure URLs to your S3 bucket (Don't store images in DB)
+  idDocumentUrl String
+  selfieUrl     String?
+  
+  // Audit Trail
+  rejectionReason String?
+  reviewedBy      String?   // Kinde ID of the Admin who reviewed it
+  verifiedAt      DateTime?
+  
+  account     Account   @relation(fields: [accountId], references: [id])
+  accountId   String  @unique
+}
+
+enum KycStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  NEEDS_MORE_INFO
+}
+
+
+model SellerDetails {
+  id          String   @id @default(uuid())
+  userId      String   @unique // Links to User.id (Kinde ID)
+  
+  // Commercial Info
+  companyName String
+  taxId       String?  
+  
+  // Reputation Engine (Updated by your backend after sales)
+  rating      Decimal  @default(0.0) 
+  totalSales  Int      @default(0)
+  
+  account     Account   @relation(fields: [accountId], references: [id])
+  accountId   String     @unique 
+}
+
+
+
+model Address {
+  id        String  @id @default(uuid())
+  userId    String  // Links to User.id (Kinde ID)
+  
+  label     String? // "Home", "Office"
+  street    String
+  city      String
+  zipCode   String
+  country   String
+  
+  account     Account   @relation(fields: [accountId], references: [kindeId])
+  accountId   String  
+}
+
+
+

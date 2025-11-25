@@ -1,0 +1,9 @@
+services:
+  biddingservice:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: kibo_password
+      POSTGRES_DB: bidding_db
+    ports:
+      - "5435:5432"

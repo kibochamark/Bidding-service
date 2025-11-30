@@ -57,3 +57,13 @@ export type SellerDetails = Prisma.SellerDetailsModel
  * 
  */
 export type Address = Prisma.AddressModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel

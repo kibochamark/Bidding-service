@@ -1,12 +1,56 @@
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator";
 
-//  to support class validation  we need to change these interfaces to classes
+/**
+ * DTO for Kinde webhook - when a user is created in Kinde
+ * This is used by the POST /accounts endpoint which acts as a webhook handler
+ *
+ * Kinde webhook payload structure:
+ * {
+ *   "type": "user.created",
+ *   "data": {
+ *     "user": {
+ *       "id": "kp_abc123",
+ *       "email": "user@example.com",
+ *       ...
+ *     }
+ *   }
+ * }
+ */
 export class CreateAccountDto {
     @IsNotEmpty()
-    kindeId: string;
+    @IsString()
+    type: string;
+
+    @IsNotEmpty()
+    @IsObject()
+    data: {
+        user: {
+            id: string;
+            email?: string;
+            first_name?: string;
+            last_name?: string;
+        };
+    };
 }
 
-export class UpdateAccountDto {
+/**
+ * DTO for manually creating an account (for testing or migration)
+ */
+export class ManualCreateAccountDto {
     @IsNotEmpty()
+    @IsString()
+    kindeId: string;
+
+    @IsOptional()
+    @IsEmail()
+    email?: string;
+}
+
+/**
+ * DTO for fetching account by kindeId path parameter
+ */
+export class AccountParamDto {
+    @IsNotEmpty()
+    @IsString()
     kindeId: string;
 }

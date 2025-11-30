@@ -17,3 +17,14 @@ export const KycStatus = {
 } as const
 
 export type KycStatus = (typeof KycStatus)[keyof typeof KycStatus]
+
+
+export const ProductCondition = {
+  MINT: 'MINT',
+  EXCELLENT: 'EXCELLENT',
+  GOOD: 'GOOD',
+  FAIR: 'FAIR',
+  NEW: 'NEW'
+} as const
+
+export type ProductCondition = (typeof ProductCondition)[keyof typeof ProductCondition]

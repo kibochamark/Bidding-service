@@ -1,22 +1,34 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AccountsService } from 'src/Domains/Accounts/accounts.service';
-import { CreateAccountDto } from './dto';
+import { AccountParamDto, CreateAccountDto } from './dto';
 
 @Controller('accounts')
 export class AccountsController {
-    // Controller methods would go here
     constructor(private accountsService: AccountsService) { }
 
-    @Get("")
+    /**
+     * Get all accounts
+     * TODO: Add pagination, filtering, and authentication
+     */
+    @Get()
     async getAllAccounts() {
         return await this.accountsService.getAllAccounts();
     }
 
-
-    @Post("")
-    async createAccount(@Body() account:CreateAccountDto) {
-        // Logic to create an account
+    /**
+     * Webhook handler for Kinde user.created event
+     * Creates a new account in local database when user signs up in Kinde
+     */
+    @Post()
+    async createAccount(@Body() account: CreateAccountDto) {
         return await this.accountsService.createAccount(account);
     }
 
+    /**
+     * Get account by Kinde ID
+     */
+    @Get(':kindeId')
+    async getAccountByKindeId(@Param() params: AccountParamDto) {
+        return await this.accountsService.getAccountByKindeId(params);
+    }
 }

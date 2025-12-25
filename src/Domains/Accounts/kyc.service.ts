@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { KycRepository } from './kyc.repository';
-import { SubmitKycDto, UpdateKycStatusDto } from 'src/Controllers/Accounts/dto';
-import { KycStatus } from 'generated/prisma/enums';
+import { SubmitKycDto, UpdateKycStatusDto } from '../../../src/Controllers/Accounts/dto';
+import { KycStatus } from '../../../generated/prisma/enums';
 
 @Injectable()
 export class KycService {

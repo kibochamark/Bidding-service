@@ -9,7 +9,7 @@ import {
     Query,
     UseGuards,
 } from '@nestjs/common';
-import { ProductService } from 'src/Domains/Products/product.service';
+import { ProductService } from '../../../src/Domains/Products/product.service';
 import {
     CreateProductDto,
     ProductParamDto,

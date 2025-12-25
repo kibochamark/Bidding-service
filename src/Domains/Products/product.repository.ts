@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProductDto, SearchProductsDto, UpdateProductDto } from 'src/Controllers/Products/dto';
-import { Prisma } from 'generated/prisma/client';
+import { PrismaService } from '../../../src/prisma/prisma.service';
+import { CreateProductDto, SearchProductsDto, UpdateProductDto } from '../../../src/Controllers/Products/dto';
+import { Prisma } from '../../../generated/prisma/client';
 
 export interface PaginatedResponse<T> {
     data: T[];

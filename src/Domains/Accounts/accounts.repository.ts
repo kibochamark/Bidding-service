@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
-import { AccountParamDto } from "src/Controllers/Accounts/dto";
-import { PrismaService } from "src/prisma/prisma.service";
+import { AccountParamDto } from "../../../src/Controllers/Accounts/dto";
+import { PrismaService } from "../../../src/prisma/prisma.service";
 
 @Injectable()
 export class AccountsRepository {

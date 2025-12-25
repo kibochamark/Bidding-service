@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
-import { AccountsService } from 'src/Domains/Accounts/accounts.service';
-import { AccountParamDto, CreateAccountDto } from './dto';
-import { decodeWebhook, UserCreatedWebhookEvent, WebhookEventType } from "@kinde/webhooks";
+import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
+import { AccountParamDto, CreateAccountDto } from './dto/index.js';
 
 @Controller('accounts')
 export class AccountsController {
@@ -23,12 +22,14 @@ export class AccountsController {
     @Post()
     async createAccount(@Body() account: CreateAccountDto, @Headers('authorization') authHeader: string) {
 
+        const kindewebhook= await(import('@kinde/webhooks'));
+
         console.log('Received webhook for account creation', account);
         
         const token = authHeader.split('Bearer')[1].trim();
 
-        const decodedWebhook = await decodeWebhook<UserCreatedWebhookEvent>(token, "https://bidmarket.kinde.com");
-        if (!decodedWebhook || decodedWebhook.type !== WebhookEventType.UserCreated) {
+        const decodedWebhook = await kindewebhook.decodeWebhook(token, "https://bidmarket.kinde.com");
+        if (!decodedWebhook || decodedWebhook.type !== kindewebhook.WebhookEventType.UserCreated) {
             throw new Error('Invalid webhook event');
         }
 

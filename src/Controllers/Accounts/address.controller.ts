@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { AddressService } from 'src/Domains/Accounts/address.service';
+import { AddressService } from '../../../src/Domains/Accounts/address.service';
 import { AddressParamDto, CreateAddressDto, UpdateAddressDto } from './dto';
 
 @Controller('addresses')

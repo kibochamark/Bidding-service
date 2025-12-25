@@ -1,9 +1,12 @@
-import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, Req, Res } from '@nestjs/common';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
 import { AccountParamDto, CreateAccountDto } from './dto/index.js';
+import * as bodyParser from 'body-parser';
 
 @Controller('accounts')
 export class AccountsController {
+    private jwtBodyParser = bodyParser.text({ type: 'application/jwt' });
+
     constructor(private accountsService: AccountsService) { }
 
     /**
@@ -20,21 +23,30 @@ export class AccountsController {
      * Creates a new account in local database when user signs up in Kinde
      */
     @Post()
-    async createAccount(@Body() account: CreateAccountDto, @Headers('authorization') authHeader: string) {
+    async createAccount(@Req() req: Request, @Res() res: Response) {
 
-        const kindewebhook= await(import('@kinde/webhooks'));
+        this.jwtBodyParser(req, res, async() => {
+            const token  = req.body as unknown; // now contains raw JWT string
 
-        console.log('Received webhook for account creation', account);
-        
-        const token = authHeader.split('Bearer')[1].trim();
-
-        const decodedWebhook = await kindewebhook.decodeWebhook(token, "https://bidmarket.kinde.com");
-        if (!decodedWebhook || decodedWebhook.type !== kindewebhook.WebhookEventType.UserCreated) {
-            throw new Error('Invalid webhook event');
-        }
+            try {
+                const kindewebhook = await(import('@kinde/webhooks'));
 
 
-        return await this.accountsService.createAccount(account);
+                const decodedWebhook = await kindewebhook.decodeWebhook(token as string, "https://bidmarket.kinde.com");
+                if (!decodedWebhook || decodedWebhook.type !== kindewebhook.WebhookEventType.UserCreated) {
+                    throw new Error('Invalid webhook event');
+                }
+
+                const account: CreateAccountDto = {
+                    type: decodedWebhook.type,
+                    ...decodedWebhook.data
+                };
+
+                return await this.accountsService.createAccount(account);
+            } catch (error) {
+                return { error: 'Failed to process webhook', details: error.message };
+            }
+        });
     }
 
     /**

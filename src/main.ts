@@ -12,7 +12,7 @@ async function bootstrap() {
   })); 
 
   app.enableCors({
-    origin: ['https://www.your-frontend-domain.com', 'http://localhost:3000'], // Specify allowed origins
+    origin: ['https://biddingapp-v2.vercel.app/', 'http://localhost:3000'], // Specify allowed origins
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Specify allowed methods
     allowedHeaders: 'Content-Type, Accept, Authorization', // Specify allowed headers
     credentials: true, // Allow cookies or authorization headers to be sent

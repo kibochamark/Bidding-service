@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Logger, Param, Post, Req, Res } from '@nestjs/common';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
 import { AccountParamDto, CreateAccountDto } from './dto/index.js';
 import * as bodyParser from 'body-parser';
@@ -6,8 +6,9 @@ import * as bodyParser from 'body-parser';
 @Controller('accounts')
 export class AccountsController {
     private jwtBodyParser = bodyParser.text({ type: 'application/jwt' });
+    private readonly logger = new Logger(AccountsController.name);
 
-    constructor(private accountsService: AccountsService) { }
+    constructor(private accountsService: AccountsService, ) { }
 
     /**
      * Get all accounts
@@ -36,6 +37,11 @@ export class AccountsController {
                 if (!decodedWebhook || decodedWebhook.type !== kindewebhook.WebhookEventType.UserCreated) {
                     throw new Error('Invalid webhook event');
                 }
+
+
+                this.logger.log(`Processing Kinde webhook of type: ${JSON.stringify(decodedWebhook)}`);
+
+                
 
                 const account: CreateAccountDto = {
                     type: decodedWebhook.type,

@@ -1,0 +1,49 @@
+# Dependencies
+# Don't copy node_modules - we install them inside Docker
+node_modules/
+
+# Build output
+# Don't copy old builds - we build fresh inside Docker
+dist/
+
+# Environment files
+# NEVER copy secrets into Docker images!
+.env
+.env.local
+.env*.local
+
+# Git
+# Don't need git history in the image
+.git/
+.gitignore
+
+# IDE
+# Don't copy IDE configuration files
+.vscode/
+.idea/
+
+# Logs
+# Don't copy log files
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Testing
+# Don't copy test coverage and reports
+coverage/
+.nyc_output/
+
+# Documentation
+# Don't copy markdown docs (optional, but saves space)
+*.md
+!README.md
+
+# Docker files themselves
+# Don't copy Docker files into the image
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Kubernetes files
+# Don't copy K8s manifests into the image
+infra/

@@ -10,6 +10,16 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // strips out properties that are not expected
   })); 
+
+  app.enableCors({
+    origin: ['https://www.your-frontend-domain.com', 'http://localhost:3000'], // Specify allowed origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Specify allowed methods
+    allowedHeaders: 'Content-Type, Accept, Authorization', // Specify allowed headers
+    credentials: true, // Allow cookies or authorization headers to be sent
+  });
+
+
+  
   
   await app.listen(4000);
 }

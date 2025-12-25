@@ -55,7 +55,7 @@ export class ProductsController {
      * Get products ending within 24 hours
      */
     @Get('ending-soon')
-    async getEndingSoon(@Query('limit') limit?: number) {
+    async getEndingSoon(@Query('limit') limit?: string) {
         return await this.productService.getEndingSoon(limit);
     }
 
@@ -64,7 +64,7 @@ export class ProductsController {
      * Get newest product listings
      */
     @Get('newest')
-    async getNewestProducts(@Query('limit') limit?: number) {
+    async getNewestProducts(@Query('limit') limit?: string) {
         return await this.productService.getNewestProducts(limit);
     }
 
@@ -76,7 +76,7 @@ export class ProductsController {
     async getProductsByCategory(
         @Param('categoryId') categoryId: string,
         @Query('page') page?: number,
-        @Query('limit') limit?: number,
+        @Query('limit') limit?: string,
     ) {
         return await this.productService.getProductsByCategory(
             categoryId,

@@ -1,0 +1,219 @@
+# ==============================================
+# Kubernetes Deployment for PostgreSQL
+# ==============================================
+# What is this?
+# A Deployment manages pods and ensures they stay running
+# If a pod crashes, the Deployment automatically recreates it
+# It's like a building manager that ensures apartments are always occupied
+
+# Why not create Pods directly?
+# - Pods don't restart themselves if they crash
+# - Deployments provide self-healing, scaling, and rolling updates
+
+# How to apply:
+# kubectl apply -f infra/3-postgres-deployment.yaml
+
+# How to check:
+# kubectl get deployments
+# kubectl get pods -l app=postgres
+# kubectl logs -l app=postgres
+
+# How to delete:
+# kubectl delete deployment postgres
+# ==============================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Name of the deployment
+  name: postgres
+
+  # Namespace
+  namespace: default
+
+  # Labels for organization
+  labels:
+    app: postgres
+    component: database
+
+spec:
+  # ==============================================
+  # Replicas: How many copies of the pod to run
+  # ==============================================
+  # For PostgreSQL, we typically run 1 replica
+  # Why? Databases need special replication logic
+  # Running multiple without replication = data corruption!
+  #
+  # For high availability, you'd use:
+  # - PostgreSQL replication (primary + replicas)
+  # - Stateful sets (not Deployment)
+  replicas: 1
+
+  # ==============================================
+  # Selector: How to find the pods this Deployment manages
+  # ==============================================
+  # This must match the labels in the pod template below
+  selector:
+    matchLabels:
+      app: postgres
+
+  # ==============================================
+  # Strategy: How to update pods
+  # ==============================================
+  # Recreate = Stop old pod, then start new one
+  # Good for databases (only one instance at a time)
+  #
+  # Alternative: RollingUpdate (for stateless apps)
+  strategy:
+    type: Recreate
+
+  # ==============================================
+  # Template: The pod specification
+  # ==============================================
+  template:
+    metadata:
+      # Labels for the pod (must match selector above!)
+      labels:
+        app: postgres
+        component: database
+
+    spec:
+      # ==============================================
+      # Containers: The actual containers to run
+      # ==============================================
+      containers:
+        - name: postgres
+          # Docker image to use
+          # postgres:16-alpine = PostgreSQL 16, Alpine Linux (small image)
+          image: postgres:16-alpine
+
+          # Image pull policy
+          # IfNotPresent = Only download if not already on node
+          # Always = Always pull latest
+          # Never = Only use local image
+          imagePullPolicy: IfNotPresent
+
+          # ==============================================
+          # Ports: Which ports the container exposes
+          # ==============================================
+          ports:
+            - name: postgres
+              containerPort: 5432  # PostgreSQL default port
+              protocol: TCP
+
+          # ==============================================
+          # Environment Variables (from Secret!)
+          # ==============================================
+          # We reference the Secret we created earlier
+          # Kubernetes automatically:
+          # 1. Fetches the secret
+          # 2. Decodes base64
+          # 3. Injects as environment variable
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret  # The secret we created
+                  key: postgres-user     # The key in the secret
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-db
+
+            # Tell PostgreSQL where to store data
+            # This matches our volume mount below
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+
+          # ==============================================
+          # Volume Mounts: Where to mount storage
+          # ==============================================
+          # This connects the PVC to a directory in the container
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data  # PostgreSQL data directory
+              # PostgreSQL stores all data here:
+              # - Database files
+              # - Transaction logs
+              # - Configuration
+
+          # ==============================================
+          # Resource Limits (IMPORTANT!)
+          # ==============================================
+          # Without limits, a pod can consume all node resources
+          # With limits, Kubernetes knows how to schedule pods
+          resources:
+            # Requests: Guaranteed resources
+            # Kubernetes only schedules pod if node has this available
+            requests:
+              memory: "256Mi"  # 256 megabytes minimum
+              cpu: "250m"      # 0.25 CPU cores minimum
+
+            # Limits: Maximum resources
+            # If pod exceeds memory limit = killed (OOMKilled)
+            # If pod exceeds CPU limit = throttled
+            limits:
+              memory: "512Mi"  # 512 megabytes maximum
+              cpu: "500m"      # 0.5 CPU cores maximum
+
+          # ==============================================
+          # Liveness Probe: Is the container alive?
+          # ==============================================
+          # If this fails, Kubernetes RESTARTS the container
+          # Think: "Is PostgreSQL running?"
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U postgres
+            initialDelaySeconds: 30  # Wait 30s before first check
+            periodSeconds: 10        # Check every 10 seconds
+            timeoutSeconds: 5        # 5 seconds timeout
+            failureThreshold: 3      # Restart after 3 failures
+
+          # ==============================================
+          # Readiness Probe: Is the container ready for traffic?
+          # ==============================================
+          # If this fails, Kubernetes REMOVES pod from Service
+          # Think: "Can PostgreSQL accept connections?"
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U postgres
+            initialDelaySeconds: 5   # Wait 5s before first check
+            periodSeconds: 5         # Check every 5 seconds
+            timeoutSeconds: 3        # 3 seconds timeout
+            failureThreshold: 3      # Mark unready after 3 failures
+
+      # ==============================================
+      # Volumes: Storage to attach to the pod
+      # ==============================================
+      # This references the PVC we created earlier
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc  # The PVC we created
+
+# ==============================================
+# What happens when you apply this?
+# ==============================================
+# 1. Kubernetes creates a ReplicaSet
+# 2. ReplicaSet creates 1 Pod
+# 3. Pod pulls postgres:16-alpine image
+# 4. Kubernetes binds PVC to a PersistentVolume
+# 5. Pod mounts the volume
+# 6. PostgreSQL starts and stores data in the volume
+# 7. Liveness/Readiness probes start checking
+# 8. Pod becomes "Ready" and can receive traffic
+# ==============================================

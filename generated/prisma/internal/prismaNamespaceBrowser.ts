@@ -110,12 +110,12 @@ export type KycProfileScalarFieldEnum = (typeof KycProfileScalarFieldEnum)[keyof
 
 export const SellerDetailsScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   companyName: 'companyName',
   taxId: 'taxId',
   rating: 'rating',
   totalSales: 'totalSales',
-  accountId: 'accountId'
+  accountId: 'accountId',
+  responseRate: 'responseRate'
 } as const
 
 export type SellerDetailsScalarFieldEnum = (typeof SellerDetailsScalarFieldEnum)[keyof typeof SellerDetailsScalarFieldEnum]
@@ -231,7 +231,6 @@ export type KycProfileOrderByRelevanceFieldEnum = (typeof KycProfileOrderByRelev
 
 export const SellerDetailsOrderByRelevanceFieldEnum = {
   id: 'id',
-  userId: 'userId',
   companyName: 'companyName',
   taxId: 'taxId',
   accountId: 'accountId'

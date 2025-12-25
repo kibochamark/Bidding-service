@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@kinde/webhooks':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@neondatabase/serverless':
         specifier: ^1.0.2
         version: 1.0.2
@@ -868,6 +871,15 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@kinde/jwt-decoder@0.1.0':
+    resolution: {integrity: sha512-DXx0GeF5I8ZKEKd69lHwuzorSiVlAANHgoGmlO+t32aF+5BjGYdoZz3TpYPsG2Os6A1wugMobgvNmBN2/1ipeA==}
+
+  '@kinde/jwt-validator@0.1.0-1':
+    resolution: {integrity: sha512-CET7NDGZmLOlbXvvKpvmVZiQl4KdWkd+679wdxKF5Tt66OH0HZ1ITMRfq9U5itk1va/8ZDwAVWqxJ/xLRn1M8g==}
+
+  '@kinde/webhooks@1.1.0':
+    resolution: {integrity: sha512-U4rz95vztbB3k031GQ2hWkHCIrhXRoo//iBgwKcfDY+ZC7spDu7zG20WjEx1Kn24Z4xacI9XfSTlFWxu3ABIEQ==}
 
   '@lukeed/csprng@1.1.0':
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
@@ -2547,6 +2559,9 @@ packages:
 
   jose@4.15.9:
     resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
+
+  jose@5.10.0:
+    resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -4511,6 +4526,17 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@kinde/jwt-decoder@0.1.0': {}
+
+  '@kinde/jwt-validator@0.1.0-1':
+    dependencies:
+      jose: 5.10.0
+
+  '@kinde/webhooks@1.1.0':
+    dependencies:
+      '@kinde/jwt-decoder': 0.1.0
+      '@kinde/jwt-validator': 0.1.0-1
 
   '@lukeed/csprng@1.1.0': {}
 
@@ -6544,6 +6570,8 @@ snapshots:
   jiti@2.6.1: {}
 
   jose@4.15.9: {}
+
+  jose@5.10.0: {}
 
   js-tokens@4.0.0: {}
 

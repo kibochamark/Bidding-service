@@ -4,9 +4,9 @@ import {
     Logger,
     NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { SubmitKycDto, UpdateKycStatusDto } from 'src/Controllers/Accounts/dto';
-import { KycStatus } from 'generated/prisma/enums';
+import { PrismaService } from '../../../src/prisma/prisma.service';
+import { SubmitKycDto, UpdateKycStatusDto } from '../../../src/Controllers/Accounts/dto';
+import { KycStatus } from '../../../generated/prisma/enums';
 
 @Injectable()
 export class KycRepository {

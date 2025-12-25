@@ -8,9 +8,9 @@ import {
     Post,
     Query,
 } from '@nestjs/common';
-import { KycService } from 'src/Domains/Accounts/kyc.service';
+import { KycService } from '../../../src/Domains/Accounts/kyc.service';
 import { KycParamDto, SubmitKycDto, UpdateKycStatusDto } from './dto';
-import { KycStatus } from 'generated/prisma/enums';
+import { KycStatus } from '../../../generated/prisma/enums';
 
 @Controller('kyc')
 export class KycController {

@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { AccountsRepository } from './accounts.repository';
-import { AccountParamDto, CreateAccountDto } from 'src/Controllers/Accounts/dto';
+import { AccountParamDto, CreateAccountDto } from '../../../src/Controllers/Accounts/dto';
 
 @Injectable()
 export class AccountsService {

@@ -8,7 +8,7 @@ import {
     Post,
     UseGuards,
 } from '@nestjs/common';
-import { CategoryService } from 'src/Domains/Products/category.service';
+import { CategoryService } from '../../../src/Domains/Products/category.service';
 import {
     CategoryParamDto,
     CategorySlugDto,

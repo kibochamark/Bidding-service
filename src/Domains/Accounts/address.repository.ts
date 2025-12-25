@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateAddressDto, UpdateAddressDto } from 'src/Controllers/Accounts/dto';
+import { PrismaService } from '../../../src/prisma/prisma.service';
+import { CreateAddressDto, UpdateAddressDto } from '../../../src/Controllers/Accounts/dto';
 
 @Injectable()
 export class AddressRepository {

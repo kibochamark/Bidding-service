@@ -56,9 +56,7 @@ async function seed() {
                 companyName: 'TechHub Store',
                 rating: 4.8,
                 totalSales: 156,
-                accountId: seller1.kindeId,
-                userId: seller1.kindeId,
-                
+                accountId: seller1.kindeId                
                 // responseRate: 0.95,
                 // description: 'Premium electronics and gadgets dealer. Fast shipping guaranteed.',
             },
@@ -69,7 +67,6 @@ async function seed() {
                 companyName: 'Audio Paradise',
                 rating: 4.6,
                 totalSales: 89,
-                userId: seller2.kindeId,
                 // responseRate: 0.88,
             },
         });
@@ -113,6 +110,9 @@ async function seed() {
 
         const endingMonth = new Date(now);
         endingMonth.setDate(now.getDate() + 30); // 1 month
+
+
+        console.log(endingSoon, endingToday, endingWeek, endingMonth);
 
         // Smartphones
         await prisma.product.create({

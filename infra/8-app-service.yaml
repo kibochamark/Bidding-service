@@ -1,0 +1,218 @@
+# ==============================================
+# Kubernetes Service for NestJS App
+# ==============================================
+# What is this?
+# Service provides stable network access to your NestJS app
+# Type: LoadBalancer - Exposes your app to the INTERNET!
+
+# Why LoadBalancer?
+# - PostgreSQL Service = ClusterIP (internal only)
+# - App Service = LoadBalancer (external access)
+# - Users can access your API from anywhere!
+
+# How to apply:
+# kubectl apply -f infra/8-app-service.yaml
+
+# How to check:
+# kubectl get service biddingservice
+# kubectl describe service biddingservice
+
+# How to get external IP/URL:
+# kubectl get service biddingservice -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+# (Or .hostname for cloud providers)
+
+# How to delete:
+# kubectl delete service biddingservice
+# ==============================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  # Name of the service
+  name: biddingservice
+
+  # Namespace
+  namespace: default
+
+  # Labels for organization
+  labels:
+    app: biddingservice
+    component: backend
+
+spec:
+  # ==============================================
+  # Service Type: LoadBalancer
+  # ==============================================
+  # LoadBalancer = Exposes service externally
+  #
+  # What happens with different environments:
+  #
+  # Cloud (AWS/GCP/Azure):
+  # - Creates real cloud load balancer
+  # - Gets public IP address
+  # - Routes internet traffic to pods
+  #
+  # Docker Desktop:
+  # - Exposes on localhost
+  # - Access via http://localhost:80
+  #
+  # Minikube:
+  # - Run: minikube tunnel
+  # - Then access via the EXTERNAL-IP shown
+  type: LoadBalancer
+
+  # ==============================================
+  # Selector: Which pods receive traffic
+  # ==============================================
+  # Routes traffic to pods with matching labels
+  # Must match labels in app-deployment.yaml!
+  selector:
+    app: biddingservice
+
+  # ==============================================
+  # Ports: Port mapping
+  # ==============================================
+  ports:
+    - name: http
+      # External port (what users/clients connect to)
+      # Access your app at: http://<external-ip>:80
+      port: 80
+
+      # Internal port (your NestJS app's port)
+      # Must match containerPort in deployment (3000)
+      targetPort: 3000
+
+      # Protocol
+      protocol: TCP
+
+  # ==============================================
+  # Session Affinity (Optional)
+  # ==============================================
+  # None = Load balance each request (default)
+  # ClientIP = Same client always goes to same pod (sticky sessions)
+  #
+  # Use ClientIP if:
+  # - You have in-memory sessions
+  # - Your app isn't stateless
+  #
+  # For stateless apps (like yours with JWT), use None
+  sessionAffinity: None
+
+# ==============================================
+# How to Access Your App:
+# ==============================================
+# After applying this file, check the external IP:
+#
+# kubectl get service biddingservice
+#
+# Output will look like:
+# NAME             TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
+# biddingservice   LoadBalancer   10.96.123.45    localhost       80:30123/TCP   1m
+#
+# Then access your app:
+# - Docker Desktop: http://localhost:80
+# - Cloud: http://<EXTERNAL-IP>:80
+# - Minikube: http://<EXTERNAL-IP>:80 (after minikube tunnel)
+# ==============================================
+
+# ==============================================
+# Load Balancing Explained:
+# ==============================================
+# With 2 replicas of your app:
+#
+#        Internet
+#           ↓
+#    LoadBalancer Service
+#        (port 80)
+#           ↓
+#       Load Balances
+#        /        \
+#       /          \
+#   Pod 1        Pod 2
+# (port 3000)  (port 3000)
+#
+# Traffic automatically distributed across both pods!
+# If one pod crashes, all traffic goes to healthy pod.
+# ==============================================
+
+# ==============================================
+# Port Mapping Flow:
+# ==============================================
+# User makes request:
+# curl http://localhost:80/api/products
+#           ↓
+# LoadBalancer receives on port 80
+#           ↓
+# Forwards to pod on targetPort 3000
+#           ↓
+# Your NestJS app receives on port 3000
+#           ↓
+# Response flows back through same path
+# ==============================================
+
+# ==============================================
+# Cloud Provider Notes:
+# ==============================================
+# AWS:
+# - Creates Elastic Load Balancer (ELB)
+# - Gets public DNS name (abc123.us-east-1.elb.amazonaws.com)
+# - Annotations for customization:
+#   service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#
+# GCP:
+# - Creates Google Cloud Load Balancer
+# - Gets public IP address
+# - Annotations:
+#   cloud.google.com/load-balancer-type: "Internal"
+#
+# Azure:
+# - Creates Azure Load Balancer
+# - Gets public IP
+# - Annotations:
+#   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+# ==============================================
+
+# ==============================================
+# Alternative: NodePort (for development)
+# ==============================================
+# If LoadBalancer doesn't work (some clusters), use NodePort:
+#
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 80
+#       targetPort: 3000
+#       nodePort: 30080  # Access on any node's IP:30080
+#
+# Then access: http://<node-ip>:30080
+# ==============================================
+
+# ==============================================
+# Production: Use Ingress Instead
+# ==============================================
+# For production, consider using Ingress instead of LoadBalancer:
+# - Ingress = HTTP/HTTPS routing layer
+# - Single load balancer for multiple services
+# - SSL/TLS termination
+# - Path-based routing (/api → app, /admin → admin-app)
+# - Host-based routing (api.example.com, admin.example.com)
+# - More cost-effective (one LB instead of many)
+#
+# Example:
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: app-ingress
+# spec:
+#   rules:
+#   - host: api.example.com
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: biddingservice
+#             port:
+#               number: 80
+# ==============================================

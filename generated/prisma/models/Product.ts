@@ -835,14 +835,6 @@ export type ProductUpdateimagesInput = {
   push?: string | string[] | runtime.Types.Skip
 }
 
-export type NullableDecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean | runtime.Types.Skip
 }

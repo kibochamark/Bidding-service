@@ -1,0 +1,88 @@
+# ==============================================
+# Kubernetes PersistentVolumeClaim (PVC) for PostgreSQL
+# ==============================================
+# What is this?
+# A PVC is a request for storage - like renting storage space
+# It requests storage from the cluster and binds to a PersistentVolume (PV)
+#
+# Think of it like:
+# - PV = The actual storage (apartment building)
+# - PVC = Your rental agreement (lease)
+# - Pod = You living there (using the storage)
+
+# Why do we need this?
+# Without persistent storage, when PostgreSQL pod restarts, ALL DATA IS LOST!
+# With PVC, data survives pod restarts, crashes, and updates.
+
+# How to apply:
+# kubectl apply -f infra/2-postgres-pvc.yaml
+
+# How to check:
+# kubectl get pvc postgres-pvc
+# kubectl describe pvc postgres-pvc
+
+# How to delete (WARNING: deletes all data!):
+# kubectl delete pvc postgres-pvc
+# ==============================================
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # Name of the PVC (we'll reference this in the deployment)
+  name: postgres-pvc
+
+  # Namespace
+  namespace: default
+
+  # Labels for organization
+  labels:
+    app: postgres
+    component: database
+
+spec:
+  # Access mode: how the volume can be mounted
+  # ReadWriteOnce (RWO) - Volume can be mounted by ONE pod in read-write mode
+  # Perfect for databases (only one instance writes at a time)
+  #
+  # Other modes:
+  # - ReadOnlyMany (ROX) - Multiple pods can read
+  # - ReadWriteMany (RWX) - Multiple pods can read/write (needs special storage)
+  accessModes:
+    - ReadWriteOnce
+
+  # Storage class: type of storage to use
+  # "standard" works on most clusters (Docker Desktop, Minikube, cloud providers)
+  #
+  # Other options:
+  # - "fast" - SSD-backed storage (faster, more expensive)
+  # - "local-path" - Local disk storage (for dev)
+  # - Leave blank to use cluster default
+  storageClassName: standard
+
+  # Resources: how much storage to request
+  resources:
+    requests:
+      # Request 5GB of storage
+      # Adjust based on your database size needs
+      #
+      # Common sizes:
+      # - Development: 1Gi - 5Gi
+      # - Production: 20Gi - 100Gi+
+      storage: 5Gi
+
+# ==============================================
+# How this PVC is used:
+# ==============================================
+# In postgres-deployment.yaml, we mount it like this:
+#
+# volumes:
+#   - name: postgres-storage
+#     persistentVolumeClaim:
+#       claimName: postgres-pvc    # This PVC
+#
+# volumeMounts:
+#   - name: postgres-storage
+#     mountPath: /var/lib/postgresql/data  # PostgreSQL data directory
+#
+# Now PostgreSQL data persists across restarts!
+# ==============================================

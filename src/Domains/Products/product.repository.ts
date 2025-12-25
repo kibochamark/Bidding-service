@@ -311,9 +311,9 @@ export class ProductRepository {
     async findProductsByCategory(
         categoryId: string,
         page = 1,
-        limit = 20,
+        limit = '20',
     ): Promise<PaginatedResponse<any>> {
-        const skip = (page - 1) * limit;
+        const skip = (page - 1) * parseInt(limit);
 
         const [products, total] = await Promise.all([
             this.prisma.product.findMany({
@@ -325,7 +325,7 @@ export class ProductRepository {
                     endDate: 'asc',
                 },
                 skip,
-                take: limit,
+                take: parseInt(limit),
                 include: {
                     category: true,
                 },
@@ -338,14 +338,14 @@ export class ProductRepository {
             }),
         ]);
 
-        const totalPages = Math.ceil(total / limit);
+        const totalPages = Math.ceil(total / parseInt(limit));
 
         return {
             data: products,
             pagination: {
                 total,
                 page,
-                limit,
+                limit:parseInt(limit),
                 totalPages,
                 hasMore: page < totalPages,
             },
@@ -402,7 +402,7 @@ export class ProductRepository {
     /**
      * Get ending soon products (for homepage)
      */
-    async findEndingSoon(limit = 10) {
+    async findEndingSoon(limit = '10') {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -417,7 +417,7 @@ export class ProductRepository {
             orderBy: {
                 endDate: 'asc',
             },
-            take: limit,
+            take: parseInt(limit),
             include: {
                 category: true,
             },
@@ -427,7 +427,7 @@ export class ProductRepository {
     /**
      * Get newest products
      */
-    async findNewest(limit = 20) {
+    async findNewest(limit = '20') {
         return await this.prisma.product.findMany({
             where: {
                 isActive: true,
@@ -435,7 +435,7 @@ export class ProductRepository {
             orderBy: {
                 createdAt: 'desc',
             },
-            take: limit,
+            // take: parseInt(limit, 10),
             include: {
                 category: true,
             },

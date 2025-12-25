@@ -1,0 +1,258 @@
+# ==============================================
+# Kubernetes Deployment for NestJS App
+# ==============================================
+# What is this?
+# Deployment manages your NestJS application pods
+# Ensures desired number of replicas are always running
+# Handles rolling updates, scaling, and self-healing
+
+# How to apply:
+# kubectl apply -f infra/7-app-deployment.yaml
+
+# How to check:
+# kubectl get deployments
+# kubectl get pods -l app=biddingservice
+# kubectl logs -l app=biddingservice -f  (follow logs)
+
+# How to scale:
+# kubectl scale deployment biddingservice --replicas=3
+
+# How to delete:
+# kubectl delete deployment biddingservice
+# ==============================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Name of the deployment
+  name: biddingservice
+
+  # Namespace
+  namespace: default
+
+  # Labels for organization
+  labels:
+    app: biddingservice
+    component: backend
+    version: v1
+
+spec:
+  # ==============================================
+  # Replicas: How many copies of your app to run
+  # ==============================================
+  # 2 replicas = High availability + Load balancing
+  # Benefits:
+  # - If one pod crashes, other handles traffic
+  # - Requests distributed across both pods
+  # - Zero-downtime updates (rolling update strategy)
+  #
+  # For production, consider 3+ replicas
+  replicas: 2
+
+  # ==============================================
+  # Selector: How to find pods this Deployment manages
+  # ==============================================
+  selector:
+    matchLabels:
+      app: biddingservice
+
+  # ==============================================
+  # Strategy: How to update pods
+  # ==============================================
+  # RollingUpdate = Replace pods gradually (zero downtime!)
+  # Process:
+  # 1. Start 1 new pod with new version
+  # 2. Wait for it to be ready
+  # 3. Terminate 1 old pod
+  # 4. Repeat until all pods updated
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Maximum pods above desired count during update
+      maxSurge: 1
+      # Maximum pods unavailable during update
+      maxUnavailable: 0
+
+  # ==============================================
+  # Template: Pod specification
+  # ==============================================
+  template:
+    metadata:
+      # Labels for the pods (must match selector!)
+      labels:
+        app: biddingservice
+        component: backend
+        version: v1
+
+    spec:
+      # ==============================================
+      # Containers: Your NestJS application
+      # ==============================================
+      containers:
+        - name: biddingservice
+          # ==============================================
+          # Docker Image from Docker Hub
+          # ==============================================
+          # Format: dockerhub-username/image-name:tag
+          # This will be pulled from Docker Hub automatically
+          #
+          # Before deploying:
+          # 1. Build: docker build -t markkibo/biddingservice:latest .
+          # 2. Push: docker push markkibo/biddingservice:latest
+          # 3. Then apply this deployment
+          image: markkibo/biddingservice:latest
+
+          # Image pull policy
+          # Always = Always pull latest (good for :latest tag)
+          # IfNotPresent = Only pull if not on node
+          # Never = Only use local image
+          imagePullPolicy: Always
+
+          # ==============================================
+          # Ports: Which port your app listens on
+          # ==============================================
+          ports:
+            - name: http
+              containerPort: 3000  # Your NestJS app port
+              protocol: TCP
+
+          # ==============================================
+          # Environment Variables
+          # ==============================================
+          # Load ALL variables from ConfigMap and Secret
+          envFrom:
+            # Load all keys from app-config ConfigMap
+            - configMapRef:
+                name: app-config
+
+            # Load all keys from app-secret Secret
+            - secretRef:
+                name: app-secret
+
+          # ==============================================
+          # Resource Limits
+          # ==============================================
+          # IMPORTANT: Always set resources!
+          # - Helps Kubernetes schedule pods efficiently
+          # - Prevents one pod from consuming all node resources
+          resources:
+            # Requests: Guaranteed resources (minimum)
+            requests:
+              memory: "256Mi"  # 256 megabytes
+              cpu: "250m"      # 0.25 CPU cores (250 millicores)
+
+            # Limits: Maximum resources
+            limits:
+              memory: "512Mi"  # 512 megabytes max
+              cpu: "500m"      # 0.5 CPU cores max
+
+          # ==============================================
+          # Liveness Probe: Is the container alive?
+          # ==============================================
+          # If this fails, Kubernetes RESTARTS the container
+          # Think: "Is my app responding?"
+          #
+          # We use TCP socket check (works for any app)
+          # Alternative: HTTP GET if you have /health endpoint
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 30  # Wait 30s for app to start
+            periodSeconds: 10        # Check every 10 seconds
+            timeoutSeconds: 5        # 5 seconds timeout
+            failureThreshold: 3      # Restart after 3 failures
+            successThreshold: 1      # 1 success = healthy
+
+          # ==============================================
+          # Readiness Probe: Is container ready for traffic?
+          # ==============================================
+          # If this fails, Kubernetes REMOVES pod from Service
+          # Pod doesn't receive traffic until ready
+          # Think: "Can my app handle requests?"
+          #
+          # During deployment:
+          # - New pod starts
+          # - Readiness probe fails initially
+          # - Once probe succeeds, pod receives traffic
+          # - Old pod can be terminated safely
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 10  # Check after 10s
+            periodSeconds: 5         # Check every 5 seconds
+            timeoutSeconds: 3        # 3 seconds timeout
+            failureThreshold: 3      # Mark unready after 3 failures
+            successThreshold: 1      # 1 success = ready
+
+          # ==============================================
+          # Optional: Startup Probe (for slow-starting apps)
+          # ==============================================
+          # If your app takes a long time to start (> 30s)
+          # Uncomment this to give it more time before liveness probe kicks in
+          #
+          # startupProbe:
+          #   tcpSocket:
+          #     port: 3000
+          #   initialDelaySeconds: 0
+          #   periodSeconds: 10
+          #   timeoutSeconds: 3
+          #   failureThreshold: 30  # 30 * 10s = 5 minutes to start
+          #   successThreshold: 1
+
+      # ==============================================
+      # Restart Policy
+      # ==============================================
+      # Always = Restart container if it exits (default)
+      # OnFailure = Only restart if exit code != 0
+      # Never = Never restart
+      restartPolicy: Always
+
+# ==============================================
+# Optional: HTTP Health Check
+# ==============================================
+# If your NestJS app has health check endpoints, use these instead:
+#
+# livenessProbe:
+#   httpGet:
+#     path: /health
+#     port: 3000
+#   initialDelaySeconds: 30
+#   periodSeconds: 10
+#
+# readinessProbe:
+#   httpGet:
+#     path: /health
+#     port: 3000
+#   initialDelaySeconds: 10
+#   periodSeconds: 5
+#
+# To add health checks to your NestJS app:
+# npm install @nestjs/terminus
+# Then create a health controller
+# ==============================================
+
+# ==============================================
+# What happens when you apply this?
+# ==============================================
+# 1. Kubernetes creates a ReplicaSet
+# 2. ReplicaSet creates 2 Pods
+# 3. Each pod pulls markkibo/biddingservice:latest from Docker Hub
+# 4. Kubernetes injects env vars from ConfigMap and Secret
+# 5. NestJS app starts in each pod
+# 6. Readiness probes check if app is ready
+# 7. Once ready, pods join the Service and receive traffic
+# 8. If a pod crashes, Kubernetes automatically recreates it
+# ==============================================
+
+# ==============================================
+# Horizontal Pod Autoscaler (HPA) - Advanced
+# ==============================================
+# To automatically scale based on CPU/memory:
+#
+# kubectl autoscale deployment biddingservice \
+#   --cpu-percent=70 \
+#   --min=2 \
+#   --max=10
+#
+# This automatically scales from 2 to 10 pods based on CPU usage
+# ==============================================

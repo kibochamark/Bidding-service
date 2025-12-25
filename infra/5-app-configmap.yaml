@@ -1,0 +1,92 @@
+# ==============================================
+# Kubernetes ConfigMap for NestJS App
+# ==============================================
+# What is this?
+# ConfigMap stores NON-SENSITIVE configuration data
+# Think: Public bulletin board - anyone with cluster access can read this
+#
+# ConfigMap vs Secret:
+# - ConfigMap: Public URLs, settings (plain text)
+# - Secret: Passwords, API keys (base64 encoded)
+
+# How to apply:
+# kubectl apply -f infra/5-app-configmap.yaml
+
+# How to check:
+# kubectl get configmap app-config
+# kubectl describe configmap app-config
+
+# How to view values:
+# kubectl get configmap app-config -o yaml
+
+# How to delete:
+# kubectl delete configmap app-config
+# ==============================================
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # Name of the ConfigMap (we'll reference this in deployment)
+  name: app-config
+
+  # Namespace
+  namespace: default
+
+  # Labels for organization
+  labels:
+    app: biddingservice
+    component: backend
+
+# ==============================================
+# Data: Key-value pairs (NO base64 encoding!)
+# ==============================================
+# All values here are plain text
+# Only put non-sensitive data here!
+data:
+  # Node environment
+  NODE_ENV: "production"
+
+  # Kinde Auth - Public URLs (non-sensitive)
+  KINDE_ISSUER_URL: "https://kolakodhek.kinde.com"
+  KINDE_SITE_URL: "http://localhost:3000"
+  KINDE_POST_LOGOUT_REDIRECT_URL: "http://localhost:3000"
+  KINDE_POST_LOGIN_REDIRECT_URL: "http://localhost:3000"
+  KINDE_WELL_KNOWN_URL: "https://kolakodhek.kinde.com/.well-known/jwks.json"
+
+  # Database connection URL
+  # Uses the postgres Service DNS name
+  # Password comes from Secret (injected separately)
+  DATABASE_URL: "postgresql://postgres:kibo_password@postgres:5432/bidding_db?schema=public"
+
+# ==============================================
+# How this ConfigMap is used:
+# ==============================================
+# In app-deployment.yaml, we reference it like this:
+#
+# envFrom:
+#   - configMapRef:
+#       name: app-config
+#
+# This injects ALL key-value pairs as environment variables!
+# Your NestJS app can access them via process.env.NODE_ENV, etc.
+# ==============================================
+
+# ==============================================
+# Note: Database URL in ConfigMap
+# ==============================================
+# You might wonder: "Isn't the password sensitive?"
+# Yes! In production, you should:
+#
+# Option 1: Remove DATABASE_URL from here, construct it in deployment:
+# env:
+#   - name: DATABASE_URL
+#     value: "postgresql://$(DB_USER):$(DB_PASS)@postgres:5432/bidding_db"
+#   - name: DB_USER
+#     valueFrom: { secretKeyRef: { name: postgres-secret, key: postgres-user } }
+#   - name: DB_PASS
+#     valueFrom: { secretKeyRef: { name: postgres-secret, key: postgres-password } }
+#
+# Option 2: Store entire DATABASE_URL in Secret
+#
+# For learning/development, keeping it here is fine!
+# ==============================================

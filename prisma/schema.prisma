@@ -1,61 +1,111 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-  engineType = "binary"
+  provider        = "prisma-client"
+  output          = "../generated/prisma"
   previewFeatures = ["fullTextSearchPostgres", "nativeDistinct", "postgresqlExtensions", "relationJoins", "schemaEngineDriverAdapters", "shardKeys", "strictUndefinedChecks", "views"]
-  moduleFormat = "cjs"
+  engineType      = "binary"
+  moduleFormat    = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-
-
-
-// reperesents an instance of a user in Kinde
 model Account {
-
-  id        String  @default(uuid())  // internal Account ID
-  kindeId   String  @unique             // Kinde's User ID (UUIDv4)
-  // Business Data that Kinde DOES NOT handle
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  // Relationships (The reason we need this table at all)
-  kyc           KycProfile?        // Kinde doesn't store ID Card images
-  sellerProfile SellerDetails?     // Kinde doesn't store Tax IDs or Ratings
-  addresses     Address[]          // Kinde isn't an Address Book
-  // bids          Bid[]              // (From Bidding Domain)
-  // orders        Order[]            // (From Shipping Domain)
-  @@id([id])
+  id            String         @id @default(uuid())
+  kindeId       String         @unique
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  addresses     Address[]
+  kyc           KycProfile?
+  sellerProfile SellerDetails?
 }
 
-
 model KycProfile {
-  id            String    @id @default(uuid())
-  userId        String    @unique // Links to User.id (Kinde ID)
-
-  // This status controls "Bidding Eligibility"
-  status        KycStatus @default(PENDING)
-
-  // Secure URLs to your S3 bucket (Don't store images in DB)
-  idDocumentUrl String
-  selfieUrl     String?
-
-  // Audit Trail
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  status          KycStatus @default(PENDING)
+  idDocumentUrl   String
+  selfieUrl       String?
   rejectionReason String?
-  reviewedBy      String?   // Kinde ID of the Admin who reviewed it
+  reviewedBy      String?
   verifiedAt      DateTime?
+  accountId       String    @unique
+  account         Account   @relation(fields: [accountId], references: [kindeId])
+}
 
-  account     Account   @relation(fields: [accountId], references: [kindeId])
-  accountId   String  @unique
+model SellerDetails {
+  id           String   @id @default(uuid())
+  companyName  String
+  taxId        String?
+  rating       Decimal  @default(0.0)
+  totalSales   Int      @default(0)
+  accountId    String   @unique
+  responseRate Decimal? @default(0.0)
+  account      Account  @relation(fields: [accountId], references: [kindeId])
+}
+
+model Address {
+  id        String  @id @default(uuid())
+  userId    String
+  label     String?
+  street    String
+  city      String
+  zipCode   String
+  country   String
+  accountId String
+  account   Account @relation(fields: [accountId], references: [kindeId])
+}
+
+model Category {
+  id          String     @id @default(uuid())
+  slug        String     @unique
+  name        String
+  description String?
+  icon        String?
+  parentId    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  products    Product[]
+
+  @@index([slug])
+  @@index([parentId])
+}
+
+model Product {
+  id             String           @id @default(uuid())
+  title          String
+  description    String
+  categoryId     String
+  condition      ProductCondition @default(GOOD)
+  images         String[]
+  startingPrice  Decimal          @db.Decimal(10, 2)
+  currentBid     Decimal          @db.Decimal(10, 2)
+  bidsCount      Int              @default(0)
+  reservePrice   Decimal?         @db.Decimal(10, 2)
+  buyNowPrice    Decimal?         @db.Decimal(10, 2)
+  startDate      DateTime         @default(now())
+  endDate        DateTime
+  isActive       Boolean          @default(true)
+  sellerId       String
+  sellerName     String
+  sellerRating   Decimal          @default(0.0) @db.Decimal(3, 2)
+  rating         Decimal          @default(0.0) @db.Decimal(3, 2)
+  reviewCount    Int              @default(0)
+  specifications Json
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  category       Category         @relation(fields: [categoryId], references: [id])
+
+  @@index([categoryId, isActive, endDate(sort: Desc)])
+  @@index([sellerId, isActive])
+  @@index([isActive, endDate])
+  @@index([isActive, currentBid(sort: Desc)])
+  @@index([isActive, createdAt(sort: Desc)])
+  @@index([condition, isActive])
+  @@index([title])
+  @@index([startingPrice, currentBid])
 }
 
 enum KycStatus {
@@ -65,130 +115,10 @@ enum KycStatus {
   NEEDS_MORE_INFO
 }
 
-
-model SellerDetails {
-  id          String   @id @default(uuid())
-
-  // Commercial Info
-  companyName String
-  taxId       String?
-
-  // Reputation Engine (Updated by your backend after sales)
-  rating      Decimal  @default(0.0)
-  totalSales  Int      @default(0)
-  responseRate Decimal? @default(0.0)
-
-  account     Account   @relation(fields: [accountId], references: [kindeId])
-  accountId   String     @unique
-}
-
-
-
-model Address {
-  id        String  @id @default(uuid())
-  userId    String  // Links to User.id (Kinde ID)
-
-  label     String? // "Home", "Office"
-  street    String
-  city      String
-  zipCode   String
-  country   String
-
-  account     Account   @relation(fields: [accountId], references: [kindeId])
-  accountId   String
-}
-
-// ============================================
-// PRODUCT CATALOG DOMAIN
-// ============================================
-
-model Category {
-  id          String   @id @default(uuid())
-  slug        String   @unique // "smartphones", "laptops", "audio", etc.
-  name        String   // "Smartphones", "Laptops", "Audio"
-  description String?
-  icon        String?  // Icon name or URL
-  parentId    String?  // For nested categories (optional)
-  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children    Category[] @relation("CategoryHierarchy")
-
-  products    Product[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([slug])
-  @@index([parentId])
-}
-
-model Product {
-  id          String   @id @default(uuid())
-
-  // Basic Info
-  title       String
-  description String   @db.Text
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
-
-  // Condition
-  condition   ProductCondition @default(GOOD)
-
-  // Media
-  images      String[] // Array of image URLs from R2/S3
-
-  // Pricing & Bidding
-  startingPrice Decimal  @db.Decimal(10, 2)
-  currentBid    Decimal  @db.Decimal(10, 2)
-  bidsCount     Int      @default(0)
-  reservePrice  Decimal? @db.Decimal(10, 2) // Minimum price seller will accept
-  buyNowPrice   Decimal? @db.Decimal(10, 2) // Optional "Buy It Now" price
-
-  // Auction Timing
-  startDate   DateTime @default(now())
-  endDate     DateTime
-  isActive    Boolean  @default(true)
-
-  // Seller Info
-  sellerId    String   // Kinde ID of seller
-  sellerName  String   // Denormalized for performance
-  sellerRating Decimal @default(0.0) @db.Decimal(3, 2)
-
-  // Product Ratings (from previous sales/reviews)
-  rating       Decimal @default(0.0) @db.Decimal(3, 2)
-  reviewCount  Int     @default(0)
-
-  // Flexible specifications (JSONB for dynamic fields)
-  specifications Json   // { "Storage": "256GB", "Color": "Purple", etc. }
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  // bids      Bid[]    // From Bidding Domain
-
-  // ===== INDEXING STRATEGY FOR FAST SEARCH & PAGINATION =====
-
-  @@index([categoryId, isActive, endDate(sort: Desc)]) // Filter by category + active auctions
-  @@index([sellerId, isActive])                         // Seller's active listings
-  @@index([isActive, endDate(sort: Asc)])              // Ending soon queries
-  @@index([isActive, currentBid(sort: Desc)])          // Highest bids
-  @@index([isActive, createdAt(sort: Desc)])           // Newest listings
-  @@index([condition, isActive])                        // Filter by condition
-  @@index([title])                                      // Text search on title
-  @@index([startingPrice, currentBid])                 // Price range queries
-
-  // Full-text search index (PostgreSQL specific)
-  // Will add GIN index for tsvector in migration
-}
-
 enum ProductCondition {
-  MINT       // Like new, no visible wear
-  EXCELLENT  // Minimal signs of use
-  GOOD       // Normal wear, fully functional
-  FAIR       // Noticeable wear, fully functional
-  NEW        // Brand new, sealed
+  MINT
+  EXCELLENT
+  GOOD
+  FAIR
+  NEW
 }
-
-
-

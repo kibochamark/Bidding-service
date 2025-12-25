@@ -41,7 +41,7 @@ export class ProductService {
         return result;
     }
 
-    async getProductsByCategory(categoryId: string, page?: number, limit?: number) {
+    async getProductsByCategory(categoryId: string, page?: number, limit?: string) {
         this.logger.log(`Fetching products for category: ${categoryId} (page: ${page}, limit: ${limit})`);
         const result = await this.productRepository.findProductsByCategory(categoryId, page, limit);
         this.logger.log(`Found ${result.data.length} products in category ${categoryId}`);
@@ -55,14 +55,14 @@ export class ProductService {
         return result;
     }
 
-    async getEndingSoon(limit?: number) {
+    async getEndingSoon(limit?: string) {
         this.logger.log(`Fetching ending soon products (limit: ${limit || 10})`);
         const products = await this.productRepository.findEndingSoon(limit);
         this.logger.log(`Found ${products.length} products ending soon`);
         return products;
     }
 
-    async getNewestProducts(limit?: number) {
+    async getNewestProducts(limit?: string) {
         this.logger.log(`Fetching newest products (limit: ${limit || 20})`);
         const products = await this.productRepository.findNewest(limit);
         this.logger.log(`Found ${products.length} newest products`);

@@ -1,0 +1,138 @@
+# ==============================================
+# Kubernetes Service for PostgreSQL
+# ==============================================
+# What is this?
+# A Service provides a stable network endpoint for pods
+# Even when pods restart/move/change IPs, the Service DNS name stays the same
+# Think: Like a phone directory or reception desk
+
+# Why do we need this?
+# Pods have dynamic IP addresses that change when they restart
+# Services provide a stable DNS name: postgres.default.svc.cluster.local
+# Your app connects to "postgres" and it always works!
+
+# How to apply:
+# kubectl apply -f infra/4-postgres-service.yaml
+
+# How to check:
+# kubectl get service postgres
+# kubectl describe service postgres
+# kubectl get endpoints postgres  (shows which pod IPs it routes to)
+
+# How to test DNS from another pod:
+# kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup postgres
+
+# How to delete:
+# kubectl delete service postgres
+# ==============================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  # Name of the service (this becomes the DNS name!)
+  # Your app will connect using: postgres:5432
+  name: postgres
+
+  # Namespace
+  namespace: default
+
+  # Labels for organization
+  labels:
+    app: postgres
+    component: database
+
+spec:
+  # ==============================================
+  # Service Type: ClusterIP (Internal Only)
+  # ==============================================
+  # ClusterIP = Only accessible within the cluster
+  # Perfect for databases (no external access needed!)
+  #
+  # Other types:
+  # - NodePort: Exposes on each node's IP (for testing)
+  # - LoadBalancer: Creates cloud load balancer (for public apps)
+  # - ExternalName: DNS alias to external service
+  type: ClusterIP
+
+  # ==============================================
+  # Selector: Which pods receive traffic
+  # ==============================================
+  # Service routes traffic to pods with matching labels
+  # This must match the labels in postgres-deployment.yaml!
+  selector:
+    app: postgres
+
+  # ==============================================
+  # Ports: Port mapping
+  # ==============================================
+  ports:
+    - name: postgres
+      # Port the Service listens on
+      # Your app connects to: postgres:5432
+      port: 5432
+
+      # Port on the pod (container port)
+      # From postgres-deployment.yaml containerPort
+      targetPort: 5432
+
+      # Protocol
+      protocol: TCP
+
+  # ==============================================
+  # Session Affinity (Optional)
+  # ==============================================
+  # None = Load balance each connection (default)
+  # ClientIP = Same client always goes to same pod
+  # For databases with single replica, this doesn't matter
+  sessionAffinity: None
+
+# ==============================================
+# How DNS Works:
+# ==============================================
+# When this Service is created, Kubernetes DNS creates these entries:
+#
+# 1. Short name (same namespace):
+#    postgres
+#
+# 2. With namespace:
+#    postgres.default
+#
+# 3. Fully qualified (anywhere in cluster):
+#    postgres.default.svc.cluster.local
+#
+# Your NestJS app can use any of these:
+# DATABASE_URL=postgresql://user:pass@postgres:5432/db
+#                                      ^^^^^^^^
+#                                      Service DNS name!
+# ==============================================
+
+# ==============================================
+# How Traffic Flows:
+# ==============================================
+# NestJS App Pod
+#      ↓
+# Connects to: postgres:5432
+#      ↓
+# Kubernetes DNS resolves to Service ClusterIP
+#      ↓
+# Service forwards to PostgreSQL Pod
+#      ↓
+# PostgreSQL Pod receives connection
+#
+# If PostgreSQL pod restarts:
+# - Pod gets new IP address
+# - Service automatically updates endpoints
+# - Your app connection still works!
+# ==============================================
+
+# ==============================================
+# Testing the Service:
+# ==============================================
+# From your NestJS app, you can now connect using:
+#
+# DATABASE_URL="postgresql://postgres:kibo_password@postgres:5432/bidding_db?schema=public"
+#                                                    ^^^^^^^^
+#                                                    Service name!
+#
+# The "postgres" hostname will resolve to the PostgreSQL pod automatically!
+# ==============================================

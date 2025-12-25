@@ -1,0 +1,221 @@
+import { PrismaService } from '../../../src/prisma/prisma.service';
+import { CreateProductDto, SearchProductsDto, UpdateProductDto } from '../../../src/Controllers/Products/dto';
+export interface PaginatedResponse<T> {
+    data: T[];
+    pagination: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+        hasMore: boolean;
+        cursor?: string;
+    };
+}
+export declare class ProductRepository {
+    private prisma;
+    private readonly logger;
+    constructor(prisma: PrismaService);
+    createProduct(data: CreateProductDto): Promise<{
+        category: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            slug: string;
+            name: string;
+            description: string | null;
+            icon: string | null;
+            parentId: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        rating: import("@prisma/client-runtime-utils").Decimal;
+        description: string;
+        title: string;
+        categoryId: string;
+        condition: import("../../../generated/prisma/enums").ProductCondition;
+        images: string[];
+        startingPrice: import("@prisma/client-runtime-utils").Decimal;
+        currentBid: import("@prisma/client-runtime-utils").Decimal;
+        bidsCount: number;
+        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
+        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        startDate: Date;
+        endDate: Date;
+        isActive: boolean;
+        sellerId: string;
+        sellerName: string;
+        sellerRating: import("@prisma/client-runtime-utils").Decimal;
+        reviewCount: number;
+        specifications: import("@prisma/client/runtime/client").JsonValue;
+    }>;
+    findProductById(id: string): Promise<{
+        category: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            slug: string;
+            name: string;
+            description: string | null;
+            icon: string | null;
+            parentId: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        rating: import("@prisma/client-runtime-utils").Decimal;
+        description: string;
+        title: string;
+        categoryId: string;
+        condition: import("../../../generated/prisma/enums").ProductCondition;
+        images: string[];
+        startingPrice: import("@prisma/client-runtime-utils").Decimal;
+        currentBid: import("@prisma/client-runtime-utils").Decimal;
+        bidsCount: number;
+        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
+        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        startDate: Date;
+        endDate: Date;
+        isActive: boolean;
+        sellerId: string;
+        sellerName: string;
+        sellerRating: import("@prisma/client-runtime-utils").Decimal;
+        reviewCount: number;
+        specifications: import("@prisma/client/runtime/client").JsonValue;
+    }>;
+    updateProduct(id: string, data: UpdateProductDto): Promise<{
+        category: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            slug: string;
+            name: string;
+            description: string | null;
+            icon: string | null;
+            parentId: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        rating: import("@prisma/client-runtime-utils").Decimal;
+        description: string;
+        title: string;
+        categoryId: string;
+        condition: import("../../../generated/prisma/enums").ProductCondition;
+        images: string[];
+        startingPrice: import("@prisma/client-runtime-utils").Decimal;
+        currentBid: import("@prisma/client-runtime-utils").Decimal;
+        bidsCount: number;
+        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
+        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        startDate: Date;
+        endDate: Date;
+        isActive: boolean;
+        sellerId: string;
+        sellerName: string;
+        sellerRating: import("@prisma/client-runtime-utils").Decimal;
+        reviewCount: number;
+        specifications: import("@prisma/client/runtime/client").JsonValue;
+    }>;
+    deleteProduct(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        rating: import("@prisma/client-runtime-utils").Decimal;
+        description: string;
+        title: string;
+        categoryId: string;
+        condition: import("../../../generated/prisma/enums").ProductCondition;
+        images: string[];
+        startingPrice: import("@prisma/client-runtime-utils").Decimal;
+        currentBid: import("@prisma/client-runtime-utils").Decimal;
+        bidsCount: number;
+        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
+        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        startDate: Date;
+        endDate: Date;
+        isActive: boolean;
+        sellerId: string;
+        sellerName: string;
+        sellerRating: import("@prisma/client-runtime-utils").Decimal;
+        reviewCount: number;
+        specifications: import("@prisma/client/runtime/client").JsonValue;
+    }>;
+    searchProducts(filters: SearchProductsDto): Promise<PaginatedResponse<any>>;
+    private fullTextSearch;
+    findProductsByCategory(categoryId: string, page?: number, limit?: string): Promise<PaginatedResponse<any>>;
+    findProductsBySeller(sellerId: string, page?: number, limit?: number): Promise<PaginatedResponse<any>>;
+    findEndingSoon(limit?: string): Promise<({
+        category: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            slug: string;
+            name: string;
+            description: string | null;
+            icon: string | null;
+            parentId: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        rating: import("@prisma/client-runtime-utils").Decimal;
+        description: string;
+        title: string;
+        categoryId: string;
+        condition: import("../../../generated/prisma/enums").ProductCondition;
+        images: string[];
+        startingPrice: import("@prisma/client-runtime-utils").Decimal;
+        currentBid: import("@prisma/client-runtime-utils").Decimal;
+        bidsCount: number;
+        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
+        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        startDate: Date;
+        endDate: Date;
+        isActive: boolean;
+        sellerId: string;
+        sellerName: string;
+        sellerRating: import("@prisma/client-runtime-utils").Decimal;
+        reviewCount: number;
+        specifications: import("@prisma/client/runtime/client").JsonValue;
+    })[]>;
+    findNewest(limit?: string): Promise<({
+        category: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            slug: string;
+            name: string;
+            description: string | null;
+            icon: string | null;
+            parentId: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        rating: import("@prisma/client-runtime-utils").Decimal;
+        description: string;
+        title: string;
+        categoryId: string;
+        condition: import("../../../generated/prisma/enums").ProductCondition;
+        images: string[];
+        startingPrice: import("@prisma/client-runtime-utils").Decimal;
+        currentBid: import("@prisma/client-runtime-utils").Decimal;
+        bidsCount: number;
+        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
+        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        startDate: Date;
+        endDate: Date;
+        isActive: boolean;
+        sellerId: string;
+        sellerName: string;
+        sellerRating: import("@prisma/client-runtime-utils").Decimal;
+        reviewCount: number;
+        specifications: import("@prisma/client/runtime/client").JsonValue;
+    })[]>;
+}

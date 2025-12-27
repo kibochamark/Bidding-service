@@ -66,7 +66,7 @@ export class AccountsController {
 
                         const account: CreateAccountDto = {
                             type: event.type,
-                            ...event.data.user
+                            data: event.data
                         };
 
                         const result = await this.accountsService.createAccount(account);

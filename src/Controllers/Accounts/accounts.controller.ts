@@ -42,6 +42,9 @@ export class AccountsController {
                 }
 
 
+                console.log('Decoded webhook:', decodedWebhook);
+
+
                 this.logger.log(`Processing Kinde webhook of type: ${JSON.stringify(decodedWebhook)}`);
 
                 

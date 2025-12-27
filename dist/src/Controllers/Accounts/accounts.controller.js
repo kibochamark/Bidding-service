@@ -44,6 +44,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var AccountsController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AccountsController = void 0;
@@ -51,9 +54,13 @@ const common_1 = require("@nestjs/common");
 const accounts_service_1 = require("../../../src/Domains/Accounts/accounts.service");
 const index_js_1 = require("./dto/index.js");
 const bodyParser = __importStar(require("body-parser"));
+const jwks_rsa_1 = __importDefault(require("jwks-rsa"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = require("@nestjs/config");
 let AccountsController = AccountsController_1 = class AccountsController {
-    constructor(accountsService) {
+    constructor(accountsService, configService) {
         this.accountsService = accountsService;
+        this.configService = configService;
         this.jwtBodyParser = bodyParser.text({ type: 'application/jwt' });
         this.logger = new common_1.Logger(AccountsController_1.name);
     }
@@ -62,23 +69,61 @@ let AccountsController = AccountsController_1 = class AccountsController {
     }
     async createAccount(req, res) {
         this.jwtBodyParser(req, res, async () => {
-            const token = req.body;
-            console.log('Received webhook with token:', token);
             try {
-                const kindewebhook = await (import('@kinde/webhooks'));
-                const decodedWebhook = await kindewebhook.decodeWebhook(token, "https://bidmarket.kinde.com");
-                if (!decodedWebhook || decodedWebhook.type !== kindewebhook.WebhookEventType.UserCreated) {
-                    throw new Error('Invalid webhook event');
+                const token = req.body;
+                const client = (0, jwks_rsa_1.default)({
+                    jwksUri: this.configService.get('KINDE_JWKS_URI', 'https://bidmarket.kinde.com/.well-known/jwks.json'),
+                });
+                const { header } = jsonwebtoken_1.default.decode(token, { complete: true });
+                const { kid } = header;
+                const key = await client.getSigningKey(kid);
+                const signingKey = key.getPublicKey();
+                const event = await jsonwebtoken_1.default.verify(token, signingKey);
+                switch (event.type) {
+                    case 'user.created':
+                        this.logger.log('Processing user.created event');
+                        const account = {
+                            type: event.type,
+                            ...event.data.user
+                        };
+                        const result = await this.accountsService.createAccount(account);
+                        return res.status(201).json({ success: true, data: result });
+                    default:
+                        this.logger.warn(`Unhandled webhook event type: ${event.type}`);
+                        return res.status(400).json({ error: 'Unhandled event type', type: event.type });
                 }
-                this.logger.log(`Processing Kinde webhook of type: ${JSON.stringify(decodedWebhook)}`);
-                const account = {
-                    type: decodedWebhook.type,
-                    ...decodedWebhook.data
-                };
-                return await this.accountsService.createAccount(account);
             }
             catch (error) {
-                return { error: 'Failed to process webhook', details: error.message };
+                this.logger.error('Failed to process webhook', error);
+                return res.status(500).json({ error: 'Failed to process webhook', details: error.message });
+            }
+        });
+    }
+    async deleteAccount(req, res) {
+        this.jwtBodyParser(req, res, async () => {
+            try {
+                const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFhOmNjOjJiOmQ2OjZlOjY5OmUyOmJhOjQzOjdkOjA3OjVlOjFkOjVkOjllOjNhIiwidHlwIjoiSldUIn0.eyJkYXRhIjp7InVzZXIiOnsiaWQiOiJrcF8zMmFlNzE5ODc0NjY0OTE2ODY0MGJiYTYzZjRjNDYxOCJ9fSwiZXZlbnRfaWQiOiJldmVudF8wMTliNWY5ZGE3ZDU0YjYzZDc0NDE4MDczY2RjZTk0ZCIsImV2ZW50X3RpbWVzdGFtcCI6IjIwMjUtMTItMjdUMjI6NDI6MDYuMjY2MTAzKzExOjAwIiwic291cmNlIjoiYWRtaW4iLCJ0aW1lc3RhbXAiOiIyMDI1LTEyLTI3VDIyOjQyOjA2LjkxNDA1ODYyOCsxMTowMCIsInR5cGUiOiJ1c2VyLmRlbGV0ZWQifQ.H3gAaHIz57MeURaOzi8kAveNsmj3URC9VM4ZaIixePJpDvrWs6GeUlp0YLXcrBFsBp-Qdvtn0KEQV3317Ai4otW-ipj-8D7OQjZ485tFxkYxe_4wuoIgMcjuM8Ue2cAzaivp7XhyXnjFFlxMonw39HcoeCtgT3G5ZJLHm2YcnzwcQKBYwCsr3bWO9bwBukPbbbp22il06O0aUsPWzL9gmsECy_Th_hepGwIENSbEYQW_hNQCDbFxCSHa9aKOO6drNIybrud9IsPH50PAnj0GBxK5uJ7QqxDdI5Xk0jZf66GHiFcnDzqlahEyUi9jb7bM7yLFX0_YLQG8tXkxWHVcBw";
+                const client = (0, jwks_rsa_1.default)({
+                    jwksUri: `https://bidmarket.kinde.com/.well-known/jwks.json`,
+                });
+                const { header } = jsonwebtoken_1.default.decode(token, { complete: true });
+                const { kid } = header;
+                const key = await client.getSigningKey(kid);
+                const signingKey = key.getPublicKey();
+                const event = await jsonwebtoken_1.default.verify(token, signingKey);
+                switch (event.type) {
+                    case 'user.deleted':
+                        this.logger.log('Processing user.deleted event');
+                        await this.accountsService.deleteAccountByKindeId(event.data.user.id);
+                        return res.status(200).json({ success: true, message: 'Account deleted successfully' });
+                    default:
+                        this.logger.warn(`Unhandled webhook event type: ${event.type}`);
+                        return res.status(400).json({ error: 'Unhandled event type', type: event.type });
+                }
+            }
+            catch (error) {
+                this.logger.error('Failed to process webhook', error);
+                return res.status(500).json({ error: 'Failed to process webhook', details: error.message });
             }
         });
     }
@@ -98,9 +143,17 @@ __decorate([
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Request, Response]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AccountsController.prototype, "createAccount", null);
+__decorate([
+    (0, common_1.Post)('deletewebhook'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AccountsController.prototype, "deleteAccount", null);
 __decorate([
     (0, common_1.Get)(':kindeId'),
     __param(0, (0, common_1.Param)()),
@@ -110,6 +163,6 @@ __decorate([
 ], AccountsController.prototype, "getAccountByKindeId", null);
 exports.AccountsController = AccountsController = AccountsController_1 = __decorate([
     (0, common_1.Controller)('accounts'),
-    __metadata("design:paramtypes", [accounts_service_1.AccountsService])
+    __metadata("design:paramtypes", [accounts_service_1.AccountsService, config_1.ConfigService])
 ], AccountsController);
 //# sourceMappingURL=accounts.controller.js.map

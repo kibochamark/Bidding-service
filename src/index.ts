@@ -15,13 +15,13 @@ async function bootstrap() {
         new ExpressAdapter(server)
     );
 
-     // const app = await NestFactory.create(AppModule);
-    const expressInstance = nestApp.getHttpAdapter().getInstance();
+    //  // const app = await NestFactory.create(AppModule);
+    // const expressInstance = nestApp.getHttpAdapter().getInstance();
     
-    useNestTreblle(expressInstance, {
-        sdkToken: process.env.TREBLLE_SDK_TOKEN!,
-        apiKey: process.env.TREBLLE_API_KEY!,
-    });
+    // useNestTreblle(expressInstance, {
+    //     sdkToken: process.env.TREBLLE_SDK_TOKEN!,
+    //     apiKey: process.env.TREBLLE_API_KEY!,
+    // });
 
     nestApp.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     nestApp.enableCors({

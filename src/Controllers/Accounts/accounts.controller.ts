@@ -57,9 +57,16 @@ export class AccountsController {
                     case 'user.created':
                         this.logger.log('Processing user.created event');
 
+                        if (!event.data?.user) {
+                            this.logger.error('Webhook event missing user data', event);
+                            return res.status(400).json({
+                                error: "Invalid event payload: missing event.data.user"
+                            });
+                        }
+
                         const account: CreateAccountDto = {
                             type: event.type,
-                            ...event.data?.user
+                            ...event.data.user
                         };
 
                         const result = await this.accountsService.createAccount(account);

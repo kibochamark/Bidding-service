@@ -1,7 +1,9 @@
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
-import { AccountParamDto, CreateAccountDto } from './dto/index.js';
+import { AccountParamDto } from './dto/index.js';
 export declare class AccountsController {
     private accountsService;
+    private jwtBodyParser;
+    private readonly logger;
     constructor(accountsService: AccountsService);
     getAllAccounts(): Promise<({
         kyc: {
@@ -12,12 +14,16 @@ export declare class AccountsController {
             status: import("../../../generated/prisma/enums").KycStatus;
             rejectionReason: string | null;
             reviewedBy: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             userId: string;
             verifiedAt: Date | null;
         } | null;
         sellerProfile: {
             accountId: string;
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             companyName: string;
             taxId: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
@@ -30,12 +36,7 @@ export declare class AccountsController {
         createdAt: Date;
         updatedAt: Date;
     })[]>;
-    createAccount(account: CreateAccountDto, authHeader: string): Promise<{
-        kindeId: string;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-    }>;
+    createAccount(req: Request, res: Response): Promise<void>;
     getAccountByKindeId(params: AccountParamDto): Promise<{
         addresses: {
             accountId: string;
@@ -45,6 +46,8 @@ export declare class AccountsController {
             zipCode: string;
             country: string;
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             userId: string;
         }[];
         kyc: {
@@ -55,12 +58,16 @@ export declare class AccountsController {
             status: import("../../../generated/prisma/enums").KycStatus;
             rejectionReason: string | null;
             reviewedBy: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             userId: string;
             verifiedAt: Date | null;
         } | null;
         sellerProfile: {
             accountId: string;
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             companyName: string;
             taxId: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;

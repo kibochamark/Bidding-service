@@ -17,6 +17,8 @@ export declare class KycController {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     })[]>;
@@ -33,6 +35,8 @@ export declare class KycController {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }) | null>;
@@ -49,6 +53,8 @@ export declare class KycController {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;
@@ -60,6 +66,8 @@ export declare class KycController {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;
@@ -71,6 +79,8 @@ export declare class KycController {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;
@@ -82,6 +92,8 @@ export declare class KycController {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;

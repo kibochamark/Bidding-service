@@ -15,6 +15,8 @@ export type AddressMinAggregateOutputType = {
     zipCode: string | null;
     country: string | null;
     accountId: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type AddressMaxAggregateOutputType = {
     id: string | null;
@@ -25,6 +27,8 @@ export type AddressMaxAggregateOutputType = {
     zipCode: string | null;
     country: string | null;
     accountId: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type AddressCountAggregateOutputType = {
     id: number;
@@ -35,6 +39,8 @@ export type AddressCountAggregateOutputType = {
     zipCode: number;
     country: number;
     accountId: number;
+    createdAt: number;
+    updatedAt: number;
     _all: number;
 };
 export type AddressMinAggregateInputType = {
@@ -46,6 +52,8 @@ export type AddressMinAggregateInputType = {
     zipCode?: true | runtime.Types.Skip;
     country?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
 };
 export type AddressMaxAggregateInputType = {
     id?: true | runtime.Types.Skip;
@@ -56,6 +64,8 @@ export type AddressMaxAggregateInputType = {
     zipCode?: true | runtime.Types.Skip;
     country?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
 };
 export type AddressCountAggregateInputType = {
     id?: true | runtime.Types.Skip;
@@ -66,6 +76,8 @@ export type AddressCountAggregateInputType = {
     zipCode?: true | runtime.Types.Skip;
     country?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
     _all?: true | runtime.Types.Skip;
 };
 export type AddressAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -101,6 +113,8 @@ export type AddressGroupByOutputType = {
     zipCode: string;
     country: string;
     accountId: string;
+    createdAt: Date;
+    updatedAt: Date;
     _count: AddressCountAggregateOutputType | null;
     _min: AddressMinAggregateOutputType | null;
     _max: AddressMaxAggregateOutputType | null;
@@ -120,6 +134,8 @@ export type AddressWhereInput = {
     zipCode?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
     country?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
     accountId?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string | runtime.Types.Skip;
     account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput> | runtime.Types.Skip;
 };
 export type AddressOrderByWithRelationInput = {
@@ -131,6 +147,8 @@ export type AddressOrderByWithRelationInput = {
     zipCode?: Prisma.SortOrder | runtime.Types.Skip;
     country?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
     account?: Prisma.AccountOrderByWithRelationInput | runtime.Types.Skip;
     _relevance?: Prisma.AddressOrderByRelevanceInput | runtime.Types.Skip;
 };
@@ -146,6 +164,8 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
     zipCode?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
     country?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
     accountId?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string | runtime.Types.Skip;
     account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput> | runtime.Types.Skip;
 }, "id">;
 export type AddressOrderByWithAggregationInput = {
@@ -157,6 +177,8 @@ export type AddressOrderByWithAggregationInput = {
     zipCode?: Prisma.SortOrder | runtime.Types.Skip;
     country?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
     _count?: Prisma.AddressCountOrderByAggregateInput | runtime.Types.Skip;
     _max?: Prisma.AddressMaxOrderByAggregateInput | runtime.Types.Skip;
     _min?: Prisma.AddressMinOrderByAggregateInput | runtime.Types.Skip;
@@ -173,6 +195,8 @@ export type AddressScalarWhereWithAggregatesInput = {
     zipCode?: Prisma.StringWithAggregatesFilter<"Address"> | string | runtime.Types.Skip;
     country?: Prisma.StringWithAggregatesFilter<"Address"> | string | runtime.Types.Skip;
     accountId?: Prisma.StringWithAggregatesFilter<"Address"> | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Address"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Address"> | Date | string | runtime.Types.Skip;
 };
 export type AddressCreateInput = {
     id?: string | runtime.Types.Skip;
@@ -182,6 +206,8 @@ export type AddressCreateInput = {
     city: string;
     zipCode: string;
     country: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
     account: Prisma.AccountCreateNestedOneWithoutAddressesInput;
 };
 export type AddressUncheckedCreateInput = {
@@ -193,6 +219,8 @@ export type AddressUncheckedCreateInput = {
     zipCode: string;
     country: string;
     accountId: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type AddressUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -202,6 +230,8 @@ export type AddressUpdateInput = {
     city?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     zipCode?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     country?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
     account?: Prisma.AccountUpdateOneRequiredWithoutAddressesNestedInput | runtime.Types.Skip;
 };
 export type AddressUncheckedUpdateInput = {
@@ -213,6 +243,8 @@ export type AddressUncheckedUpdateInput = {
     zipCode?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     country?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     accountId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type AddressCreateManyInput = {
     id?: string | runtime.Types.Skip;
@@ -223,6 +255,8 @@ export type AddressCreateManyInput = {
     zipCode: string;
     country: string;
     accountId: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type AddressUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -232,6 +266,8 @@ export type AddressUpdateManyMutationInput = {
     city?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     zipCode?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     country?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type AddressUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -242,6 +278,8 @@ export type AddressUncheckedUpdateManyInput = {
     zipCode?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     country?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     accountId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type AddressListRelationFilter = {
     every?: Prisma.AddressWhereInput | runtime.Types.Skip;
@@ -265,6 +303,8 @@ export type AddressCountOrderByAggregateInput = {
     zipCode?: Prisma.SortOrder | runtime.Types.Skip;
     country?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type AddressMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
@@ -275,6 +315,8 @@ export type AddressMaxOrderByAggregateInput = {
     zipCode?: Prisma.SortOrder | runtime.Types.Skip;
     country?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type AddressMinOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
@@ -285,6 +327,8 @@ export type AddressMinOrderByAggregateInput = {
     zipCode?: Prisma.SortOrder | runtime.Types.Skip;
     country?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type AddressCreateNestedManyWithoutAccountInput = {
     create?: Prisma.XOR<Prisma.AddressCreateWithoutAccountInput, Prisma.AddressUncheckedCreateWithoutAccountInput> | Prisma.AddressCreateWithoutAccountInput[] | Prisma.AddressUncheckedCreateWithoutAccountInput[] | runtime.Types.Skip;
@@ -332,6 +376,8 @@ export type AddressCreateWithoutAccountInput = {
     city: string;
     zipCode: string;
     country: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type AddressUncheckedCreateWithoutAccountInput = {
     id?: string | runtime.Types.Skip;
@@ -341,6 +387,8 @@ export type AddressUncheckedCreateWithoutAccountInput = {
     city: string;
     zipCode: string;
     country: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type AddressCreateOrConnectWithoutAccountInput = {
     where: Prisma.AddressWhereUniqueInput;
@@ -375,6 +423,8 @@ export type AddressScalarWhereInput = {
     zipCode?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
     country?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
     accountId?: Prisma.StringFilter<"Address"> | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string | runtime.Types.Skip;
 };
 export type AddressCreateManyAccountInput = {
     id?: string | runtime.Types.Skip;
@@ -384,6 +434,8 @@ export type AddressCreateManyAccountInput = {
     city: string;
     zipCode: string;
     country: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type AddressUpdateWithoutAccountInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -393,6 +445,8 @@ export type AddressUpdateWithoutAccountInput = {
     city?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     zipCode?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     country?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type AddressUncheckedUpdateWithoutAccountInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -402,6 +456,8 @@ export type AddressUncheckedUpdateWithoutAccountInput = {
     city?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     zipCode?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     country?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type AddressUncheckedUpdateManyWithoutAccountInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -411,6 +467,8 @@ export type AddressUncheckedUpdateManyWithoutAccountInput = {
     city?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     zipCode?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     country?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean | runtime.Types.Skip;
@@ -421,6 +479,8 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     zipCode?: boolean | runtime.Types.Skip;
     country?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["address"]>;
 export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -432,6 +492,8 @@ export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     zipCode?: boolean | runtime.Types.Skip;
     country?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["address"]>;
 export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -443,6 +505,8 @@ export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     zipCode?: boolean | runtime.Types.Skip;
     country?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["address"]>;
 export type AddressSelectScalar = {
@@ -454,8 +518,10 @@ export type AddressSelectScalar = {
     zipCode?: boolean | runtime.Types.Skip;
     country?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
 };
-export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "label" | "street" | "city" | "zipCode" | "country" | "accountId", ExtArgs["result"]["address"], runtime.Types.Skip>;
+export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "label" | "street" | "city" | "zipCode" | "country" | "accountId" | "createdAt" | "updatedAt", ExtArgs["result"]["address"], runtime.Types.Skip>;
 export type AddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 };
@@ -479,6 +545,8 @@ export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         zipCode: string;
         country: string;
         accountId: string;
+        createdAt: Date;
+        updatedAt: Date;
     }, ExtArgs["result"]["address"]>;
     composites: {};
 };
@@ -545,6 +613,8 @@ export interface AddressFieldRefs {
     readonly zipCode: Prisma.FieldRef<"Address", 'String'>;
     readonly country: Prisma.FieldRef<"Address", 'String'>;
     readonly accountId: Prisma.FieldRef<"Address", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"Address", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"Address", 'DateTime'>;
 }
 export type AddressFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.AddressSelect<ExtArgs> | null;

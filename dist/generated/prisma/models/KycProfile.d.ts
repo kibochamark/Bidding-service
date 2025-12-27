@@ -17,6 +17,8 @@ export type KycProfileMinAggregateOutputType = {
     reviewedBy: string | null;
     verifiedAt: Date | null;
     accountId: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type KycProfileMaxAggregateOutputType = {
     id: string | null;
@@ -28,6 +30,8 @@ export type KycProfileMaxAggregateOutputType = {
     reviewedBy: string | null;
     verifiedAt: Date | null;
     accountId: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type KycProfileCountAggregateOutputType = {
     id: number;
@@ -39,6 +43,8 @@ export type KycProfileCountAggregateOutputType = {
     reviewedBy: number;
     verifiedAt: number;
     accountId: number;
+    createdAt: number;
+    updatedAt: number;
     _all: number;
 };
 export type KycProfileMinAggregateInputType = {
@@ -51,6 +57,8 @@ export type KycProfileMinAggregateInputType = {
     reviewedBy?: true | runtime.Types.Skip;
     verifiedAt?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
 };
 export type KycProfileMaxAggregateInputType = {
     id?: true | runtime.Types.Skip;
@@ -62,6 +70,8 @@ export type KycProfileMaxAggregateInputType = {
     reviewedBy?: true | runtime.Types.Skip;
     verifiedAt?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
 };
 export type KycProfileCountAggregateInputType = {
     id?: true | runtime.Types.Skip;
@@ -73,6 +83,8 @@ export type KycProfileCountAggregateInputType = {
     reviewedBy?: true | runtime.Types.Skip;
     verifiedAt?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
     _all?: true | runtime.Types.Skip;
 };
 export type KycProfileAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -109,6 +121,8 @@ export type KycProfileGroupByOutputType = {
     reviewedBy: string | null;
     verifiedAt: Date | null;
     accountId: string;
+    createdAt: Date;
+    updatedAt: Date;
     _count: KycProfileCountAggregateOutputType | null;
     _min: KycProfileMinAggregateOutputType | null;
     _max: KycProfileMaxAggregateOutputType | null;
@@ -129,6 +143,8 @@ export type KycProfileWhereInput = {
     reviewedBy?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.DateTimeNullableFilter<"KycProfile"> | Date | string | null | runtime.Types.Skip;
     accountId?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
     account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput> | runtime.Types.Skip;
 };
 export type KycProfileOrderByWithRelationInput = {
@@ -141,6 +157,8 @@ export type KycProfileOrderByWithRelationInput = {
     reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
     account?: Prisma.AccountOrderByWithRelationInput | runtime.Types.Skip;
     _relevance?: Prisma.KycProfileOrderByRelevanceInput | runtime.Types.Skip;
 };
@@ -157,6 +175,8 @@ export type KycProfileWhereUniqueInput = Prisma.AtLeast<{
     rejectionReason?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.DateTimeNullableFilter<"KycProfile"> | Date | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
     account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput> | runtime.Types.Skip;
 }, "id" | "userId" | "accountId">;
 export type KycProfileOrderByWithAggregationInput = {
@@ -169,6 +189,8 @@ export type KycProfileOrderByWithAggregationInput = {
     reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
     _count?: Prisma.KycProfileCountOrderByAggregateInput | runtime.Types.Skip;
     _max?: Prisma.KycProfileMaxOrderByAggregateInput | runtime.Types.Skip;
     _min?: Prisma.KycProfileMinOrderByAggregateInput | runtime.Types.Skip;
@@ -186,6 +208,8 @@ export type KycProfileScalarWhereWithAggregatesInput = {
     reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"KycProfile"> | Date | string | null | runtime.Types.Skip;
     accountId?: Prisma.StringWithAggregatesFilter<"KycProfile"> | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
 };
 export type KycProfileCreateInput = {
     id?: string | runtime.Types.Skip;
@@ -196,6 +220,8 @@ export type KycProfileCreateInput = {
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
     verifiedAt?: Date | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
     account: Prisma.AccountCreateNestedOneWithoutKycInput;
 };
 export type KycProfileUncheckedCreateInput = {
@@ -208,6 +234,8 @@ export type KycProfileUncheckedCreateInput = {
     reviewedBy?: string | null | runtime.Types.Skip;
     verifiedAt?: Date | string | null | runtime.Types.Skip;
     accountId: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type KycProfileUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -218,6 +246,8 @@ export type KycProfileUpdateInput = {
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
     account?: Prisma.AccountUpdateOneRequiredWithoutKycNestedInput | runtime.Types.Skip;
 };
 export type KycProfileUncheckedUpdateInput = {
@@ -230,6 +260,8 @@ export type KycProfileUncheckedUpdateInput = {
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null | runtime.Types.Skip;
     accountId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type KycProfileCreateManyInput = {
     id?: string | runtime.Types.Skip;
@@ -241,6 +273,8 @@ export type KycProfileCreateManyInput = {
     reviewedBy?: string | null | runtime.Types.Skip;
     verifiedAt?: Date | string | null | runtime.Types.Skip;
     accountId: string;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type KycProfileUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -251,6 +285,8 @@ export type KycProfileUpdateManyMutationInput = {
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type KycProfileUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -262,6 +298,8 @@ export type KycProfileUncheckedUpdateManyInput = {
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null | runtime.Types.Skip;
     accountId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type KycProfileNullableScalarRelationFilter = {
     is?: Prisma.KycProfileWhereInput | null | runtime.Types.Skip;
@@ -282,6 +320,8 @@ export type KycProfileCountOrderByAggregateInput = {
     reviewedBy?: Prisma.SortOrder | runtime.Types.Skip;
     verifiedAt?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type KycProfileMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
@@ -293,6 +333,8 @@ export type KycProfileMaxOrderByAggregateInput = {
     reviewedBy?: Prisma.SortOrder | runtime.Types.Skip;
     verifiedAt?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type KycProfileMinOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
@@ -304,6 +346,8 @@ export type KycProfileMinOrderByAggregateInput = {
     reviewedBy?: Prisma.SortOrder | runtime.Types.Skip;
     verifiedAt?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type KycProfileCreateNestedOneWithoutAccountInput = {
     create?: Prisma.XOR<Prisma.KycProfileCreateWithoutAccountInput, Prisma.KycProfileUncheckedCreateWithoutAccountInput> | runtime.Types.Skip;
@@ -351,6 +395,8 @@ export type KycProfileCreateWithoutAccountInput = {
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
     verifiedAt?: Date | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type KycProfileUncheckedCreateWithoutAccountInput = {
     id?: string | runtime.Types.Skip;
@@ -361,6 +407,8 @@ export type KycProfileUncheckedCreateWithoutAccountInput = {
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
     verifiedAt?: Date | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type KycProfileCreateOrConnectWithoutAccountInput = {
     where: Prisma.KycProfileWhereUniqueInput;
@@ -384,6 +432,8 @@ export type KycProfileUpdateWithoutAccountInput = {
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type KycProfileUncheckedUpdateWithoutAccountInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -394,6 +444,8 @@ export type KycProfileUncheckedUpdateWithoutAccountInput = {
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type KycProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean | runtime.Types.Skip;
@@ -405,6 +457,8 @@ export type KycProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     reviewedBy?: boolean | runtime.Types.Skip;
     verifiedAt?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["kycProfile"]>;
 export type KycProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -417,6 +471,8 @@ export type KycProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
     reviewedBy?: boolean | runtime.Types.Skip;
     verifiedAt?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["kycProfile"]>;
 export type KycProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -429,6 +485,8 @@ export type KycProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
     reviewedBy?: boolean | runtime.Types.Skip;
     verifiedAt?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["kycProfile"]>;
 export type KycProfileSelectScalar = {
@@ -441,8 +499,10 @@ export type KycProfileSelectScalar = {
     reviewedBy?: boolean | runtime.Types.Skip;
     verifiedAt?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
 };
-export type KycProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "status" | "idDocumentUrl" | "selfieUrl" | "rejectionReason" | "reviewedBy" | "verifiedAt" | "accountId", ExtArgs["result"]["kycProfile"], runtime.Types.Skip>;
+export type KycProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "status" | "idDocumentUrl" | "selfieUrl" | "rejectionReason" | "reviewedBy" | "verifiedAt" | "accountId" | "createdAt" | "updatedAt", ExtArgs["result"]["kycProfile"], runtime.Types.Skip>;
 export type KycProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 };
@@ -467,6 +527,8 @@ export type $KycProfilePayload<ExtArgs extends runtime.Types.Extensions.Internal
         reviewedBy: string | null;
         verifiedAt: Date | null;
         accountId: string;
+        createdAt: Date;
+        updatedAt: Date;
     }, ExtArgs["result"]["kycProfile"]>;
     composites: {};
 };
@@ -534,6 +596,8 @@ export interface KycProfileFieldRefs {
     readonly reviewedBy: Prisma.FieldRef<"KycProfile", 'String'>;
     readonly verifiedAt: Prisma.FieldRef<"KycProfile", 'DateTime'>;
     readonly accountId: Prisma.FieldRef<"KycProfile", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"KycProfile", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"KycProfile", 'DateTime'>;
 }
 export type KycProfileFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.KycProfileSelect<ExtArgs> | null;

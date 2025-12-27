@@ -26,6 +26,8 @@ export type SellerDetailsMinAggregateOutputType = {
     totalSales: number | null;
     accountId: string | null;
     responseRate: runtime.Decimal | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type SellerDetailsMaxAggregateOutputType = {
     id: string | null;
@@ -35,6 +37,8 @@ export type SellerDetailsMaxAggregateOutputType = {
     totalSales: number | null;
     accountId: string | null;
     responseRate: runtime.Decimal | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type SellerDetailsCountAggregateOutputType = {
     id: number;
@@ -44,6 +48,8 @@ export type SellerDetailsCountAggregateOutputType = {
     totalSales: number;
     accountId: number;
     responseRate: number;
+    createdAt: number;
+    updatedAt: number;
     _all: number;
 };
 export type SellerDetailsAvgAggregateInputType = {
@@ -64,6 +70,8 @@ export type SellerDetailsMinAggregateInputType = {
     totalSales?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
     responseRate?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
 };
 export type SellerDetailsMaxAggregateInputType = {
     id?: true | runtime.Types.Skip;
@@ -73,6 +81,8 @@ export type SellerDetailsMaxAggregateInputType = {
     totalSales?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
     responseRate?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
 };
 export type SellerDetailsCountAggregateInputType = {
     id?: true | runtime.Types.Skip;
@@ -82,6 +92,8 @@ export type SellerDetailsCountAggregateInputType = {
     totalSales?: true | runtime.Types.Skip;
     accountId?: true | runtime.Types.Skip;
     responseRate?: true | runtime.Types.Skip;
+    createdAt?: true | runtime.Types.Skip;
+    updatedAt?: true | runtime.Types.Skip;
     _all?: true | runtime.Types.Skip;
 };
 export type SellerDetailsAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -120,6 +132,8 @@ export type SellerDetailsGroupByOutputType = {
     totalSales: number;
     accountId: string;
     responseRate: runtime.Decimal | null;
+    createdAt: Date;
+    updatedAt: Date;
     _count: SellerDetailsCountAggregateOutputType | null;
     _avg: SellerDetailsAvgAggregateOutputType | null;
     _sum: SellerDetailsSumAggregateOutputType | null;
@@ -140,6 +154,8 @@ export type SellerDetailsWhereInput = {
     totalSales?: Prisma.IntFilter<"SellerDetails"> | number | runtime.Types.Skip;
     accountId?: Prisma.StringFilter<"SellerDetails"> | string | runtime.Types.Skip;
     responseRate?: Prisma.DecimalNullableFilter<"SellerDetails"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFilter<"SellerDetails"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFilter<"SellerDetails"> | Date | string | runtime.Types.Skip;
     account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput> | runtime.Types.Skip;
 };
 export type SellerDetailsOrderByWithRelationInput = {
@@ -150,6 +166,8 @@ export type SellerDetailsOrderByWithRelationInput = {
     totalSales?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
     responseRate?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
     account?: Prisma.AccountOrderByWithRelationInput | runtime.Types.Skip;
     _relevance?: Prisma.SellerDetailsOrderByRelevanceInput | runtime.Types.Skip;
 };
@@ -164,6 +182,8 @@ export type SellerDetailsWhereUniqueInput = Prisma.AtLeast<{
     rating?: Prisma.DecimalFilter<"SellerDetails"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: Prisma.IntFilter<"SellerDetails"> | number | runtime.Types.Skip;
     responseRate?: Prisma.DecimalNullableFilter<"SellerDetails"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFilter<"SellerDetails"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFilter<"SellerDetails"> | Date | string | runtime.Types.Skip;
     account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput> | runtime.Types.Skip;
 }, "id" | "accountId">;
 export type SellerDetailsOrderByWithAggregationInput = {
@@ -174,6 +194,8 @@ export type SellerDetailsOrderByWithAggregationInput = {
     totalSales?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
     responseRate?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
     _count?: Prisma.SellerDetailsCountOrderByAggregateInput | runtime.Types.Skip;
     _avg?: Prisma.SellerDetailsAvgOrderByAggregateInput | runtime.Types.Skip;
     _max?: Prisma.SellerDetailsMaxOrderByAggregateInput | runtime.Types.Skip;
@@ -191,6 +213,8 @@ export type SellerDetailsScalarWhereWithAggregatesInput = {
     totalSales?: Prisma.IntWithAggregatesFilter<"SellerDetails"> | number | runtime.Types.Skip;
     accountId?: Prisma.StringWithAggregatesFilter<"SellerDetails"> | string | runtime.Types.Skip;
     responseRate?: Prisma.DecimalNullableWithAggregatesFilter<"SellerDetails"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"SellerDetails"> | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SellerDetails"> | Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsCreateInput = {
     id?: string | runtime.Types.Skip;
@@ -199,6 +223,8 @@ export type SellerDetailsCreateInput = {
     rating?: runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: number | runtime.Types.Skip;
     responseRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
     account: Prisma.AccountCreateNestedOneWithoutSellerProfileInput;
 };
 export type SellerDetailsUncheckedCreateInput = {
@@ -209,6 +235,8 @@ export type SellerDetailsUncheckedCreateInput = {
     totalSales?: number | runtime.Types.Skip;
     accountId: string;
     responseRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -217,6 +245,8 @@ export type SellerDetailsUpdateInput = {
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip;
     responseRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
     account?: Prisma.AccountUpdateOneRequiredWithoutSellerProfileNestedInput | runtime.Types.Skip;
 };
 export type SellerDetailsUncheckedUpdateInput = {
@@ -227,6 +257,8 @@ export type SellerDetailsUncheckedUpdateInput = {
     totalSales?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip;
     accountId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     responseRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsCreateManyInput = {
     id?: string | runtime.Types.Skip;
@@ -236,6 +268,8 @@ export type SellerDetailsCreateManyInput = {
     totalSales?: number | runtime.Types.Skip;
     accountId: string;
     responseRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -244,6 +278,8 @@ export type SellerDetailsUpdateManyMutationInput = {
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip;
     responseRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -253,6 +289,8 @@ export type SellerDetailsUncheckedUpdateManyInput = {
     totalSales?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip;
     accountId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     responseRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsNullableScalarRelationFilter = {
     is?: Prisma.SellerDetailsWhereInput | null | runtime.Types.Skip;
@@ -271,6 +309,8 @@ export type SellerDetailsCountOrderByAggregateInput = {
     totalSales?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
     responseRate?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type SellerDetailsAvgOrderByAggregateInput = {
     rating?: Prisma.SortOrder | runtime.Types.Skip;
@@ -285,6 +325,8 @@ export type SellerDetailsMaxOrderByAggregateInput = {
     totalSales?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
     responseRate?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type SellerDetailsMinOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
@@ -294,6 +336,8 @@ export type SellerDetailsMinOrderByAggregateInput = {
     totalSales?: Prisma.SortOrder | runtime.Types.Skip;
     accountId?: Prisma.SortOrder | runtime.Types.Skip;
     responseRate?: Prisma.SortOrder | runtime.Types.Skip;
+    createdAt?: Prisma.SortOrder | runtime.Types.Skip;
+    updatedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type SellerDetailsSumOrderByAggregateInput = {
     rating?: Prisma.SortOrder | runtime.Types.Skip;
@@ -356,6 +400,8 @@ export type SellerDetailsCreateWithoutAccountInput = {
     rating?: runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: number | runtime.Types.Skip;
     responseRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsUncheckedCreateWithoutAccountInput = {
     id?: string | runtime.Types.Skip;
@@ -364,6 +410,8 @@ export type SellerDetailsUncheckedCreateWithoutAccountInput = {
     rating?: runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: number | runtime.Types.Skip;
     responseRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Date | string | runtime.Types.Skip;
+    updatedAt?: Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsCreateOrConnectWithoutAccountInput = {
     where: Prisma.SellerDetailsWhereUniqueInput;
@@ -385,6 +433,8 @@ export type SellerDetailsUpdateWithoutAccountInput = {
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip;
     responseRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsUncheckedUpdateWithoutAccountInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
@@ -393,6 +443,8 @@ export type SellerDetailsUncheckedUpdateWithoutAccountInput = {
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
     totalSales?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip;
     responseRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
 };
 export type SellerDetailsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean | runtime.Types.Skip;
@@ -402,6 +454,8 @@ export type SellerDetailsSelect<ExtArgs extends runtime.Types.Extensions.Interna
     totalSales?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
     responseRate?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["sellerDetails"]>;
 export type SellerDetailsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -412,6 +466,8 @@ export type SellerDetailsSelectCreateManyAndReturn<ExtArgs extends runtime.Types
     totalSales?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
     responseRate?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["sellerDetails"]>;
 export type SellerDetailsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -422,6 +478,8 @@ export type SellerDetailsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
     totalSales?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
     responseRate?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 }, ExtArgs["result"]["sellerDetails"]>;
 export type SellerDetailsSelectScalar = {
@@ -432,8 +490,10 @@ export type SellerDetailsSelectScalar = {
     totalSales?: boolean | runtime.Types.Skip;
     accountId?: boolean | runtime.Types.Skip;
     responseRate?: boolean | runtime.Types.Skip;
+    createdAt?: boolean | runtime.Types.Skip;
+    updatedAt?: boolean | runtime.Types.Skip;
 };
-export type SellerDetailsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyName" | "taxId" | "rating" | "totalSales" | "accountId" | "responseRate", ExtArgs["result"]["sellerDetails"], runtime.Types.Skip>;
+export type SellerDetailsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "companyName" | "taxId" | "rating" | "totalSales" | "accountId" | "responseRate" | "createdAt" | "updatedAt", ExtArgs["result"]["sellerDetails"], runtime.Types.Skip>;
 export type SellerDetailsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 };
@@ -456,6 +516,8 @@ export type $SellerDetailsPayload<ExtArgs extends runtime.Types.Extensions.Inter
         totalSales: number;
         accountId: string;
         responseRate: runtime.Decimal | null;
+        createdAt: Date;
+        updatedAt: Date;
     }, ExtArgs["result"]["sellerDetails"]>;
     composites: {};
 };
@@ -521,6 +583,8 @@ export interface SellerDetailsFieldRefs {
     readonly totalSales: Prisma.FieldRef<"SellerDetails", 'Int'>;
     readonly accountId: Prisma.FieldRef<"SellerDetails", 'String'>;
     readonly responseRate: Prisma.FieldRef<"SellerDetails", 'Decimal'>;
+    readonly createdAt: Prisma.FieldRef<"SellerDetails", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"SellerDetails", 'DateTime'>;
 }
 export type SellerDetailsFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.SellerDetailsSelect<ExtArgs> | null;

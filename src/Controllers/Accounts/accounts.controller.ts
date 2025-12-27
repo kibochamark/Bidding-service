@@ -29,11 +29,14 @@ export class AccountsController {
         this.jwtBodyParser(req, res, async() => {
             const token  = req.body as unknown; // now contains raw JWT string
 
+            console.log('Received webhook with token:', token);
+
             try {
                 const kindewebhook = await(import('@kinde/webhooks'));
 
 
                 const decodedWebhook = await kindewebhook.decodeWebhook(token as string, "https://bidmarket.kinde.com");
+
                 if (!decodedWebhook || decodedWebhook.type !== kindewebhook.WebhookEventType.UserCreated) {
                     throw new Error('Invalid webhook event');
                 }

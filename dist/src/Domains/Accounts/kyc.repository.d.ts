@@ -18,6 +18,8 @@ export declare class KycRepository {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }) | null>;
@@ -34,6 +36,8 @@ export declare class KycRepository {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;
@@ -50,6 +54,8 @@ export declare class KycRepository {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     })[]>;
@@ -61,6 +67,8 @@ export declare class KycRepository {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;
@@ -72,6 +80,8 @@ export declare class KycRepository {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;
@@ -83,6 +93,8 @@ export declare class KycRepository {
         status: KycStatus;
         rejectionReason: string | null;
         reviewedBy: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
         verifiedAt: Date | null;
     }>;

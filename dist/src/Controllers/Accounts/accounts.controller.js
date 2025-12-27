@@ -102,7 +102,7 @@ let AccountsController = AccountsController_1 = class AccountsController {
     async deleteAccount(req, res) {
         this.jwtBodyParser(req, res, async () => {
             try {
-                const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFhOmNjOjJiOmQ2OjZlOjY5OmUyOmJhOjQzOjdkOjA3OjVlOjFkOjVkOjllOjNhIiwidHlwIjoiSldUIn0.eyJkYXRhIjp7InVzZXIiOnsiaWQiOiJrcF8zMmFlNzE5ODc0NjY0OTE2ODY0MGJiYTYzZjRjNDYxOCJ9fSwiZXZlbnRfaWQiOiJldmVudF8wMTliNWY5ZGE3ZDU0YjYzZDc0NDE4MDczY2RjZTk0ZCIsImV2ZW50X3RpbWVzdGFtcCI6IjIwMjUtMTItMjdUMjI6NDI6MDYuMjY2MTAzKzExOjAwIiwic291cmNlIjoiYWRtaW4iLCJ0aW1lc3RhbXAiOiIyMDI1LTEyLTI3VDIyOjQyOjA2LjkxNDA1ODYyOCsxMTowMCIsInR5cGUiOiJ1c2VyLmRlbGV0ZWQifQ.H3gAaHIz57MeURaOzi8kAveNsmj3URC9VM4ZaIixePJpDvrWs6GeUlp0YLXcrBFsBp-Qdvtn0KEQV3317Ai4otW-ipj-8D7OQjZ485tFxkYxe_4wuoIgMcjuM8Ue2cAzaivp7XhyXnjFFlxMonw39HcoeCtgT3G5ZJLHm2YcnzwcQKBYwCsr3bWO9bwBukPbbbp22il06O0aUsPWzL9gmsECy_Th_hepGwIENSbEYQW_hNQCDbFxCSHa9aKOO6drNIybrud9IsPH50PAnj0GBxK5uJ7QqxDdI5Xk0jZf66GHiFcnDzqlahEyUi9jb7bM7yLFX0_YLQG8tXkxWHVcBw";
+                const token = req.body;
                 const client = (0, jwks_rsa_1.default)({
                     jwksUri: `https://bidmarket.kinde.com/.well-known/jwks.json`,
                 });
@@ -139,7 +139,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AccountsController.prototype, "getAllAccounts", null);
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('createwebhook'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

@@ -4,15 +4,24 @@ import { AppModule } from '../src/app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 import { ValidationPipe } from '@nestjs/common';
+import { useNestTreblle } from 'treblle';
 
 const server = express();
-let app: any;
+let nestApp: any;
 
 async function bootstrap() {
     const nestApp = await NestFactory.create(
         AppModule,
         new ExpressAdapter(server)
     );
+
+     // const app = await NestFactory.create(AppModule);
+    const expressInstance = nestApp.getHttpAdapter().getInstance();
+    
+    useNestTreblle(expressInstance, {
+        sdkToken: process.env.TREBLLE_SDK_TOKEN!,
+        apiKey: process.env.TREBLLE_API_KEY!,
+    });
 
     nestApp.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     nestApp.enableCors({
@@ -27,8 +36,8 @@ async function bootstrap() {
 }
 
 export default async function handler(req: express.Request, res: express.Response) {
-    if (!app) {
-        app = await bootstrap();
+    if (!nestApp) {
+        nestApp = await bootstrap();
     }
-    return app(req, res);
+    return nestApp(req, res);
 }

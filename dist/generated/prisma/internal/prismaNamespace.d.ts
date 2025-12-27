@@ -677,6 +677,8 @@ export declare const KycProfileScalarFieldEnum: {
     readonly reviewedBy: "reviewedBy";
     readonly verifiedAt: "verifiedAt";
     readonly accountId: "accountId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type KycProfileScalarFieldEnum = (typeof KycProfileScalarFieldEnum)[keyof typeof KycProfileScalarFieldEnum];
 export declare const SellerDetailsScalarFieldEnum: {
@@ -687,6 +689,8 @@ export declare const SellerDetailsScalarFieldEnum: {
     readonly totalSales: "totalSales";
     readonly accountId: "accountId";
     readonly responseRate: "responseRate";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type SellerDetailsScalarFieldEnum = (typeof SellerDetailsScalarFieldEnum)[keyof typeof SellerDetailsScalarFieldEnum];
 export declare const AddressScalarFieldEnum: {
@@ -698,6 +702,8 @@ export declare const AddressScalarFieldEnum: {
     readonly zipCode: "zipCode";
     readonly country: "country";
     readonly accountId: "accountId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum];
 export declare const CategoryScalarFieldEnum: {

@@ -102,7 +102,9 @@ export const KycProfileScalarFieldEnum = {
   rejectionReason: 'rejectionReason',
   reviewedBy: 'reviewedBy',
   verifiedAt: 'verifiedAt',
-  accountId: 'accountId'
+  accountId: 'accountId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type KycProfileScalarFieldEnum = (typeof KycProfileScalarFieldEnum)[keyof typeof KycProfileScalarFieldEnum]
@@ -115,7 +117,9 @@ export const SellerDetailsScalarFieldEnum = {
   rating: 'rating',
   totalSales: 'totalSales',
   accountId: 'accountId',
-  responseRate: 'responseRate'
+  responseRate: 'responseRate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type SellerDetailsScalarFieldEnum = (typeof SellerDetailsScalarFieldEnum)[keyof typeof SellerDetailsScalarFieldEnum]
@@ -129,7 +133,9 @@ export const AddressScalarFieldEnum = {
   city: 'city',
   zipCode: 'zipCode',
   country: 'country',
-  accountId: 'accountId'
+  accountId: 'accountId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]

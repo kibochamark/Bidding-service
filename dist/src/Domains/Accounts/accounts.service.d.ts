@@ -13,12 +13,16 @@ export declare class AccountsService {
             status: import("../../../generated/prisma/enums").KycStatus;
             rejectionReason: string | null;
             reviewedBy: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             userId: string;
             verifiedAt: Date | null;
         } | null;
         sellerProfile: {
             accountId: string;
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             companyName: string;
             taxId: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
@@ -46,6 +50,8 @@ export declare class AccountsService {
             zipCode: string;
             country: string;
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             userId: string;
         }[];
         kyc: {
@@ -56,12 +62,16 @@ export declare class AccountsService {
             status: import("../../../generated/prisma/enums").KycStatus;
             rejectionReason: string | null;
             reviewedBy: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             userId: string;
             verifiedAt: Date | null;
         } | null;
         sellerProfile: {
             accountId: string;
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             companyName: string;
             taxId: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;

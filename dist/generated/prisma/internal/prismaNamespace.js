@@ -93,7 +93,9 @@ exports.KycProfileScalarFieldEnum = {
     rejectionReason: 'rejectionReason',
     reviewedBy: 'reviewedBy',
     verifiedAt: 'verifiedAt',
-    accountId: 'accountId'
+    accountId: 'accountId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 exports.SellerDetailsScalarFieldEnum = {
     id: 'id',
@@ -102,7 +104,9 @@ exports.SellerDetailsScalarFieldEnum = {
     rating: 'rating',
     totalSales: 'totalSales',
     accountId: 'accountId',
-    responseRate: 'responseRate'
+    responseRate: 'responseRate',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 exports.AddressScalarFieldEnum = {
     id: 'id',
@@ -112,7 +116,9 @@ exports.AddressScalarFieldEnum = {
     city: 'city',
     zipCode: 'zipCode',
     country: 'country',
-    accountId: 'accountId'
+    accountId: 'accountId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 exports.CategoryScalarFieldEnum = {
     id: 'id',

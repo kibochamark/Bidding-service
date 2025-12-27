@@ -11,6 +11,8 @@ export declare class AddressService {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }[]>;
     getAddressById(id: string): Promise<({
@@ -26,6 +28,8 @@ export declare class AddressService {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }) | null>;
     createAddress(data: CreateAddressDto): Promise<{
@@ -36,6 +40,8 @@ export declare class AddressService {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }>;
     updateAddress(id: string, data: UpdateAddressDto): Promise<{
@@ -46,6 +52,8 @@ export declare class AddressService {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }>;
     deleteAddress(id: string): Promise<{
@@ -56,6 +64,8 @@ export declare class AddressService {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }>;
 }

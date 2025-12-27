@@ -11,6 +11,8 @@ export declare class AddressController {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }[]>;
     getAddressById(params: AddressParamDto): Promise<({
@@ -26,6 +28,8 @@ export declare class AddressController {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }) | null>;
     createAddress(createAddressDto: CreateAddressDto): Promise<{
@@ -36,6 +40,8 @@ export declare class AddressController {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }>;
     updateAddress(params: AddressParamDto, updateAddressDto: UpdateAddressDto): Promise<{
@@ -46,6 +52,8 @@ export declare class AddressController {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }>;
     deleteAddress(params: AddressParamDto): Promise<{
@@ -56,6 +64,8 @@ export declare class AddressController {
         zipCode: string;
         country: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         userId: string;
     }>;
 }

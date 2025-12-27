@@ -9,7 +9,7 @@ async function bootstrap() {
         whitelist: true,
     }));
     app.enableCors({
-        origin: ['https://biddingapp-v2.vercel.app/', 'http://localhost:3000'],
+        origin: ['https://biddingapp-v2.vercel.app/', 'http://localhost:3000', 'https://bidmarket.kinde.com'],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         allowedHeaders: 'Content-Type, Accept, Authorization',
         credentials: true,

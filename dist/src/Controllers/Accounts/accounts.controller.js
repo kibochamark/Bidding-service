@@ -82,9 +82,15 @@ let AccountsController = AccountsController_1 = class AccountsController {
                 switch (event.type) {
                     case 'user.created':
                         this.logger.log('Processing user.created event');
+                        if (!event.data?.user) {
+                            this.logger.error('Webhook event missing user data', event);
+                            return res.status(400).json({
+                                error: "Invalid event payload: missing event.data.user"
+                            });
+                        }
                         const account = {
                             type: event.type,
-                            ...event.data?.user
+                            data: event.data
                         };
                         const result = await this.accountsService.createAccount(account);
                         return res.status(201).json({ success: true, data: result });

@@ -1,10 +1,13 @@
+import type * as express from 'express';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
 import { AccountParamDto } from './dto/index.js';
+import { ConfigService } from '@nestjs/config';
 export declare class AccountsController {
     private accountsService;
+    private configService;
     private jwtBodyParser;
     private readonly logger;
-    constructor(accountsService: AccountsService);
+    constructor(accountsService: AccountsService, configService: ConfigService);
     getAllAccounts(): Promise<({
         kyc: {
             accountId: string;
@@ -36,7 +39,8 @@ export declare class AccountsController {
         createdAt: Date;
         updatedAt: Date;
     })[]>;
-    createAccount(req: Request, res: Response): Promise<void>;
+    createAccount(req: express.Request, res: express.Response): Promise<void>;
+    deleteAccount(req: express.Request, res: express.Response): Promise<void>;
     getAccountByKindeId(params: AccountParamDto): Promise<{
         addresses: {
             accountId: string;

@@ -136,6 +136,9 @@ let AccountsController = AccountsController_1 = class AccountsController {
     async getAccountByKindeId(params) {
         return await this.accountsService.getAccountByKindeId(params);
     }
+    async updateAccountData(params, body) {
+        return await this.accountsService.updateAccount(params.kindeId, body);
+    }
 };
 exports.AccountsController = AccountsController;
 __decorate([
@@ -167,6 +170,14 @@ __decorate([
     __metadata("design:paramtypes", [index_js_1.AccountParamDto]),
     __metadata("design:returntype", Promise)
 ], AccountsController.prototype, "getAccountByKindeId", null);
+__decorate([
+    (0, common_1.Patch)(':kindeId'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [index_js_1.AccountParamDto, Object]),
+    __metadata("design:returntype", Promise)
+], AccountsController.prototype, "updateAccountData", null);
 exports.AccountsController = AccountsController = AccountsController_1 = __decorate([
     (0, common_1.Controller)('accounts'),
     __metadata("design:paramtypes", [accounts_service_1.AccountsService, config_1.ConfigService])

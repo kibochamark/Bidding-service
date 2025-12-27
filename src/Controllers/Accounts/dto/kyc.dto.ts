@@ -8,6 +8,18 @@ import { KycStatus } from "generated/prisma/enums";
 export class SubmitKycDto {
     @IsNotEmpty()
     @IsString()
+    fullName: string;
+
+    @IsNotEmpty()
+    @IsString()
+    dateOfBirth: string; // ISO date string
+
+    @IsOptional()
+    @IsString()
+    alienIdNumber?: string;
+
+    @IsNotEmpty()
+    @IsString()
     accountId: string; // Will be extracted from authenticated user in production
 
     @IsNotEmpty()

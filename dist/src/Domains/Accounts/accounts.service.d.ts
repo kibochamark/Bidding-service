@@ -1,13 +1,16 @@
 import { AccountsRepository } from './accounts.repository';
-import { AccountParamDto, CreateAccountDto } from '../../../src/Controllers/Accounts/dto';
+import { AccountParamDto, CreateAccountDto, UpdateAccountDto } from '../../../src/Controllers/Accounts/dto';
 export declare class AccountsService {
     private accountRepository;
     private readonly logger;
     constructor(accountRepository: AccountsRepository);
     getAllAccounts(): Promise<({
         kyc: {
+            fullName: string;
             accountId: string;
             id: string;
+            dateOfBirth: Date;
+            alienIdNumber: string | null;
             idDocumentUrl: string;
             selfieUrl: string | null;
             status: import("../../../generated/prisma/enums").KycStatus;
@@ -31,12 +34,18 @@ export declare class AccountsService {
         } | null;
     } & {
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
     })[]>;
     createAccount(webhookData: CreateAccountDto): Promise<{
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -55,8 +64,11 @@ export declare class AccountsService {
             userId: string;
         }[];
         kyc: {
+            fullName: string;
             accountId: string;
             id: string;
+            dateOfBirth: Date;
+            alienIdNumber: string | null;
             idDocumentUrl: string;
             selfieUrl: string | null;
             status: import("../../../generated/prisma/enums").KycStatus;
@@ -80,12 +92,18 @@ export declare class AccountsService {
         } | null;
     } & {
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
-    updateAccount(kindeId: string, data: Partial<AccountParamDto>): Promise<{
+    updateAccount(kindeId: string, data: Partial<UpdateAccountDto>): Promise<{
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;

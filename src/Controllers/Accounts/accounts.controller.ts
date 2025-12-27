@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Headers, Logger, Param, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Logger, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import type * as express from 'express';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
-import { AccountParamDto, CreateAccountDto } from './dto/index.js';
+import { AccountParamDto, CreateAccountDto, UpdateAccountDto } from './dto/index.js';
 import * as bodyParser from 'body-parser';
 import jwksClient from "jwks-rsa";
 import jwt from "jsonwebtoken";
@@ -132,4 +132,10 @@ export class AccountsController {
     async getAccountByKindeId(@Param() params: AccountParamDto) {
         return await this.accountsService.getAccountByKindeId(params);
     }
+
+    @Patch(':kindeId')
+    async updateAccountData(@Param() params: AccountParamDto, @Body() body: Partial<UpdateAccountDto>) {
+        return await this.accountsService.updateAccount(params.kindeId, body);
+    }
+
 }

@@ -42,6 +42,7 @@ let AccountsService = AccountsService_1 = class AccountsService {
         return await this.accountRepository.findAccountByKindeId(data);
     }
     async updateAccount(kindeId, data) {
+        console.log('Updating account with data:', data);
         const existingAccount = await this.accountRepository.findAccountByKindeIdRaw(kindeId);
         if (!existingAccount) {
             this.logger.warn(`Account not found for Kinde ID: ${kindeId}`);

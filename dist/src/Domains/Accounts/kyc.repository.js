@@ -107,6 +107,9 @@ let KycRepository = KycRepository_1 = class KycRepository {
                 idDocumentUrl: data.idDocumentUrl,
                 selfieUrl: data.selfieUrl,
                 status: enums_1.KycStatus.PENDING,
+                fullName: data.fullName,
+                dateOfBirth: new Date(data.dateOfBirth),
+                alienIdNumber: data.alienIdNumber,
             },
         });
     }

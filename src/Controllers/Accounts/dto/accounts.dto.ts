@@ -54,3 +54,18 @@ export class AccountParamDto {
     @IsString()
     kindeId: string;
 }
+
+
+export class UpdateAccountDto {
+    @IsOptional()
+    @IsString()
+    contact?: string;
+
+    @IsOptional()
+    @IsString()
+    fullName?: string;
+
+    @IsEmail()
+    @IsOptional()
+    email?: string;
+}

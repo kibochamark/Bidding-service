@@ -8,13 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var AccountsRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AccountsRepository = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../../src/prisma/prisma.service");
-let AccountsRepository = class AccountsRepository {
+let AccountsRepository = AccountsRepository_1 = class AccountsRepository {
     constructor(prisma) {
         this.prisma = prisma;
+        this.logger = new common_1.Logger(AccountsRepository_1.name);
     }
     async findAllAccounts() {
         return await this.prisma.account.findMany({
@@ -57,10 +59,15 @@ let AccountsRepository = class AccountsRepository {
         }
     }
     async updateAccount(kindeId, data) {
+        this.logger.log(`Updating account ${kindeId} with data: ${JSON.stringify(data)}`);
         try {
             const updatedUser = await this.prisma.account.update({
                 where: { kindeId },
-                data,
+                data: {
+                    contact: data.contact,
+                    fullName: data.fullName,
+                    email: data.email,
+                },
             });
             return updatedUser;
         }
@@ -86,7 +93,7 @@ let AccountsRepository = class AccountsRepository {
     }
 };
 exports.AccountsRepository = AccountsRepository;
-exports.AccountsRepository = AccountsRepository = __decorate([
+exports.AccountsRepository = AccountsRepository = AccountsRepository_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], AccountsRepository);

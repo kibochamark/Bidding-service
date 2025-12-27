@@ -658,6 +658,9 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export declare const AccountScalarFieldEnum: {
     readonly id: "id";
     readonly kindeId: "kindeId";
+    readonly email: "email";
+    readonly contact: "contact";
+    readonly fullName: "fullName";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -671,6 +674,9 @@ export declare const KycProfileScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
     readonly status: "status";
+    readonly fullName: "fullName";
+    readonly dateOfBirth: "dateOfBirth";
+    readonly alienIdNumber: "alienIdNumber";
     readonly idDocumentUrl: "idDocumentUrl";
     readonly selfieUrl: "selfieUrl";
     readonly rejectionReason: "rejectionReason";
@@ -756,19 +762,24 @@ export declare const QueryMode: {
     readonly insensitive: "insensitive";
 };
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
-export declare const AccountOrderByRelevanceFieldEnum: {
-    readonly id: "id";
-    readonly kindeId: "kindeId";
-};
-export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum];
 export declare const NullsOrder: {
     readonly first: "first";
     readonly last: "last";
 };
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+export declare const AccountOrderByRelevanceFieldEnum: {
+    readonly id: "id";
+    readonly kindeId: "kindeId";
+    readonly email: "email";
+    readonly contact: "contact";
+    readonly fullName: "fullName";
+};
+export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum];
 export declare const KycProfileOrderByRelevanceFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
+    readonly fullName: "fullName";
+    readonly alienIdNumber: "alienIdNumber";
     readonly idDocumentUrl: "idDocumentUrl";
     readonly selfieUrl: "selfieUrl";
     readonly rejectionReason: "rejectionReason";

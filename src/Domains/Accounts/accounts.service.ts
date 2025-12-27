@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { AccountsRepository } from './accounts.repository';
-import { AccountParamDto, CreateAccountDto } from '../../../src/Controllers/Accounts/dto';
+import { AccountParamDto, CreateAccountDto, UpdateAccountDto } from '../../../src/Controllers/Accounts/dto';
 
 @Injectable()
 export class AccountsService {
@@ -49,7 +49,8 @@ export class AccountsService {
     }
 
     // updateAccount and deleteAccount methods can be added here in the future
-    async updateAccount( kindeId:string, data:Partial<AccountParamDto>) {
+    async updateAccount(kindeId: string, data: Partial<UpdateAccountDto>) {
+        console.log('Updating account with data:', data);
         // check if id exists
         const existingAccount = await this.accountRepository.findAccountByKindeIdRaw(
             kindeId,

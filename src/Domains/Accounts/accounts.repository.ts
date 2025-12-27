@@ -1,9 +1,10 @@
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { AccountParamDto } from "../../../src/Controllers/Accounts/dto";
 import { PrismaService } from "../../../src/prisma/prisma.service";
 
 @Injectable()
 export class AccountsRepository {
+    private readonly logger = new Logger(AccountsRepository.name);
     constructor(private prisma: PrismaService) {}
 
     async findAllAccounts() {
@@ -63,11 +64,16 @@ export class AccountsRepository {
     /**
      * Update account by kindeId
      */
-    async updateAccount(kindeId: string, data: Partial<{ kindeId: string }>) {
+    async updateAccount(kindeId: string, data: Partial<{ contact: string; fullName: string; email?: string;}>) {
+        this.logger.log(`Updating account ${kindeId} with data: ${JSON.stringify(data)}`);
         try {
             const updatedUser = await this.prisma.account.update({
-                where: { kindeId },
-                data,
+                where: { kindeId},
+                data:{
+                    contact: data.contact,
+                    fullName: data.fullName,
+                    email: data.email,
+                },
             });
 
             return updatedUser;
@@ -94,4 +100,5 @@ export class AccountsRepository {
             throw error;
         }
     }
+
 }

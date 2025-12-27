@@ -2,9 +2,24 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { KindeAuthGuard } from './Guards';
+import { useNestTreblle } from "treblle";
+
+
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+
+  // const app = await NestFactory.create(AppModule);
+  const expressInstance = app.getHttpAdapter().getInstance();
+
+  useNestTreblle(expressInstance, {
+    sdkToken: process.env.TREBLLE_SDK_TOKEN!,
+    apiKey: process.env.TREBLLE_API_KEY!,
+  });
+
+
   // add any global middleware or configurations here\
   // app.useGlobalGuards(new KindeAuthGuard())
   app.useGlobalPipes(new ValidationPipe({

@@ -9,10 +9,16 @@ const app_module_1 = require("../src/app.module");
 const platform_express_1 = require("@nestjs/platform-express");
 const express_1 = __importDefault(require("express"));
 const common_1 = require("@nestjs/common");
+const treblle_1 = require("treblle");
 const server = (0, express_1.default)();
-let app;
+let nestApp;
 async function bootstrap() {
     const nestApp = await core_1.NestFactory.create(app_module_1.AppModule, new platform_express_1.ExpressAdapter(server));
+    const expressInstance = nestApp.getHttpAdapter().getInstance();
+    (0, treblle_1.useNestTreblle)(expressInstance, {
+        sdkToken: process.env.TREBLLE_SDK_TOKEN,
+        apiKey: process.env.TREBLLE_API_KEY,
+    });
     nestApp.useGlobalPipes(new common_1.ValidationPipe({ whitelist: true }));
     nestApp.enableCors({
         origin: ['https://biddingapp-v2.vercel.app/', 'http://localhost:3000'],
@@ -24,9 +30,9 @@ async function bootstrap() {
     return server;
 }
 async function handler(req, res) {
-    if (!app) {
-        app = await bootstrap();
+    if (!nestApp) {
+        nestApp = await bootstrap();
     }
-    return app(req, res);
+    return nestApp(req, res);
 }
 //# sourceMappingURL=index.js.map

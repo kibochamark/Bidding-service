@@ -63,6 +63,7 @@ let AccountsController = AccountsController_1 = class AccountsController {
     async createAccount(req, res) {
         this.jwtBodyParser(req, res, async () => {
             const token = req.body;
+            console.log('Received webhook with token:', token);
             try {
                 const kindewebhook = await (import('@kinde/webhooks'));
                 const decodedWebhook = await kindewebhook.decodeWebhook(token, "https://bidmarket.kinde.com");

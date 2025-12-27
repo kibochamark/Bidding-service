@@ -102,7 +102,7 @@ let AccountsController = AccountsController_1 = class AccountsController {
     async deleteAccount(req, res) {
         this.jwtBodyParser(req, res, async () => {
             try {
-                const token = "***REMOVED_HARDCODED_JWT***";
+                const token = req.body;
                 const client = (0, jwks_rsa_1.default)({
                     jwksUri: `https://bidmarket.kinde.com/.well-known/jwks.json`,
                 });
@@ -139,7 +139,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AccountsController.prototype, "getAllAccounts", null);
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('createwebhook'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

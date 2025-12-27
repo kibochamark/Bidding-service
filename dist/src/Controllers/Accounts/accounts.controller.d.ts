@@ -1,6 +1,6 @@
 import type * as express from 'express';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
-import { AccountParamDto } from './dto/index.js';
+import { AccountParamDto, UpdateAccountDto } from './dto/index.js';
 import { ConfigService } from '@nestjs/config';
 export declare class AccountsController {
     private accountsService;
@@ -10,8 +10,11 @@ export declare class AccountsController {
     constructor(accountsService: AccountsService, configService: ConfigService);
     getAllAccounts(): Promise<({
         kyc: {
+            fullName: string;
             accountId: string;
             id: string;
+            dateOfBirth: Date;
+            alienIdNumber: string | null;
             idDocumentUrl: string;
             selfieUrl: string | null;
             status: import("../../../generated/prisma/enums").KycStatus;
@@ -35,6 +38,9 @@ export declare class AccountsController {
         } | null;
     } & {
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -55,8 +61,11 @@ export declare class AccountsController {
             userId: string;
         }[];
         kyc: {
+            fullName: string;
             accountId: string;
             id: string;
+            dateOfBirth: Date;
+            alienIdNumber: string | null;
             idDocumentUrl: string;
             selfieUrl: string | null;
             status: import("../../../generated/prisma/enums").KycStatus;
@@ -80,6 +89,18 @@ export declare class AccountsController {
         } | null;
     } & {
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    updateAccountData(params: AccountParamDto, body: Partial<UpdateAccountDto>): Promise<{
+        kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;

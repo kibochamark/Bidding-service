@@ -1,5 +1,8 @@
 import { KycStatus } from "generated/prisma/enums";
 export declare class SubmitKycDto {
+    fullName: string;
+    dateOfBirth: string;
+    alienIdNumber?: string;
     accountId: string;
     idDocumentUrl: string;
     selfieUrl?: string;

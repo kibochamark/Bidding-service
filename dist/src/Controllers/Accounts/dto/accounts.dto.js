@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AccountParamDto = exports.ManualCreateAccountDto = exports.CreateAccountDto = void 0;
+exports.UpdateAccountDto = exports.AccountParamDto = exports.ManualCreateAccountDto = exports.CreateAccountDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateAccountDto {
 }
@@ -45,4 +45,22 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], AccountParamDto.prototype, "kindeId", void 0);
+class UpdateAccountDto {
+}
+exports.UpdateAccountDto = UpdateAccountDto;
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateAccountDto.prototype, "contact", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateAccountDto.prototype, "fullName", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], UpdateAccountDto.prototype, "email", void 0);
 //# sourceMappingURL=accounts.dto.js.map

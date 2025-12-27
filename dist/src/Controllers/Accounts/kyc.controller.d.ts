@@ -10,8 +10,11 @@ export declare class KycController {
             createdAt: Date;
         };
     } & {
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -28,8 +31,11 @@ export declare class KycController {
             createdAt: Date;
         };
     } & {
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -46,8 +52,11 @@ export declare class KycController {
             createdAt: Date;
         };
     } & {
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -59,8 +68,11 @@ export declare class KycController {
         verifiedAt: Date | null;
     }>;
     submitKyc(submitKycDto: SubmitKycDto): Promise<{
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -72,8 +84,11 @@ export declare class KycController {
         verifiedAt: Date | null;
     }>;
     updateKycStatus(params: KycParamDto, updateKycStatusDto: UpdateKycStatusDto): Promise<{
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -85,8 +100,11 @@ export declare class KycController {
         verifiedAt: Date | null;
     }>;
     deleteKyc(params: KycParamDto): Promise<{
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;

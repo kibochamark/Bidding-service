@@ -2,11 +2,15 @@ import { AccountParamDto } from "../../../src/Controllers/Accounts/dto";
 import { PrismaService } from "../../../src/prisma/prisma.service";
 export declare class AccountsRepository {
     private prisma;
+    private readonly logger;
     constructor(prisma: PrismaService);
     findAllAccounts(): Promise<({
         kyc: {
+            fullName: string;
             accountId: string;
             id: string;
+            dateOfBirth: Date;
+            alienIdNumber: string | null;
             idDocumentUrl: string;
             selfieUrl: string | null;
             status: import("../../../generated/prisma/enums").KycStatus;
@@ -30,6 +34,9 @@ export declare class AccountsRepository {
         } | null;
     } & {
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -48,8 +55,11 @@ export declare class AccountsRepository {
             userId: string;
         }[];
         kyc: {
+            fullName: string;
             accountId: string;
             id: string;
+            dateOfBirth: Date;
+            alienIdNumber: string | null;
             idDocumentUrl: string;
             selfieUrl: string | null;
             status: import("../../../generated/prisma/enums").KycStatus;
@@ -73,6 +83,9 @@ export declare class AccountsRepository {
         } | null;
     } & {
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -91,8 +104,11 @@ export declare class AccountsRepository {
             userId: string;
         }[];
         kyc: {
+            fullName: string;
             accountId: string;
             id: string;
+            dateOfBirth: Date;
+            alienIdNumber: string | null;
             idDocumentUrl: string;
             selfieUrl: string | null;
             status: import("../../../generated/prisma/enums").KycStatus;
@@ -116,6 +132,9 @@ export declare class AccountsRepository {
         } | null;
     } & {
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -124,14 +143,22 @@ export declare class AccountsRepository {
         kindeId: string;
     }): Promise<{
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
     updateAccount(kindeId: string, data: Partial<{
-        kindeId: string;
+        contact: string;
+        fullName: string;
+        email?: string;
     }>): Promise<{
         kindeId: string;
+        email: string | null;
+        contact: string | null;
+        fullName: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;

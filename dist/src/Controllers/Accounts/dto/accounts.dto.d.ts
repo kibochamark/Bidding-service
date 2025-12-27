@@ -16,3 +16,8 @@ export declare class ManualCreateAccountDto {
 export declare class AccountParamDto {
     kindeId: string;
 }
+export declare class UpdateAccountDto {
+    contact?: string;
+    fullName?: string;
+    email?: string;
+}

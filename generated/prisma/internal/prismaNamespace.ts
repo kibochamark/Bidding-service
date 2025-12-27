@@ -900,6 +900,9 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const AccountScalarFieldEnum = {
   id: 'id',
   kindeId: 'kindeId',
+  email: 'email',
+  contact: 'contact',
+  fullName: 'fullName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -919,6 +922,9 @@ export const KycProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   status: 'status',
+  fullName: 'fullName',
+  dateOfBirth: 'dateOfBirth',
+  alienIdNumber: 'alienIdNumber',
   idDocumentUrl: 'idDocumentUrl',
   selfieUrl: 'selfieUrl',
   rejectionReason: 'rejectionReason',
@@ -1028,14 +1034,6 @@ export const QueryMode = {
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
-export const AccountOrderByRelevanceFieldEnum = {
-  id: 'id',
-  kindeId: 'kindeId'
-} as const
-
-export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum]
-
-
 export const NullsOrder = {
   first: 'first',
   last: 'last'
@@ -1044,9 +1042,22 @@ export const NullsOrder = {
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
+export const AccountOrderByRelevanceFieldEnum = {
+  id: 'id',
+  kindeId: 'kindeId',
+  email: 'email',
+  contact: 'contact',
+  fullName: 'fullName'
+} as const
+
+export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum]
+
+
 export const KycProfileOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
+  fullName: 'fullName',
+  alienIdNumber: 'alienIdNumber',
   idDocumentUrl: 'idDocumentUrl',
   selfieUrl: 'selfieUrl',
   rejectionReason: 'rejectionReason',

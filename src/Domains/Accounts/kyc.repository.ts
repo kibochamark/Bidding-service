@@ -128,6 +128,9 @@ export class KycRepository {
                 idDocumentUrl: data.idDocumentUrl,
                 selfieUrl: data.selfieUrl,
                 status: KycStatus.PENDING,
+                fullName: data.fullName,
+                dateOfBirth: new Date(data.dateOfBirth),
+                alienIdNumber: data.alienIdNumber,
             },
         });
     }

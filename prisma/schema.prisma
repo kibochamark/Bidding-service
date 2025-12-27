@@ -13,29 +13,32 @@ datasource db {
 model Account {
   id            String         @id @default(uuid())
   kindeId       String         @unique
+  email         String?         @unique
+  contact       String?
+  fullName      String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   addresses     Address[]
   kyc           KycProfile?
   sellerProfile SellerDetails?
-
-  
 }
 
 model KycProfile {
   id              String    @id @default(uuid())
   userId          String    @unique
   status          KycStatus @default(PENDING)
+  fullName        String
+  dateOfBirth     DateTime
+  alienIdNumber   String?
   idDocumentUrl   String
   selfieUrl       String?
   rejectionReason String?
   reviewedBy      String?
   verifiedAt      DateTime?
   accountId       String    @unique
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   account         Account   @relation(fields: [accountId], references: [kindeId])
-
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
 }
 
 model SellerDetails {
@@ -46,14 +49,13 @@ model SellerDetails {
   totalSales   Int      @default(0)
   accountId    String   @unique
   responseRate Decimal? @default(0.0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   account      Account  @relation(fields: [accountId], references: [kindeId])
-
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
 }
 
 model Address {
-  id        String  @id @default(uuid())
+  id        String   @id @default(uuid())
   userId    String
   label     String?
   street    String
@@ -61,10 +63,9 @@ model Address {
   zipCode   String
   country   String
   accountId String
-  account   Account @relation(fields: [accountId], references: [kindeId])
-
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  account   Account  @relation(fields: [accountId], references: [kindeId])
 }
 
 model Category {
@@ -85,29 +86,30 @@ model Category {
 }
 
 model Product {
-  id             String           @id @default(uuid())
+  id             String                   @id @default(uuid())
   title          String
   description    String
   categoryId     String
-  condition      ProductCondition @default(GOOD)
+  condition      ProductCondition         @default(GOOD)
   images         String[]
-  startingPrice  Decimal          @db.Decimal(10, 2)
-  currentBid     Decimal          @db.Decimal(10, 2)
-  bidsCount      Int              @default(0)
-  reservePrice   Decimal?         @db.Decimal(10, 2)
-  buyNowPrice    Decimal?         @db.Decimal(10, 2)
-  startDate      DateTime         @default(now())
+  startingPrice  Decimal                  @db.Decimal(10, 2)
+  currentBid     Decimal                  @db.Decimal(10, 2)
+  bidsCount      Int                      @default(0)
+  reservePrice   Decimal?                 @db.Decimal(10, 2)
+  buyNowPrice    Decimal?                 @db.Decimal(10, 2)
+  startDate      DateTime                 @default(now())
   endDate        DateTime
-  isActive       Boolean          @default(true)
+  isActive       Boolean                  @default(true)
   sellerId       String
   sellerName     String
-  sellerRating   Decimal          @default(0.0) @db.Decimal(3, 2)
-  rating         Decimal          @default(0.0) @db.Decimal(3, 2)
-  reviewCount    Int              @default(0)
+  sellerRating   Decimal                  @default(0.0) @db.Decimal(3, 2)
+  rating         Decimal                  @default(0.0) @db.Decimal(3, 2)
+  reviewCount    Int                      @default(0)
   specifications Json
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  category       Category         @relation(fields: [categoryId], references: [id])
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  search_vector  Unsupported("tsvector")?
+  category       Category                 @relation(fields: [categoryId], references: [id])
 
   @@index([categoryId, isActive, endDate(sort: Desc)])
   @@index([sellerId, isActive])
@@ -117,6 +119,7 @@ model Product {
   @@index([condition, isActive])
   @@index([title])
   @@index([startingPrice, currentBid])
+  @@index([search_vector], type: Gin)
 }
 
 enum KycStatus {

@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineExtension = exports.ProductOrderByRelevanceFieldEnum = exports.JsonNullValueFilter = exports.CategoryOrderByRelevanceFieldEnum = exports.AddressOrderByRelevanceFieldEnum = exports.SellerDetailsOrderByRelevanceFieldEnum = exports.KycProfileOrderByRelevanceFieldEnum = exports.NullsOrder = exports.AccountOrderByRelevanceFieldEnum = exports.QueryMode = exports.JsonNullValueInput = exports.SortOrder = exports.ProductScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.AddressScalarFieldEnum = exports.SellerDetailsScalarFieldEnum = exports.KycProfileScalarFieldEnum = exports.RelationLoadStrategy = exports.AccountScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.skip = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
+exports.defineExtension = exports.ProductOrderByRelevanceFieldEnum = exports.JsonNullValueFilter = exports.CategoryOrderByRelevanceFieldEnum = exports.AddressOrderByRelevanceFieldEnum = exports.SellerDetailsOrderByRelevanceFieldEnum = exports.KycProfileOrderByRelevanceFieldEnum = exports.AccountOrderByRelevanceFieldEnum = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.SortOrder = exports.ProductScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.AddressScalarFieldEnum = exports.SellerDetailsScalarFieldEnum = exports.KycProfileScalarFieldEnum = exports.RelationLoadStrategy = exports.AccountScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.skip = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 exports.PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError;
 exports.PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError;
@@ -77,6 +77,9 @@ exports.TransactionIsolationLevel = runtime.makeStrictEnum({
 exports.AccountScalarFieldEnum = {
     id: 'id',
     kindeId: 'kindeId',
+    email: 'email',
+    contact: 'contact',
+    fullName: 'fullName',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -88,6 +91,9 @@ exports.KycProfileScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
     status: 'status',
+    fullName: 'fullName',
+    dateOfBirth: 'dateOfBirth',
+    alienIdNumber: 'alienIdNumber',
     idDocumentUrl: 'idDocumentUrl',
     selfieUrl: 'selfieUrl',
     rejectionReason: 'rejectionReason',
@@ -165,17 +171,22 @@ exports.QueryMode = {
     default: 'default',
     insensitive: 'insensitive'
 };
-exports.AccountOrderByRelevanceFieldEnum = {
-    id: 'id',
-    kindeId: 'kindeId'
-};
 exports.NullsOrder = {
     first: 'first',
     last: 'last'
 };
+exports.AccountOrderByRelevanceFieldEnum = {
+    id: 'id',
+    kindeId: 'kindeId',
+    email: 'email',
+    contact: 'contact',
+    fullName: 'fullName'
+};
 exports.KycProfileOrderByRelevanceFieldEnum = {
     id: 'id',
     userId: 'userId',
+    fullName: 'fullName',
+    alienIdNumber: 'alienIdNumber',
     idDocumentUrl: 'idDocumentUrl',
     selfieUrl: 'selfieUrl',
     rejectionReason: 'rejectionReason',

@@ -11,8 +11,11 @@ export declare class KycService {
             createdAt: Date;
         };
     } & {
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -29,8 +32,11 @@ export declare class KycService {
             createdAt: Date;
         };
     } & {
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -47,8 +53,11 @@ export declare class KycService {
             createdAt: Date;
         };
     } & {
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -60,8 +69,11 @@ export declare class KycService {
         verifiedAt: Date | null;
     })[]>;
     submitKyc(data: SubmitKycDto): Promise<{
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -73,8 +85,11 @@ export declare class KycService {
         verifiedAt: Date | null;
     }>;
     updateKycStatus(id: string, data: UpdateKycStatusDto): Promise<{
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;
@@ -86,8 +101,11 @@ export declare class KycService {
         verifiedAt: Date | null;
     }>;
     deleteKyc(id: string): Promise<{
+        fullName: string;
         accountId: string;
         id: string;
+        dateOfBirth: Date;
+        alienIdNumber: string | null;
         idDocumentUrl: string;
         selfieUrl: string | null;
         status: KycStatus;

@@ -84,7 +84,7 @@ let AccountsController = AccountsController_1 = class AccountsController {
                         this.logger.log('Processing user.created event');
                         const account = {
                             type: event.type,
-                            ...event.data.user
+                            ...event.data?.user
                         };
                         const result = await this.accountsService.createAccount(account);
                         return res.status(201).json({ success: true, data: result });

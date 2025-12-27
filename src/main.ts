@@ -11,13 +11,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
 
-  // const app = await NestFactory.create(AppModule);
-  const expressInstance = app.getHttpAdapter().getInstance();
+  // // const app = await NestFactory.create(AppModule);
+  // const expressInstance = app.getHttpAdapter().getInstance();
 
-  useNestTreblle(expressInstance, {
-    sdkToken: process.env.TREBLLE_SDK_TOKEN!,
-    apiKey: process.env.TREBLLE_API_KEY!,
-  });
+  // useNestTreblle(expressInstance, {
+  //   sdkToken: process.env.TREBLLE_SDK_TOKEN!,
+  //   apiKey: process.env.TREBLLE_API_KEY!,
+  // });
 
 
   // add any global middleware or configurations here\

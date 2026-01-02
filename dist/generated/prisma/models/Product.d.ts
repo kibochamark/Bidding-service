@@ -708,9 +708,6 @@ export type ProductUpdateimagesInput = {
     set?: string[] | runtime.Types.Skip;
     push?: string | string[] | runtime.Types.Skip;
 };
-export type BoolFieldUpdateOperationsInput = {
-    set?: boolean | runtime.Types.Skip;
-};
 export type ProductCreateWithoutCategoryInput = {
     id?: string | runtime.Types.Skip;
     title: string;

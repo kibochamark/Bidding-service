@@ -53,15 +53,18 @@ export declare class AccountsService {
     getAccountByKindeId(data: AccountParamDto): Promise<{
         addresses: {
             accountId: string;
+            phone: string;
             label: string | null;
             street: string;
+            state: string;
             city: string;
             zipCode: string;
             country: string;
+            isPrimary: boolean;
+            recipientname: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            userId: string;
         }[];
         kyc: {
             fullName: string;

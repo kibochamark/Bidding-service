@@ -955,13 +955,16 @@ export type SellerDetailsScalarFieldEnum = (typeof SellerDetailsScalarFieldEnum)
 
 export const AddressScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  recipientname: 'recipientname',
+  phone: 'phone',
   label: 'label',
   street: 'street',
   city: 'city',
+  state: 'state',
   zipCode: 'zipCode',
   country: 'country',
   accountId: 'accountId',
+  isPrimary: 'isPrimary',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1080,10 +1083,12 @@ export type SellerDetailsOrderByRelevanceFieldEnum = (typeof SellerDetailsOrderB
 
 export const AddressOrderByRelevanceFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  recipientname: 'recipientname',
+  phone: 'phone',
   label: 'label',
   street: 'street',
   city: 'city',
+  state: 'state',
   zipCode: 'zipCode',
   country: 'country',
   accountId: 'accountId'
@@ -1203,6 +1208,13 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'ProductCondition'
  */
 export type EnumProductConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductCondition'>
@@ -1213,13 +1225,6 @@ export type EnumProductConditionFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'ProductCondition[]'
  */
 export type ListEnumProductConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductCondition[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

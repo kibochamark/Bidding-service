@@ -237,16 +237,24 @@ export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDecimalNullableFilter<$PrismaModel> | runtime.Types.Skip
 }
 
+export type BoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip
+}
+
+export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip
+  _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip
+  _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
+  _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
+}
+
 export type EnumProductConditionFilter<$PrismaModel = never> = {
   equals?: $Enums.ProductCondition | Prisma.EnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip
   in?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip
   notIn?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip
   not?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | $Enums.ProductCondition | runtime.Types.Skip
-}
-
-export type BoolFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
-  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip
 }
 
 export type JsonFilter<$PrismaModel = never> =
@@ -281,14 +289,6 @@ export type EnumProductConditionWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip
   _min?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip
   _max?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip
-}
-
-export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
-  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip
-  _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip
-  _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
-  _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
 }
 
 export type JsonWithAggregatesFilter<$PrismaModel = never> =
@@ -554,16 +554,24 @@ export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDecimalNullableFilter<$PrismaModel> | runtime.Types.Skip
 }
 
+export type NestedBoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip
+}
+
+export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip
+  _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip
+  _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
+  _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
+}
+
 export type NestedEnumProductConditionFilter<$PrismaModel = never> = {
   equals?: $Enums.ProductCondition | Prisma.EnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip
   in?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip
   notIn?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip
   not?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | $Enums.ProductCondition | runtime.Types.Skip
-}
-
-export type NestedBoolFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
-  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip
 }
 
 export type NestedEnumProductConditionWithAggregatesFilter<$PrismaModel = never> = {
@@ -574,14 +582,6 @@ export type NestedEnumProductConditionWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip
   _min?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip
   _max?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip
-}
-
-export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip
-  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip
-  _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip
-  _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
-  _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip
 }
 
 export type NestedJsonFilter<$PrismaModel = never> =

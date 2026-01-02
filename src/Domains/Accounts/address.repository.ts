@@ -63,12 +63,14 @@ export class AddressRepository {
         return await this.prisma.address.create({
             data: {
                 accountId: data.accountId,
-                userId: account.kindeId,
+                recipientname: data.recipientName,
                 label: data.label,
                 street: data.street,
+                state: data.state,
                 city: data.city,
                 zipCode: data.zipCode,
                 country: data.country,
+                isPrimary: data.isPrimary,
             },
         });
     }
@@ -76,7 +78,7 @@ export class AddressRepository {
     /**
      * Update an existing address
      */
-    async updateAddress(id: string, data: UpdateAddressDto) {
+    async updateAddress(id: string, data: Partial<UpdateAddressDto>) {
         // Verify address exists
         this.logger.log(`Updating address with ID: ${id}`);
 
@@ -92,11 +94,7 @@ export class AddressRepository {
         return await this.prisma.address.update({
             where: { id },
             data: {
-                label: data.label,
-                street: data.street,
-                city: data.city,
-                zipCode: data.zipCode,
-                country: data.country,
+                ...data
             },
         });
     }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 
 /**
  * DTO for creating a new address
@@ -8,6 +8,18 @@ export class CreateAddressDto {
     @IsString()
     accountId: string;
 
+
+
+    @IsNotEmpty()
+    @IsString()
+    phone: string;
+
+    @IsNotEmpty()
+    @IsString()
+    recipientName: string;
+
+
+
     @IsOptional()
     @IsString()
     label?: string; // "Home", "Office", etc.
@@ -15,6 +27,10 @@ export class CreateAddressDto {
     @IsNotEmpty()
     @IsString()
     street: string;
+
+    @IsNotEmpty()
+    @IsString()
+    state: string;
 
     @IsNotEmpty()
     @IsString()
@@ -27,15 +43,28 @@ export class CreateAddressDto {
     @IsNotEmpty()
     @IsString()
     country: string;
+
+    @IsNotEmpty()
+    @IsBoolean()
+    isPrimary: boolean;
 }
 
 /**
  * DTO for updating an existing address
  */
 export class UpdateAddressDto {
+
     @IsOptional()
     @IsString()
-    label?: string;
+    recipientname?: string;
+
+    @IsOptional()
+    @IsString()
+    phone?: string;
+
+    @IsOptional()
+    @IsString()
+    state?: string;
 
     @IsOptional()
     @IsString()
@@ -52,6 +81,11 @@ export class UpdateAddressDto {
     @IsOptional()
     @IsString()
     country?: string;
+
+
+    @IsOptional()
+    @IsBoolean()
+    isPrimary?: boolean;
 }
 
 /**

@@ -56,13 +56,16 @@ model SellerDetails {
 
 model Address {
   id        String   @id @default(uuid())
-  userId    String
+  recipientname String
+  phone String
   label     String?
   street    String
   city      String
+  state     String
   zipCode   String
   country   String
   accountId String
+  isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   account   Account  @relation(fields: [accountId], references: [kindeId])

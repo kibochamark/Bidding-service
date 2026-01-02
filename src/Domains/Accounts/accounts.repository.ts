@@ -68,7 +68,7 @@ export class AccountsRepository {
         this.logger.log(`Updating account ${kindeId} with data: ${JSON.stringify(data)}`);
         try {
             const updatedUser = await this.prisma.account.update({
-                where: { kindeId},
+                where: { kindeId },
                 data:{
                     contact: data.contact,
                     fullName: data.fullName,

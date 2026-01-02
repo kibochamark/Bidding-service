@@ -835,10 +835,6 @@ export type ProductUpdateimagesInput = {
   push?: string | string[] | runtime.Types.Skip
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean | runtime.Types.Skip
-}
-
 export type ProductCreateWithoutCategoryInput = {
   id?: string | runtime.Types.Skip
   title: string

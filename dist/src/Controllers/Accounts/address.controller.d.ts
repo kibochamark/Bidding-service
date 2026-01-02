@@ -5,15 +5,18 @@ export declare class AddressController {
     constructor(addressService: AddressService);
     getAddressesByAccountId(accountId: string): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }[]>;
     getAddressById(params: AddressParamDto): Promise<({
         account: {
@@ -22,50 +25,62 @@ export declare class AddressController {
         };
     } & {
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }) | null>;
     createAddress(createAddressDto: CreateAddressDto): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }>;
     updateAddress(params: AddressParamDto, updateAddressDto: UpdateAddressDto): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }>;
     deleteAddress(params: AddressParamDto): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }>;
 }

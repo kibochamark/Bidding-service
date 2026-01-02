@@ -6,15 +6,18 @@ export declare class AddressRepository {
     constructor(prisma: PrismaService);
     findAddressesByAccountId(accountId: string): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }[]>;
     findAddressById(id: string): Promise<{
         account: {
@@ -23,50 +26,62 @@ export declare class AddressRepository {
         };
     } & {
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }>;
     createAddress(data: CreateAddressDto): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }>;
-    updateAddress(id: string, data: UpdateAddressDto): Promise<{
+    updateAddress(id: string, data: Partial<UpdateAddressDto>): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }>;
     deleteAddress(id: string): Promise<{
         accountId: string;
+        phone: string;
         label: string | null;
         street: string;
+        state: string;
         city: string;
         zipCode: string;
         country: string;
+        isPrimary: boolean;
+        recipientname: string;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
     }>;
 }

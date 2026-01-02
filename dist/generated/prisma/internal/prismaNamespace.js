@@ -116,13 +116,16 @@ exports.SellerDetailsScalarFieldEnum = {
 };
 exports.AddressScalarFieldEnum = {
     id: 'id',
-    userId: 'userId',
+    recipientname: 'recipientname',
+    phone: 'phone',
     label: 'label',
     street: 'street',
     city: 'city',
+    state: 'state',
     zipCode: 'zipCode',
     country: 'country',
     accountId: 'accountId',
+    isPrimary: 'isPrimary',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -201,10 +204,12 @@ exports.SellerDetailsOrderByRelevanceFieldEnum = {
 };
 exports.AddressOrderByRelevanceFieldEnum = {
     id: 'id',
-    userId: 'userId',
+    recipientname: 'recipientname',
+    phone: 'phone',
     label: 'label',
     street: 'street',
     city: 'city',
+    state: 'state',
     zipCode: 'zipCode',
     country: 'country',
     accountId: 'accountId'

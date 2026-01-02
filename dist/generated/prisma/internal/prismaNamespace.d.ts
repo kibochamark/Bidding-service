@@ -701,13 +701,16 @@ export declare const SellerDetailsScalarFieldEnum: {
 export type SellerDetailsScalarFieldEnum = (typeof SellerDetailsScalarFieldEnum)[keyof typeof SellerDetailsScalarFieldEnum];
 export declare const AddressScalarFieldEnum: {
     readonly id: "id";
-    readonly userId: "userId";
+    readonly recipientname: "recipientname";
+    readonly phone: "phone";
     readonly label: "label";
     readonly street: "street";
     readonly city: "city";
+    readonly state: "state";
     readonly zipCode: "zipCode";
     readonly country: "country";
     readonly accountId: "accountId";
+    readonly isPrimary: "isPrimary";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -796,10 +799,12 @@ export declare const SellerDetailsOrderByRelevanceFieldEnum: {
 export type SellerDetailsOrderByRelevanceFieldEnum = (typeof SellerDetailsOrderByRelevanceFieldEnum)[keyof typeof SellerDetailsOrderByRelevanceFieldEnum];
 export declare const AddressOrderByRelevanceFieldEnum: {
     readonly id: "id";
-    readonly userId: "userId";
+    readonly recipientname: "recipientname";
+    readonly phone: "phone";
     readonly label: "label";
     readonly street: "street";
     readonly city: "city";
+    readonly state: "state";
     readonly zipCode: "zipCode";
     readonly country: "country";
     readonly accountId: "accountId";
@@ -840,9 +845,9 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
 export type EnumProductConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductCondition'>;
 export type ListEnumProductConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductCondition[]'>;
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;

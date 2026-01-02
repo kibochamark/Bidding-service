@@ -64,6 +64,7 @@ export class AddressRepository {
             data: {
                 accountId: data.accountId,
                 recipientname: data.recipientName,
+                phone: data.phone,
                 label: data.label,
                 street: data.street,
                 state: data.state,

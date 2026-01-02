@@ -207,15 +207,22 @@ export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedDecimalNullableFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedDecimalNullableFilter<$PrismaModel> | runtime.Types.Skip;
 };
+export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip;
+};
+export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip;
+    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
+    _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
+    _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
+};
 export type EnumProductConditionFilter<$PrismaModel = never> = {
     equals?: $Enums.ProductCondition | Prisma.EnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     in?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     notIn?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     not?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | $Enums.ProductCondition | runtime.Types.Skip;
-};
-export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip;
 };
 export type JsonFilter<$PrismaModel = never> = Prisma.PatchUndefined<Prisma.Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>, Required<JsonFilterBase<$PrismaModel>>> | Prisma.OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>;
 export type JsonFilterBase<$PrismaModel = never> = {
@@ -242,13 +249,6 @@ export type EnumProductConditionWithAggregatesFilter<$PrismaModel = never> = {
     _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
     _min?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip;
-};
-export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip;
-    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
 };
 export type JsonWithAggregatesFilter<$PrismaModel = never> = Prisma.PatchUndefined<Prisma.Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>, Required<JsonWithAggregatesFilterBase<$PrismaModel>>> | Prisma.OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>;
 export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
@@ -488,15 +488,22 @@ export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedDecimalNullableFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedDecimalNullableFilter<$PrismaModel> | runtime.Types.Skip;
 };
+export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip;
+};
+export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip;
+    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
+    _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
+    _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
+};
 export type NestedEnumProductConditionFilter<$PrismaModel = never> = {
     equals?: $Enums.ProductCondition | Prisma.EnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     in?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     notIn?: $Enums.ProductCondition[] | Prisma.ListEnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     not?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | $Enums.ProductCondition | runtime.Types.Skip;
-};
-export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean | runtime.Types.Skip;
 };
 export type NestedEnumProductConditionWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ProductCondition | Prisma.EnumProductConditionFieldRefInput<$PrismaModel> | runtime.Types.Skip;
@@ -506,13 +513,6 @@ export type NestedEnumProductConditionWithAggregatesFilter<$PrismaModel = never>
     _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
     _min?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedEnumProductConditionFilter<$PrismaModel> | runtime.Types.Skip;
-};
-export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean | runtime.Types.Skip;
-    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedBoolFilter<$PrismaModel> | runtime.Types.Skip;
 };
 export type NestedJsonFilter<$PrismaModel = never> = Prisma.PatchUndefined<Prisma.Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>, Required<NestedJsonFilterBase<$PrismaModel>>> | Prisma.OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>;
 export type NestedJsonFilterBase<$PrismaModel = never> = {

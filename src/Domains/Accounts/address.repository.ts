@@ -59,6 +59,20 @@ export class AddressRepository {
             throw new NotFoundException(`Account with ID ${data.accountId} not found`);
         }
 
+        // If the new address is marked as primary, unset all other primary addresses for this account
+        if (data.isPrimary) {
+            this.logger.log(`Unsetting isPrimary for all existing addresses for account ID: ${data.accountId}`);
+            await this.prisma.address.updateMany({
+                where: {
+                    accountId: data.accountId,
+                    isPrimary: true,
+                },
+                data: {
+                    isPrimary: false,
+                },
+            });
+        }
+
         this.logger.log(`Account found for ID: ${data.accountId}, proceeding to create address`);
         return await this.prisma.address.create({
             data: {
@@ -88,6 +102,21 @@ export class AddressRepository {
         if (!existingaddress) {
             this.logger.warn(`Address with ID: ${id} not found`);
             throw new NotFoundException(`Address with ID ${id} not found`);
+        }
+
+        // If the address is being set as primary, unset all other primary addresses for this account
+        if (data.isPrimary === true) {
+            this.logger.log(`Unsetting isPrimary for all other addresses for account ID: ${existingaddress.accountId}`);
+            await this.prisma.address.updateMany({
+                where: {
+                    accountId: existingaddress.accountId,
+                    isPrimary: true,
+                    id: { not: id }, // Exclude the current address being updated
+                },
+                data: {
+                    isPrimary: false,
+                },
+            });
         }
 
         this.logger.log(`Address found for ID: ${id}, proceeding to update`);

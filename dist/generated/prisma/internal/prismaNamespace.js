@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineExtension = exports.ProductOrderByRelevanceFieldEnum = exports.JsonNullValueFilter = exports.CategoryOrderByRelevanceFieldEnum = exports.AddressOrderByRelevanceFieldEnum = exports.SellerDetailsOrderByRelevanceFieldEnum = exports.KycProfileOrderByRelevanceFieldEnum = exports.AccountOrderByRelevanceFieldEnum = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.SortOrder = exports.ProductScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.AddressScalarFieldEnum = exports.SellerDetailsScalarFieldEnum = exports.KycProfileScalarFieldEnum = exports.RelationLoadStrategy = exports.AccountScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.skip = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
+exports.defineExtension = exports.BidOrderByRelevanceFieldEnum = exports.AuctionOrderByRelevanceFieldEnum = exports.ProductOrderByRelevanceFieldEnum = exports.JsonNullValueFilter = exports.CategoryOrderByRelevanceFieldEnum = exports.AddressOrderByRelevanceFieldEnum = exports.SellerDetailsOrderByRelevanceFieldEnum = exports.KycProfileOrderByRelevanceFieldEnum = exports.AccountOrderByRelevanceFieldEnum = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.SortOrder = exports.BidScalarFieldEnum = exports.AuctionScalarFieldEnum = exports.ProductScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.AddressScalarFieldEnum = exports.SellerDetailsScalarFieldEnum = exports.KycProfileScalarFieldEnum = exports.RelationLoadStrategy = exports.AccountScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.skip = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 exports.PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError;
 exports.PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError;
@@ -66,7 +66,9 @@ exports.ModelName = {
     SellerDetails: 'SellerDetails',
     Address: 'Address',
     Category: 'Category',
-    Product: 'Product'
+    Product: 'Product',
+    Auction: 'Auction',
+    Bid: 'Bid'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -89,12 +91,14 @@ exports.RelationLoadStrategy = {
 };
 exports.KycProfileScalarFieldEnum = {
     id: 'id',
-    userId: 'userId',
     status: 'status',
     fullName: 'fullName',
     dateOfBirth: 'dateOfBirth',
-    alienIdNumber: 'alienIdNumber',
+    nationality: 'nationality',
+    documentType: 'documentType',
+    idDocumentNumber: 'idDocumentNumber',
     idDocumentUrl: 'idDocumentUrl',
+    proofOfAddressUrl: 'proofOfAddressUrl',
     selfieUrl: 'selfieUrl',
     rejectionReason: 'rejectionReason',
     reviewedBy: 'reviewedBy',
@@ -163,6 +167,33 @@ exports.ProductScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
+exports.AuctionScalarFieldEnum = {
+    id: 'id',
+    productId: 'productId',
+    title: 'title',
+    description: 'description',
+    prizeValue: 'prizeValue',
+    entryFee: 'entryFee',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    status: 'status',
+    winnerId: 'winnerId',
+    winningBidAmount: 'winningBidAmount',
+    totalBidsCount: 'totalBidsCount',
+    totalRevenue: 'totalRevenue',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.BidScalarFieldEnum = {
+    id: 'id',
+    auctionId: 'auctionId',
+    bidderId: 'bidderId',
+    bidderName: 'bidderName',
+    bidAmount: 'bidAmount',
+    isUnique: 'isUnique',
+    isWinning: 'isWinning',
+    placedAt: 'placedAt'
+};
 exports.SortOrder = {
     asc: 'asc',
     desc: 'desc'
@@ -187,10 +218,11 @@ exports.AccountOrderByRelevanceFieldEnum = {
 };
 exports.KycProfileOrderByRelevanceFieldEnum = {
     id: 'id',
-    userId: 'userId',
     fullName: 'fullName',
-    alienIdNumber: 'alienIdNumber',
+    nationality: 'nationality',
+    idDocumentNumber: 'idDocumentNumber',
     idDocumentUrl: 'idDocumentUrl',
+    proofOfAddressUrl: 'proofOfAddressUrl',
     selfieUrl: 'selfieUrl',
     rejectionReason: 'rejectionReason',
     reviewedBy: 'reviewedBy',
@@ -235,6 +267,19 @@ exports.ProductOrderByRelevanceFieldEnum = {
     images: 'images',
     sellerId: 'sellerId',
     sellerName: 'sellerName'
+};
+exports.AuctionOrderByRelevanceFieldEnum = {
+    id: 'id',
+    productId: 'productId',
+    title: 'title',
+    description: 'description',
+    winnerId: 'winnerId'
+};
+exports.BidOrderByRelevanceFieldEnum = {
+    id: 'id',
+    auctionId: 'auctionId',
+    bidderId: 'bidderId',
+    bidderName: 'bidderName'
 };
 exports.defineExtension = runtime.Extensions.defineExtension;
 //# sourceMappingURL=prismaNamespace.js.map

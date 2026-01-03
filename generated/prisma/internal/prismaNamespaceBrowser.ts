@@ -56,7 +56,9 @@ export const ModelName = {
   SellerDetails: 'SellerDetails',
   Address: 'Address',
   Category: 'Category',
-  Product: 'Product'
+  Product: 'Product',
+  Auction: 'Auction',
+  Bid: 'Bid'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -98,12 +100,14 @@ export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof Re
 
 export const KycProfileScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   status: 'status',
   fullName: 'fullName',
   dateOfBirth: 'dateOfBirth',
-  alienIdNumber: 'alienIdNumber',
+  nationality: 'nationality',
+  documentType: 'documentType',
+  idDocumentNumber: 'idDocumentNumber',
   idDocumentUrl: 'idDocumentUrl',
+  proofOfAddressUrl: 'proofOfAddressUrl',
   selfieUrl: 'selfieUrl',
   rejectionReason: 'rejectionReason',
   reviewedBy: 'reviewedBy',
@@ -192,6 +196,41 @@ export const ProductScalarFieldEnum = {
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
+export const AuctionScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  title: 'title',
+  description: 'description',
+  prizeValue: 'prizeValue',
+  entryFee: 'entryFee',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  winnerId: 'winnerId',
+  winningBidAmount: 'winningBidAmount',
+  totalBidsCount: 'totalBidsCount',
+  totalRevenue: 'totalRevenue',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuctionScalarFieldEnum = (typeof AuctionScalarFieldEnum)[keyof typeof AuctionScalarFieldEnum]
+
+
+export const BidScalarFieldEnum = {
+  id: 'id',
+  auctionId: 'auctionId',
+  bidderId: 'bidderId',
+  bidderName: 'bidderName',
+  bidAmount: 'bidAmount',
+  isUnique: 'isUnique',
+  isWinning: 'isWinning',
+  placedAt: 'placedAt'
+} as const
+
+export type BidScalarFieldEnum = (typeof BidScalarFieldEnum)[keyof typeof BidScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -236,10 +275,11 @@ export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFi
 
 export const KycProfileOrderByRelevanceFieldEnum = {
   id: 'id',
-  userId: 'userId',
   fullName: 'fullName',
-  alienIdNumber: 'alienIdNumber',
+  nationality: 'nationality',
+  idDocumentNumber: 'idDocumentNumber',
   idDocumentUrl: 'idDocumentUrl',
+  proofOfAddressUrl: 'proofOfAddressUrl',
   selfieUrl: 'selfieUrl',
   rejectionReason: 'rejectionReason',
   reviewedBy: 'reviewedBy',
@@ -307,4 +347,25 @@ export const ProductOrderByRelevanceFieldEnum = {
 } as const
 
 export type ProductOrderByRelevanceFieldEnum = (typeof ProductOrderByRelevanceFieldEnum)[keyof typeof ProductOrderByRelevanceFieldEnum]
+
+
+export const AuctionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  title: 'title',
+  description: 'description',
+  winnerId: 'winnerId'
+} as const
+
+export type AuctionOrderByRelevanceFieldEnum = (typeof AuctionOrderByRelevanceFieldEnum)[keyof typeof AuctionOrderByRelevanceFieldEnum]
+
+
+export const BidOrderByRelevanceFieldEnum = {
+  id: 'id',
+  auctionId: 'auctionId',
+  bidderId: 'bidderId',
+  bidderName: 'bidderName'
+} as const
+
+export type BidOrderByRelevanceFieldEnum = (typeof BidOrderByRelevanceFieldEnum)[keyof typeof BidOrderByRelevanceFieldEnum]
 

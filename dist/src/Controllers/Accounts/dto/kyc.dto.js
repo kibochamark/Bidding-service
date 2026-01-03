@@ -9,12 +9,59 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StatusKycDto = exports.KycParamDto = exports.UpdateKycStatusDto = exports.SubmitKycDto = void 0;
+exports.StatusKycDto = exports.KycParamDto = exports.UpdateKycStatusDto = exports.SubmitKycDto = exports.KycDocumentDto = exports.DocumentType = void 0;
 const class_validator_1 = require("class-validator");
 const enums_1 = require("../../../../generated/prisma/enums");
+var DocumentType;
+(function (DocumentType) {
+    DocumentType["NATIONAL_ID"] = "NATIONAL_ID";
+    DocumentType["PASSPORT"] = "PASSPORT";
+    DocumentType["DRIVERS_LICENSE"] = "DRIVERS_LICENSE";
+    DocumentType["PROOF_OF_ADDRESS"] = "PROOF_OF_ADDRESS";
+    DocumentType["SELFIE"] = "SELFIE";
+})(DocumentType || (exports.DocumentType = DocumentType = {}));
+class KycDocumentDto {
+}
+exports.KycDocumentDto = KycDocumentDto;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], KycDocumentDto.prototype, "accountId", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsEnum)(DocumentType),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], KycDocumentDto.prototype, "documentType", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], KycDocumentDto.prototype, "idDocumentNumber", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUrl)(),
+    __metadata("design:type", String)
+], KycDocumentDto.prototype, "idDocumentUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUrl)(),
+    __metadata("design:type", String)
+], KycDocumentDto.prototype, "proofOfAddressUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUrl)(),
+    __metadata("design:type", String)
+], KycDocumentDto.prototype, "selfieUrl", void 0);
 class SubmitKycDto {
 }
 exports.SubmitKycDto = SubmitKycDto;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], SubmitKycDto.prototype, "accountId", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -26,25 +73,10 @@ __decorate([
     __metadata("design:type", String)
 ], SubmitKycDto.prototype, "dateOfBirth", void 0);
 __decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], SubmitKycDto.prototype, "alienIdNumber", void 0);
-__decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], SubmitKycDto.prototype, "accountId", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsUrl)(),
-    __metadata("design:type", String)
-], SubmitKycDto.prototype, "idDocumentUrl", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)(),
-    __metadata("design:type", String)
-], SubmitKycDto.prototype, "selfieUrl", void 0);
+], SubmitKycDto.prototype, "nationality", void 0);
 class UpdateKycStatusDto {
 }
 exports.UpdateKycStatusDto = UpdateKycStatusDto;

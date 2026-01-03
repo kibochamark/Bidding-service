@@ -8,10 +8,12 @@ import { KycRepository } from './kyc.repository';
 import { AccountsController } from '../../../src/Controllers/Accounts/accounts.controller.js';
 import { AddressController } from '../../../src/Controllers/Accounts/address.controller';
 import { KycController } from '../../../src/Controllers/Accounts/kyc.controller';
+import { UploadController } from '../../../src/Controllers/Accounts/upload.controller';
+import { S3moduleModule } from '../s3module/s3module.module';
 
 @Module({
-  imports: [],
-  controllers: [AccountsController, AddressController, KycController],
+  imports: [S3moduleModule],
+  controllers: [AccountsController, AddressController, KycController, UploadController],
   providers: [
     AccountsService,
     AccountsRepository,

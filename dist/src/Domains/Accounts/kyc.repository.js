@@ -14,10 +14,23 @@ exports.KycRepository = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../../src/prisma/prisma.service");
 const enums_1 = require("../../../generated/prisma/enums");
+const s3module_service_1 = require("../s3module/s3module.service");
 let KycRepository = KycRepository_1 = class KycRepository {
-    constructor(prisma) {
+    constructor(prisma, s3moduleService) {
         this.prisma = prisma;
+        this.s3moduleService = s3moduleService;
         this.logger = new common_1.Logger(KycRepository_1.name);
+    }
+    extractPublicIdFromUrl(url) {
+        try {
+            const regex = /\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+        catch (error) {
+            this.logger.warn(`Failed to extract public_id from URL: ${url}`, error);
+            return null;
+        }
     }
     async findKycByAccountId(accountId) {
         this.logger.log(`Fetching KYC profile for account ID: ${accountId}`);
@@ -87,30 +100,16 @@ let KycRepository = KycRepository_1 = class KycRepository {
                 this.logger.warn(`KYC already verified for account ID: ${data.accountId}`);
                 throw new common_1.BadRequestException('KYC already verified');
             }
-            this.logger.log(`Updating existing KYC profile for account ID: ${data.accountId}`);
-            return await this.prisma.kycProfile.update({
-                where: { id: existingKyc.id },
-                data: {
-                    idDocumentUrl: data.idDocumentUrl,
-                    selfieUrl: data.selfieUrl,
-                    status: enums_1.KycStatus.PENDING,
-                    rejectionReason: null,
-                    reviewedBy: null,
-                    verifiedAt: null,
-                },
-            });
         }
+        this.logger.log(`Creating new KYC profile for account ID: ${data.accountId}`);
         return await this.prisma.kycProfile.create({
             data: {
-                userId: account.kindeId,
                 accountId: account.kindeId,
-                idDocumentUrl: data.idDocumentUrl,
-                selfieUrl: data.selfieUrl,
-                status: enums_1.KycStatus.PENDING,
                 fullName: data.fullName,
                 dateOfBirth: new Date(data.dateOfBirth),
-                alienIdNumber: data.alienIdNumber,
-            },
+                nationality: data.nationality,
+                status: enums_1.KycStatus.PENDING,
+            }
         });
     }
     async updateKycStatus(id, data) {
@@ -127,16 +126,85 @@ let KycRepository = KycRepository_1 = class KycRepository {
         });
     }
     async deleteKyc(id) {
-        await this.findKycById(id);
+        const kyc = await this.findKycById(id);
         this.logger.log(`Deleting KYC profile with ID: ${id}`);
-        return await this.prisma.kycProfile.delete({
-            where: { id },
+        const filePublicIds = [];
+        if (kyc.idDocumentUrl) {
+            const idPublicId = this.extractPublicIdFromUrl(kyc.idDocumentUrl);
+            if (idPublicId) {
+                filePublicIds.push(idPublicId);
+                this.logger.log(`Found ID document to delete: ${idPublicId}`);
+            }
+        }
+        if (kyc.proofOfAddressUrl) {
+            const proofPublicId = this.extractPublicIdFromUrl(kyc.proofOfAddressUrl);
+            if (proofPublicId) {
+                filePublicIds.push(proofPublicId);
+                this.logger.log(`Found proof of address to delete: ${proofPublicId}`);
+            }
+        }
+        if (kyc.selfieUrl) {
+            const selfiePublicId = this.extractPublicIdFromUrl(kyc.selfieUrl);
+            if (selfiePublicId) {
+                filePublicIds.push(selfiePublicId);
+                this.logger.log(`Found selfie to delete: ${selfiePublicId}`);
+            }
+        }
+        try {
+            const deletedKyc = await this.prisma.$transaction(async (tx) => {
+                return await tx.kycProfile.delete({
+                    where: { id },
+                });
+            });
+            this.logger.log(`KYC profile deleted from database: ${id}`);
+            if (filePublicIds.length > 0) {
+                this.logger.log(`Deleting ${filePublicIds.length} files from Cloudinary...`);
+                const deletePromises = filePublicIds.map(async (publicId) => {
+                    try {
+                        await this.s3moduleService.deleteFile(publicId);
+                        this.logger.log(`Successfully deleted file from Cloudinary: ${publicId}`);
+                    }
+                    catch (error) {
+                        this.logger.warn(`Failed to delete file ${publicId} from Cloudinary:`, error);
+                    }
+                });
+                await Promise.allSettled(deletePromises);
+                this.logger.log('Cloudinary cleanup completed');
+            }
+            return deletedKyc;
+        }
+        catch (error) {
+            this.logger.error(`Failed to delete KYC profile ${id}:`, error);
+            throw error;
+        }
+    }
+    async uploadKycDocument(accountId, documentType, documentUrl, documentIdNumber) {
+        this.logger.log(`Uploading KYC document for account ID: ${accountId}, type: ${documentType}`);
+        let updateData = {};
+        if (documentType === 'NATIONAL_ID' || documentType === 'PASSPORT' || documentType === 'DRIVER_LICENSE') {
+            updateData = { idDocumentUrl: documentUrl, idDocumentNumber: documentIdNumber, documentType: documentType };
+        }
+        else if (documentType === 'PROOF_OF_ADDRESS') {
+            updateData = { proofOfAddressUrl: documentUrl };
+        }
+        else if (documentType === 'SELFIE') {
+            updateData = { selfieUrl: documentUrl };
+        }
+        else {
+            this.logger.warn(`Invalid document type: ${documentType}`);
+            throw new common_1.BadRequestException('Invalid document type');
+        }
+        return await this.prisma.kycProfile.updateMany({
+            where: { accountId },
+            data: {
+                ...updateData
+            },
         });
     }
 };
 exports.KycRepository = KycRepository;
 exports.KycRepository = KycRepository = KycRepository_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService, s3module_service_1.S3moduleService])
 ], KycRepository);
 //# sourceMappingURL=kyc.repository.js.map

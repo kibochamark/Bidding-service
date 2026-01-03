@@ -1,10 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query } from '@nestjs/common';
 import { AddressService } from '../../../src/Domains/Accounts/address.service';
 import { AddressParamDto, CreateAddressDto, UpdateAddressDto } from './dto';
 
 @Controller('addresses')
 export class AddressController {
-    constructor(private addressService: AddressService) {}
+    private readonly logger = new Logger(AddressController.name);
+
+
+    constructor(private addressService: AddressService, ) {}
 
     /**
      * Get all addresses for a specific account
@@ -29,6 +32,7 @@ export class AddressController {
      */
     @Post()
     async createAddress(@Body() createAddressDto: CreateAddressDto) {
+        this.logger.log(`Creating address for account ID: ${createAddressDto.accountId}`);
         return await this.addressService.createAddress(createAddressDto);
     }
 

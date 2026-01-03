@@ -9,16 +9,18 @@ export declare class AccountsRepository {
             fullName: string;
             accountId: string;
             id: string;
-            dateOfBirth: Date;
-            alienIdNumber: string | null;
-            idDocumentUrl: string;
+            documentType: import("../../../generated/prisma/enums").DocumentType | null;
+            idDocumentNumber: string | null;
+            idDocumentUrl: string | null;
+            proofOfAddressUrl: string | null;
             selfieUrl: string | null;
+            dateOfBirth: Date;
+            nationality: string;
             status: import("../../../generated/prisma/enums").KycStatus;
             rejectionReason: string | null;
             reviewedBy: string | null;
             createdAt: Date;
             updatedAt: Date;
-            userId: string;
             verifiedAt: Date | null;
         } | null;
         sellerProfile: {
@@ -61,16 +63,18 @@ export declare class AccountsRepository {
             fullName: string;
             accountId: string;
             id: string;
-            dateOfBirth: Date;
-            alienIdNumber: string | null;
-            idDocumentUrl: string;
+            documentType: import("../../../generated/prisma/enums").DocumentType | null;
+            idDocumentNumber: string | null;
+            idDocumentUrl: string | null;
+            proofOfAddressUrl: string | null;
             selfieUrl: string | null;
+            dateOfBirth: Date;
+            nationality: string;
             status: import("../../../generated/prisma/enums").KycStatus;
             rejectionReason: string | null;
             reviewedBy: string | null;
             createdAt: Date;
             updatedAt: Date;
-            userId: string;
             verifiedAt: Date | null;
         } | null;
         sellerProfile: {
@@ -113,16 +117,18 @@ export declare class AccountsRepository {
             fullName: string;
             accountId: string;
             id: string;
-            dateOfBirth: Date;
-            alienIdNumber: string | null;
-            idDocumentUrl: string;
+            documentType: import("../../../generated/prisma/enums").DocumentType | null;
+            idDocumentNumber: string | null;
+            idDocumentUrl: string | null;
+            proofOfAddressUrl: string | null;
             selfieUrl: string | null;
+            dateOfBirth: Date;
+            nationality: string;
             status: import("../../../generated/prisma/enums").KycStatus;
             rejectionReason: string | null;
             reviewedBy: string | null;
             createdAt: Date;
             updatedAt: Date;
-            userId: string;
             verifiedAt: Date | null;
         } | null;
         sellerProfile: {

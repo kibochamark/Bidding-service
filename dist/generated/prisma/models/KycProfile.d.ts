@@ -9,12 +9,14 @@ export type AggregateKycProfile = {
 };
 export type KycProfileMinAggregateOutputType = {
     id: string | null;
-    userId: string | null;
     status: $Enums.KycStatus | null;
     fullName: string | null;
     dateOfBirth: Date | null;
-    alienIdNumber: string | null;
+    nationality: string | null;
+    documentType: $Enums.DocumentType | null;
+    idDocumentNumber: string | null;
     idDocumentUrl: string | null;
+    proofOfAddressUrl: string | null;
     selfieUrl: string | null;
     rejectionReason: string | null;
     reviewedBy: string | null;
@@ -25,12 +27,14 @@ export type KycProfileMinAggregateOutputType = {
 };
 export type KycProfileMaxAggregateOutputType = {
     id: string | null;
-    userId: string | null;
     status: $Enums.KycStatus | null;
     fullName: string | null;
     dateOfBirth: Date | null;
-    alienIdNumber: string | null;
+    nationality: string | null;
+    documentType: $Enums.DocumentType | null;
+    idDocumentNumber: string | null;
     idDocumentUrl: string | null;
+    proofOfAddressUrl: string | null;
     selfieUrl: string | null;
     rejectionReason: string | null;
     reviewedBy: string | null;
@@ -41,12 +45,14 @@ export type KycProfileMaxAggregateOutputType = {
 };
 export type KycProfileCountAggregateOutputType = {
     id: number;
-    userId: number;
     status: number;
     fullName: number;
     dateOfBirth: number;
-    alienIdNumber: number;
+    nationality: number;
+    documentType: number;
+    idDocumentNumber: number;
     idDocumentUrl: number;
+    proofOfAddressUrl: number;
     selfieUrl: number;
     rejectionReason: number;
     reviewedBy: number;
@@ -58,12 +64,14 @@ export type KycProfileCountAggregateOutputType = {
 };
 export type KycProfileMinAggregateInputType = {
     id?: true | runtime.Types.Skip;
-    userId?: true | runtime.Types.Skip;
     status?: true | runtime.Types.Skip;
     fullName?: true | runtime.Types.Skip;
     dateOfBirth?: true | runtime.Types.Skip;
-    alienIdNumber?: true | runtime.Types.Skip;
+    nationality?: true | runtime.Types.Skip;
+    documentType?: true | runtime.Types.Skip;
+    idDocumentNumber?: true | runtime.Types.Skip;
     idDocumentUrl?: true | runtime.Types.Skip;
+    proofOfAddressUrl?: true | runtime.Types.Skip;
     selfieUrl?: true | runtime.Types.Skip;
     rejectionReason?: true | runtime.Types.Skip;
     reviewedBy?: true | runtime.Types.Skip;
@@ -74,12 +82,14 @@ export type KycProfileMinAggregateInputType = {
 };
 export type KycProfileMaxAggregateInputType = {
     id?: true | runtime.Types.Skip;
-    userId?: true | runtime.Types.Skip;
     status?: true | runtime.Types.Skip;
     fullName?: true | runtime.Types.Skip;
     dateOfBirth?: true | runtime.Types.Skip;
-    alienIdNumber?: true | runtime.Types.Skip;
+    nationality?: true | runtime.Types.Skip;
+    documentType?: true | runtime.Types.Skip;
+    idDocumentNumber?: true | runtime.Types.Skip;
     idDocumentUrl?: true | runtime.Types.Skip;
+    proofOfAddressUrl?: true | runtime.Types.Skip;
     selfieUrl?: true | runtime.Types.Skip;
     rejectionReason?: true | runtime.Types.Skip;
     reviewedBy?: true | runtime.Types.Skip;
@@ -90,12 +100,14 @@ export type KycProfileMaxAggregateInputType = {
 };
 export type KycProfileCountAggregateInputType = {
     id?: true | runtime.Types.Skip;
-    userId?: true | runtime.Types.Skip;
     status?: true | runtime.Types.Skip;
     fullName?: true | runtime.Types.Skip;
     dateOfBirth?: true | runtime.Types.Skip;
-    alienIdNumber?: true | runtime.Types.Skip;
+    nationality?: true | runtime.Types.Skip;
+    documentType?: true | runtime.Types.Skip;
+    idDocumentNumber?: true | runtime.Types.Skip;
     idDocumentUrl?: true | runtime.Types.Skip;
+    proofOfAddressUrl?: true | runtime.Types.Skip;
     selfieUrl?: true | runtime.Types.Skip;
     rejectionReason?: true | runtime.Types.Skip;
     reviewedBy?: true | runtime.Types.Skip;
@@ -131,12 +143,14 @@ export type KycProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 };
 export type KycProfileGroupByOutputType = {
     id: string;
-    userId: string;
     status: $Enums.KycStatus;
     fullName: string;
     dateOfBirth: Date;
-    alienIdNumber: string | null;
-    idDocumentUrl: string;
+    nationality: string;
+    documentType: $Enums.DocumentType | null;
+    idDocumentNumber: string | null;
+    idDocumentUrl: string | null;
+    proofOfAddressUrl: string | null;
     selfieUrl: string | null;
     rejectionReason: string | null;
     reviewedBy: string | null;
@@ -156,12 +170,14 @@ export type KycProfileWhereInput = {
     OR?: Prisma.KycProfileWhereInput[] | runtime.Types.Skip;
     NOT?: Prisma.KycProfileWhereInput | Prisma.KycProfileWhereInput[] | runtime.Types.Skip;
     id?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
-    userId?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusFilter<"KycProfile"> | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
+    documentType?: Prisma.EnumDocumentTypeNullableFilter<"KycProfile"> | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
@@ -173,12 +189,14 @@ export type KycProfileWhereInput = {
 };
 export type KycProfileOrderByWithRelationInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
-    userId?: Prisma.SortOrder | runtime.Types.Skip;
     status?: Prisma.SortOrder | runtime.Types.Skip;
     fullName?: Prisma.SortOrder | runtime.Types.Skip;
     dateOfBirth?: Prisma.SortOrder | runtime.Types.Skip;
-    alienIdNumber?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.SortOrder | runtime.Types.Skip;
+    nationality?: Prisma.SortOrder | runtime.Types.Skip;
+    documentType?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     selfieUrl?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
@@ -191,7 +209,7 @@ export type KycProfileOrderByWithRelationInput = {
 };
 export type KycProfileWhereUniqueInput = Prisma.AtLeast<{
     id?: string | runtime.Types.Skip;
-    userId?: string | runtime.Types.Skip;
+    idDocumentNumber?: string | runtime.Types.Skip;
     accountId?: string | runtime.Types.Skip;
     AND?: Prisma.KycProfileWhereInput | Prisma.KycProfileWhereInput[] | runtime.Types.Skip;
     OR?: Prisma.KycProfileWhereInput[] | runtime.Types.Skip;
@@ -199,8 +217,10 @@ export type KycProfileWhereUniqueInput = Prisma.AtLeast<{
     status?: Prisma.EnumKycStatusFilter<"KycProfile"> | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFilter<"KycProfile"> | string | runtime.Types.Skip;
+    documentType?: Prisma.EnumDocumentTypeNullableFilter<"KycProfile"> | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.StringNullableFilter<"KycProfile"> | string | null | runtime.Types.Skip;
@@ -208,15 +228,17 @@ export type KycProfileWhereUniqueInput = Prisma.AtLeast<{
     createdAt?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
     updatedAt?: Prisma.DateTimeFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
     account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput> | runtime.Types.Skip;
-}, "id" | "userId" | "accountId">;
+}, "id" | "idDocumentNumber" | "accountId">;
 export type KycProfileOrderByWithAggregationInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
-    userId?: Prisma.SortOrder | runtime.Types.Skip;
     status?: Prisma.SortOrder | runtime.Types.Skip;
     fullName?: Prisma.SortOrder | runtime.Types.Skip;
     dateOfBirth?: Prisma.SortOrder | runtime.Types.Skip;
-    alienIdNumber?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.SortOrder | runtime.Types.Skip;
+    nationality?: Prisma.SortOrder | runtime.Types.Skip;
+    documentType?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     selfieUrl?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
     reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip;
@@ -233,12 +255,14 @@ export type KycProfileScalarWhereWithAggregatesInput = {
     OR?: Prisma.KycProfileScalarWhereWithAggregatesInput[] | runtime.Types.Skip;
     NOT?: Prisma.KycProfileScalarWhereWithAggregatesInput | Prisma.KycProfileScalarWhereWithAggregatesInput[] | runtime.Types.Skip;
     id?: Prisma.StringWithAggregatesFilter<"KycProfile"> | string | runtime.Types.Skip;
-    userId?: Prisma.StringWithAggregatesFilter<"KycProfile"> | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusWithAggregatesFilter<"KycProfile"> | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringWithAggregatesFilter<"KycProfile"> | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeWithAggregatesFilter<"KycProfile"> | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringWithAggregatesFilter<"KycProfile"> | string | runtime.Types.Skip;
+    nationality?: Prisma.StringWithAggregatesFilter<"KycProfile"> | string | runtime.Types.Skip;
+    documentType?: Prisma.EnumDocumentTypeNullableWithAggregatesFilter<"KycProfile"> | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"KycProfile"> | string | null | runtime.Types.Skip;
@@ -249,12 +273,14 @@ export type KycProfileScalarWhereWithAggregatesInput = {
 };
 export type KycProfileCreateInput = {
     id?: string | runtime.Types.Skip;
-    userId: string;
     status?: $Enums.KycStatus | runtime.Types.Skip;
     fullName: string;
     dateOfBirth: Date | string;
-    alienIdNumber?: string | null | runtime.Types.Skip;
-    idDocumentUrl: string;
+    nationality: string;
+    documentType?: $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: string | null | runtime.Types.Skip;
+    idDocumentUrl?: string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: string | null | runtime.Types.Skip;
     selfieUrl?: string | null | runtime.Types.Skip;
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
@@ -265,12 +291,14 @@ export type KycProfileCreateInput = {
 };
 export type KycProfileUncheckedCreateInput = {
     id?: string | runtime.Types.Skip;
-    userId: string;
     status?: $Enums.KycStatus | runtime.Types.Skip;
     fullName: string;
     dateOfBirth: Date | string;
-    alienIdNumber?: string | null | runtime.Types.Skip;
-    idDocumentUrl: string;
+    nationality: string;
+    documentType?: $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: string | null | runtime.Types.Skip;
+    idDocumentUrl?: string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: string | null | runtime.Types.Skip;
     selfieUrl?: string | null | runtime.Types.Skip;
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
@@ -281,12 +309,14 @@ export type KycProfileUncheckedCreateInput = {
 };
 export type KycProfileUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    documentType?: Prisma.NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
@@ -297,12 +327,14 @@ export type KycProfileUpdateInput = {
 };
 export type KycProfileUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    documentType?: Prisma.NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
@@ -313,12 +345,14 @@ export type KycProfileUncheckedUpdateInput = {
 };
 export type KycProfileCreateManyInput = {
     id?: string | runtime.Types.Skip;
-    userId: string;
     status?: $Enums.KycStatus | runtime.Types.Skip;
     fullName: string;
     dateOfBirth: Date | string;
-    alienIdNumber?: string | null | runtime.Types.Skip;
-    idDocumentUrl: string;
+    nationality: string;
+    documentType?: $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: string | null | runtime.Types.Skip;
+    idDocumentUrl?: string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: string | null | runtime.Types.Skip;
     selfieUrl?: string | null | runtime.Types.Skip;
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
@@ -329,12 +363,14 @@ export type KycProfileCreateManyInput = {
 };
 export type KycProfileUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    documentType?: Prisma.NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
@@ -344,12 +380,14 @@ export type KycProfileUpdateManyMutationInput = {
 };
 export type KycProfileUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    documentType?: Prisma.NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
@@ -369,12 +407,14 @@ export type KycProfileOrderByRelevanceInput = {
 };
 export type KycProfileCountOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
-    userId?: Prisma.SortOrder | runtime.Types.Skip;
     status?: Prisma.SortOrder | runtime.Types.Skip;
     fullName?: Prisma.SortOrder | runtime.Types.Skip;
     dateOfBirth?: Prisma.SortOrder | runtime.Types.Skip;
-    alienIdNumber?: Prisma.SortOrder | runtime.Types.Skip;
+    nationality?: Prisma.SortOrder | runtime.Types.Skip;
+    documentType?: Prisma.SortOrder | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.SortOrder | runtime.Types.Skip;
     idDocumentUrl?: Prisma.SortOrder | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.SortOrder | runtime.Types.Skip;
     selfieUrl?: Prisma.SortOrder | runtime.Types.Skip;
     rejectionReason?: Prisma.SortOrder | runtime.Types.Skip;
     reviewedBy?: Prisma.SortOrder | runtime.Types.Skip;
@@ -385,12 +425,14 @@ export type KycProfileCountOrderByAggregateInput = {
 };
 export type KycProfileMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
-    userId?: Prisma.SortOrder | runtime.Types.Skip;
     status?: Prisma.SortOrder | runtime.Types.Skip;
     fullName?: Prisma.SortOrder | runtime.Types.Skip;
     dateOfBirth?: Prisma.SortOrder | runtime.Types.Skip;
-    alienIdNumber?: Prisma.SortOrder | runtime.Types.Skip;
+    nationality?: Prisma.SortOrder | runtime.Types.Skip;
+    documentType?: Prisma.SortOrder | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.SortOrder | runtime.Types.Skip;
     idDocumentUrl?: Prisma.SortOrder | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.SortOrder | runtime.Types.Skip;
     selfieUrl?: Prisma.SortOrder | runtime.Types.Skip;
     rejectionReason?: Prisma.SortOrder | runtime.Types.Skip;
     reviewedBy?: Prisma.SortOrder | runtime.Types.Skip;
@@ -401,12 +443,14 @@ export type KycProfileMaxOrderByAggregateInput = {
 };
 export type KycProfileMinOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
-    userId?: Prisma.SortOrder | runtime.Types.Skip;
     status?: Prisma.SortOrder | runtime.Types.Skip;
     fullName?: Prisma.SortOrder | runtime.Types.Skip;
     dateOfBirth?: Prisma.SortOrder | runtime.Types.Skip;
-    alienIdNumber?: Prisma.SortOrder | runtime.Types.Skip;
+    nationality?: Prisma.SortOrder | runtime.Types.Skip;
+    documentType?: Prisma.SortOrder | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.SortOrder | runtime.Types.Skip;
     idDocumentUrl?: Prisma.SortOrder | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.SortOrder | runtime.Types.Skip;
     selfieUrl?: Prisma.SortOrder | runtime.Types.Skip;
     rejectionReason?: Prisma.SortOrder | runtime.Types.Skip;
     reviewedBy?: Prisma.SortOrder | runtime.Types.Skip;
@@ -446,17 +490,22 @@ export type KycProfileUncheckedUpdateOneWithoutAccountNestedInput = {
 export type EnumKycStatusFieldUpdateOperationsInput = {
     set?: $Enums.KycStatus | runtime.Types.Skip;
 };
+export type NullableEnumDocumentTypeFieldUpdateOperationsInput = {
+    set?: $Enums.DocumentType | null | runtime.Types.Skip;
+};
 export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null | runtime.Types.Skip;
 };
 export type KycProfileCreateWithoutAccountInput = {
     id?: string | runtime.Types.Skip;
-    userId: string;
     status?: $Enums.KycStatus | runtime.Types.Skip;
     fullName: string;
     dateOfBirth: Date | string;
-    alienIdNumber?: string | null | runtime.Types.Skip;
-    idDocumentUrl: string;
+    nationality: string;
+    documentType?: $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: string | null | runtime.Types.Skip;
+    idDocumentUrl?: string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: string | null | runtime.Types.Skip;
     selfieUrl?: string | null | runtime.Types.Skip;
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
@@ -466,12 +515,14 @@ export type KycProfileCreateWithoutAccountInput = {
 };
 export type KycProfileUncheckedCreateWithoutAccountInput = {
     id?: string | runtime.Types.Skip;
-    userId: string;
     status?: $Enums.KycStatus | runtime.Types.Skip;
     fullName: string;
     dateOfBirth: Date | string;
-    alienIdNumber?: string | null | runtime.Types.Skip;
-    idDocumentUrl: string;
+    nationality: string;
+    documentType?: $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: string | null | runtime.Types.Skip;
+    idDocumentUrl?: string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: string | null | runtime.Types.Skip;
     selfieUrl?: string | null | runtime.Types.Skip;
     rejectionReason?: string | null | runtime.Types.Skip;
     reviewedBy?: string | null | runtime.Types.Skip;
@@ -494,12 +545,14 @@ export type KycProfileUpdateToOneWithWhereWithoutAccountInput = {
 };
 export type KycProfileUpdateWithoutAccountInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    documentType?: Prisma.NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
@@ -509,12 +562,14 @@ export type KycProfileUpdateWithoutAccountInput = {
 };
 export type KycProfileUncheckedUpdateWithoutAccountInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     status?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus | runtime.Types.Skip;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
-    alienIdNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
-    idDocumentUrl?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    nationality?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    documentType?: Prisma.NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null | runtime.Types.Skip;
+    idDocumentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    idDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
+    proofOfAddressUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     selfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
     reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip;
@@ -524,12 +579,14 @@ export type KycProfileUncheckedUpdateWithoutAccountInput = {
 };
 export type KycProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean | runtime.Types.Skip;
-    userId?: boolean | runtime.Types.Skip;
     status?: boolean | runtime.Types.Skip;
     fullName?: boolean | runtime.Types.Skip;
     dateOfBirth?: boolean | runtime.Types.Skip;
-    alienIdNumber?: boolean | runtime.Types.Skip;
+    nationality?: boolean | runtime.Types.Skip;
+    documentType?: boolean | runtime.Types.Skip;
+    idDocumentNumber?: boolean | runtime.Types.Skip;
     idDocumentUrl?: boolean | runtime.Types.Skip;
+    proofOfAddressUrl?: boolean | runtime.Types.Skip;
     selfieUrl?: boolean | runtime.Types.Skip;
     rejectionReason?: boolean | runtime.Types.Skip;
     reviewedBy?: boolean | runtime.Types.Skip;
@@ -541,12 +598,14 @@ export type KycProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 }, ExtArgs["result"]["kycProfile"]>;
 export type KycProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean | runtime.Types.Skip;
-    userId?: boolean | runtime.Types.Skip;
     status?: boolean | runtime.Types.Skip;
     fullName?: boolean | runtime.Types.Skip;
     dateOfBirth?: boolean | runtime.Types.Skip;
-    alienIdNumber?: boolean | runtime.Types.Skip;
+    nationality?: boolean | runtime.Types.Skip;
+    documentType?: boolean | runtime.Types.Skip;
+    idDocumentNumber?: boolean | runtime.Types.Skip;
     idDocumentUrl?: boolean | runtime.Types.Skip;
+    proofOfAddressUrl?: boolean | runtime.Types.Skip;
     selfieUrl?: boolean | runtime.Types.Skip;
     rejectionReason?: boolean | runtime.Types.Skip;
     reviewedBy?: boolean | runtime.Types.Skip;
@@ -558,12 +617,14 @@ export type KycProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 }, ExtArgs["result"]["kycProfile"]>;
 export type KycProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean | runtime.Types.Skip;
-    userId?: boolean | runtime.Types.Skip;
     status?: boolean | runtime.Types.Skip;
     fullName?: boolean | runtime.Types.Skip;
     dateOfBirth?: boolean | runtime.Types.Skip;
-    alienIdNumber?: boolean | runtime.Types.Skip;
+    nationality?: boolean | runtime.Types.Skip;
+    documentType?: boolean | runtime.Types.Skip;
+    idDocumentNumber?: boolean | runtime.Types.Skip;
     idDocumentUrl?: boolean | runtime.Types.Skip;
+    proofOfAddressUrl?: boolean | runtime.Types.Skip;
     selfieUrl?: boolean | runtime.Types.Skip;
     rejectionReason?: boolean | runtime.Types.Skip;
     reviewedBy?: boolean | runtime.Types.Skip;
@@ -575,12 +636,14 @@ export type KycProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 }, ExtArgs["result"]["kycProfile"]>;
 export type KycProfileSelectScalar = {
     id?: boolean | runtime.Types.Skip;
-    userId?: boolean | runtime.Types.Skip;
     status?: boolean | runtime.Types.Skip;
     fullName?: boolean | runtime.Types.Skip;
     dateOfBirth?: boolean | runtime.Types.Skip;
-    alienIdNumber?: boolean | runtime.Types.Skip;
+    nationality?: boolean | runtime.Types.Skip;
+    documentType?: boolean | runtime.Types.Skip;
+    idDocumentNumber?: boolean | runtime.Types.Skip;
     idDocumentUrl?: boolean | runtime.Types.Skip;
+    proofOfAddressUrl?: boolean | runtime.Types.Skip;
     selfieUrl?: boolean | runtime.Types.Skip;
     rejectionReason?: boolean | runtime.Types.Skip;
     reviewedBy?: boolean | runtime.Types.Skip;
@@ -589,7 +652,7 @@ export type KycProfileSelectScalar = {
     createdAt?: boolean | runtime.Types.Skip;
     updatedAt?: boolean | runtime.Types.Skip;
 };
-export type KycProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "status" | "fullName" | "dateOfBirth" | "alienIdNumber" | "idDocumentUrl" | "selfieUrl" | "rejectionReason" | "reviewedBy" | "verifiedAt" | "accountId" | "createdAt" | "updatedAt", ExtArgs["result"]["kycProfile"], runtime.Types.Skip>;
+export type KycProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "status" | "fullName" | "dateOfBirth" | "nationality" | "documentType" | "idDocumentNumber" | "idDocumentUrl" | "proofOfAddressUrl" | "selfieUrl" | "rejectionReason" | "reviewedBy" | "verifiedAt" | "accountId" | "createdAt" | "updatedAt", ExtArgs["result"]["kycProfile"], runtime.Types.Skip>;
 export type KycProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     account?: boolean | Prisma.AccountDefaultArgs<ExtArgs> | runtime.Types.Skip;
 };
@@ -606,12 +669,14 @@ export type $KycProfilePayload<ExtArgs extends runtime.Types.Extensions.Internal
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
-        userId: string;
         status: $Enums.KycStatus;
         fullName: string;
         dateOfBirth: Date;
-        alienIdNumber: string | null;
-        idDocumentUrl: string;
+        nationality: string;
+        documentType: $Enums.DocumentType | null;
+        idDocumentNumber: string | null;
+        idDocumentUrl: string | null;
+        proofOfAddressUrl: string | null;
         selfieUrl: string | null;
         rejectionReason: string | null;
         reviewedBy: string | null;
@@ -678,12 +743,14 @@ export interface Prisma__KycProfileClient<T, Null = never, ExtArgs extends runti
 }
 export interface KycProfileFieldRefs {
     readonly id: Prisma.FieldRef<"KycProfile", 'String'>;
-    readonly userId: Prisma.FieldRef<"KycProfile", 'String'>;
     readonly status: Prisma.FieldRef<"KycProfile", 'KycStatus'>;
     readonly fullName: Prisma.FieldRef<"KycProfile", 'String'>;
     readonly dateOfBirth: Prisma.FieldRef<"KycProfile", 'DateTime'>;
-    readonly alienIdNumber: Prisma.FieldRef<"KycProfile", 'String'>;
+    readonly nationality: Prisma.FieldRef<"KycProfile", 'String'>;
+    readonly documentType: Prisma.FieldRef<"KycProfile", 'DocumentType'>;
+    readonly idDocumentNumber: Prisma.FieldRef<"KycProfile", 'String'>;
     readonly idDocumentUrl: Prisma.FieldRef<"KycProfile", 'String'>;
+    readonly proofOfAddressUrl: Prisma.FieldRef<"KycProfile", 'String'>;
     readonly selfieUrl: Prisma.FieldRef<"KycProfile", 'String'>;
     readonly rejectionReason: Prisma.FieldRef<"KycProfile", 'String'>;
     readonly reviewedBy: Prisma.FieldRef<"KycProfile", 'String'>;

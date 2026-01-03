@@ -19,6 +19,17 @@ export const KycStatus = {
 export type KycStatus = (typeof KycStatus)[keyof typeof KycStatus]
 
 
+export const DocumentType = {
+  NATIONAL_ID: 'NATIONAL_ID',
+  PASSPORT: 'PASSPORT',
+  DRIVERS_LICENSE: 'DRIVERS_LICENSE',
+  SELFIE: 'SELFIE',
+  PROOF_OF_ADDRESS: 'PROOF_OF_ADDRESS'
+} as const
+
+export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
+
+
 export const ProductCondition = {
   MINT: 'MINT',
   EXCELLENT: 'EXCELLENT',
@@ -28,3 +39,13 @@ export const ProductCondition = {
 } as const
 
 export type ProductCondition = (typeof ProductCondition)[keyof typeof ProductCondition]
+
+
+export const AuctionStatus = {
+  ACTIVE: 'ACTIVE',
+  ENDED: 'ENDED',
+  CANCELLED: 'CANCELLED',
+  WINNER_DETERMINED: 'WINNER_DETERMINED'
+} as const
+
+export type AuctionStatus = (typeof AuctionStatus)[keyof typeof AuctionStatus]

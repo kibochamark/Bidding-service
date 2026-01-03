@@ -39,6 +39,10 @@ let KycService = KycService_1 = class KycService {
         this.logger.log(`Deleting KYC profile: ${id}`);
         return await this.kycRepository.deleteKyc(id);
     }
+    async uploadKycDocument(accountId, documentType, documentUrl, documentIdNumber) {
+        this.logger.log(`Uploading KYC document for account: ${accountId}, type: ${documentType}`);
+        return await this.kycRepository.uploadKycDocument(accountId, documentType, documentUrl, documentIdNumber);
+    }
 };
 exports.KycService = KycService;
 exports.KycService = KycService = KycService_1 = __decorate([

@@ -2,6 +2,7 @@ import { AddressService } from '../../../src/Domains/Accounts/address.service';
 import { AddressParamDto, CreateAddressDto, UpdateAddressDto } from './dto';
 export declare class AddressController {
     private addressService;
+    private readonly logger;
     constructor(addressService: AddressService);
     getAddressesByAccountId(accountId: string): Promise<{
         accountId: string;

@@ -24,21 +24,23 @@ model Account {
 }
 
 model KycProfile {
-  id              String    @id @default(uuid())
-  userId          String    @unique
-  status          KycStatus @default(PENDING)
-  fullName        String
-  dateOfBirth     DateTime
-  alienIdNumber   String?
-  idDocumentUrl   String
-  selfieUrl       String?
-  rejectionReason String?
-  reviewedBy      String?
-  verifiedAt      DateTime?
-  accountId       String    @unique
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  account         Account   @relation(fields: [accountId], references: [kindeId])
+  id                String       @id @default(uuid())
+  status            KycStatus    @default(PENDING)
+  fullName          String
+  dateOfBirth       DateTime
+  nationality       String
+  documentType      DocumentType?
+  idDocumentNumber  String?       @unique
+  idDocumentUrl     String?
+  proofOfAddressUrl String?
+  selfieUrl         String?
+  rejectionReason   String?
+  reviewedBy        String?
+  verifiedAt        DateTime?
+  accountId         String       @unique
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  account           Account      @relation(fields: [accountId], references: [kindeId])
 }
 
 model SellerDetails {
@@ -113,6 +115,7 @@ model Product {
   updatedAt      DateTime                 @updatedAt
   search_vector  Unsupported("tsvector")?
   category       Category                 @relation(fields: [categoryId], references: [id])
+  auctions       Auction[]
 
   @@index([categoryId, isActive, endDate(sort: Desc)])
   @@index([sellerId, isActive])
@@ -125,11 +128,60 @@ model Product {
   @@index([search_vector], type: Gin)
 }
 
+model Auction {
+  id               String        @id @default(uuid())
+  productId        String
+  title            String
+  description      String
+  prizeValue       Decimal       @db.Decimal(10, 2)
+  entryFee         Decimal       @db.Decimal(10, 2)
+  startDate        DateTime      @default(now())
+  endDate          DateTime
+  status           AuctionStatus @default(ACTIVE)
+  winnerId         String?
+  winningBidAmount Decimal?      @db.Decimal(10, 2)
+  totalBidsCount   Int           @default(0)
+  totalRevenue     Decimal       @default(0.0) @db.Decimal(10, 2)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  product          Product       @relation(fields: [productId], references: [id])
+  bids             Bid[]
+
+  @@index([status, endDate])
+  @@index([productId])
+  @@index([winnerId])
+}
+
+model Bid {
+  id          String   @id @default(uuid())
+  auctionId   String
+  bidderId    String
+  bidderName  String
+  bidAmount   Decimal  @db.Decimal(10, 2)
+  isUnique    Boolean  @default(true)
+  isWinning   Boolean  @default(false)
+  placedAt    DateTime @default(now())
+  auction     Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@unique([auctionId, bidderId])
+  @@index([auctionId, bidAmount])
+  @@index([auctionId, isUnique, bidAmount])
+  @@index([bidderId])
+}
+
 enum KycStatus {
   PENDING
   VERIFIED
   REJECTED
   NEEDS_MORE_INFO
+}
+
+enum DocumentType {
+  NATIONAL_ID
+  PASSPORT
+  DRIVERS_LICENSE
+  SELFIE
+  PROOF_OF_ADDRESS
 }
 
 enum ProductCondition {
@@ -138,4 +190,11 @@ enum ProductCondition {
   GOOD
   FAIR
   NEW
+}
+
+enum AuctionStatus {
+  ACTIVE
+  ENDED
+  CANCELLED
+  WINNER_DETERMINED
 }

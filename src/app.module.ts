@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AccountModule } from './Domains/Accounts/account.module';
 import { ProductModule } from './Domains/Products/product.module';
+import { BiddingModule } from './Domains/Bidding/bidding.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { S3moduleModule } from './Domains/s3module/s3module.module';
 
 
 @Module({
@@ -12,7 +14,9 @@ import { ConfigModule } from '@nestjs/config';
     }),
     AccountModule,
     ProductModule,
+    BiddingModule,
     PrismaModule,
+    S3moduleModule,
   ],
 })
 export class AppModule {}

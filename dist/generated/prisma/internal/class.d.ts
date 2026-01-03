@@ -46,5 +46,11 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get product(): Prisma.ProductDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get auction(): Prisma.AuctionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get bid(): Prisma.BidDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

@@ -11,14 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var AddressController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddressController = void 0;
 const common_1 = require("@nestjs/common");
 const address_service_1 = require("../../../src/Domains/Accounts/address.service");
 const dto_1 = require("./dto");
-let AddressController = class AddressController {
+let AddressController = AddressController_1 = class AddressController {
     constructor(addressService) {
         this.addressService = addressService;
+        this.logger = new common_1.Logger(AddressController_1.name);
     }
     async getAddressesByAccountId(accountId) {
         return await this.addressService.getAddressesByAccountId(accountId);
@@ -27,6 +29,7 @@ let AddressController = class AddressController {
         return await this.addressService.getAddressById(params.id);
     }
     async createAddress(createAddressDto) {
+        this.logger.log(`Creating address for account ID: ${createAddressDto.accountId}`);
         return await this.addressService.createAddress(createAddressDto);
     }
     async updateAddress(params, updateAddressDto) {
@@ -74,7 +77,7 @@ __decorate([
     __metadata("design:paramtypes", [dto_1.AddressParamDto]),
     __metadata("design:returntype", Promise)
 ], AddressController.prototype, "deleteAddress", null);
-exports.AddressController = AddressController = __decorate([
+exports.AddressController = AddressController = AddressController_1 = __decorate([
     (0, common_1.Controller)('addresses'),
     __metadata("design:paramtypes", [address_service_1.AddressService])
 ], AddressController);

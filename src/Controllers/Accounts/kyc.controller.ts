@@ -7,10 +7,13 @@ import {
     Patch,
     Post,
     Query,
+    UploadedFiles,
+    UseInterceptors,
 } from '@nestjs/common';
 import { KycService } from '../../../src/Domains/Accounts/kyc.service';
 import { KycParamDto, SubmitKycDto, UpdateKycStatusDto } from './dto';
 import { KycStatus } from '../../../generated/prisma/enums';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('kyc')
 export class KycController {
@@ -49,8 +52,9 @@ export class KycController {
      * TODO: Add @UseGuards(KindeAuthGuard)
      * TODO: Extract accountId from @CurrentUser() instead of body
      */
+   
     @Post()
-    async submitKyc(@Body() submitKycDto: SubmitKycDto) {
+    async submitKyc( @Body() submitKycDto: SubmitKycDto) {
         return await this.kycService.submitKyc(submitKycDto);
     }
 

@@ -47,3 +47,13 @@ export type Category = Prisma.CategoryModel
  * 
  */
 export type Product = Prisma.ProductModel
+/**
+ * Model Auction
+ * 
+ */
+export type Auction = Prisma.AuctionModel
+/**
+ * Model Bid
+ * 
+ */
+export type Bid = Prisma.BidModel

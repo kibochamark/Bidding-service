@@ -164,6 +164,8 @@ export declare const ModelName: {
     readonly Address: "Address";
     readonly Category: "Category";
     readonly Product: "Product";
+    readonly Auction: "Auction";
+    readonly Bid: "Bid";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -176,7 +178,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "account" | "kycProfile" | "sellerDetails" | "address" | "category" | "product";
+        modelProps: "account" | "kycProfile" | "sellerDetails" | "address" | "category" | "product" | "auction" | "bid";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -624,6 +626,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        Auction: {
+            payload: Prisma.$AuctionPayload<ExtArgs>;
+            fields: Prisma.AuctionFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.AuctionFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.AuctionFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>;
+                };
+                findFirst: {
+                    args: Prisma.AuctionFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.AuctionFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>;
+                };
+                findMany: {
+                    args: Prisma.AuctionFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>[];
+                };
+                create: {
+                    args: Prisma.AuctionCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>;
+                };
+                createMany: {
+                    args: Prisma.AuctionCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.AuctionCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>[];
+                };
+                delete: {
+                    args: Prisma.AuctionDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>;
+                };
+                update: {
+                    args: Prisma.AuctionUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.AuctionDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.AuctionUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.AuctionUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>[];
+                };
+                upsert: {
+                    args: Prisma.AuctionUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AuctionPayload>;
+                };
+                aggregate: {
+                    args: Prisma.AuctionAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateAuction>;
+                };
+                groupBy: {
+                    args: Prisma.AuctionGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AuctionGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.AuctionCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AuctionCountAggregateOutputType> | number;
+                };
+            };
+        };
+        Bid: {
+            payload: Prisma.$BidPayload<ExtArgs>;
+            fields: Prisma.BidFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.BidFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.BidFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>;
+                };
+                findFirst: {
+                    args: Prisma.BidFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.BidFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>;
+                };
+                findMany: {
+                    args: Prisma.BidFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>[];
+                };
+                create: {
+                    args: Prisma.BidCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>;
+                };
+                createMany: {
+                    args: Prisma.BidCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.BidCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>[];
+                };
+                delete: {
+                    args: Prisma.BidDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>;
+                };
+                update: {
+                    args: Prisma.BidUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.BidDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.BidUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.BidUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>[];
+                };
+                upsert: {
+                    args: Prisma.BidUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$BidPayload>;
+                };
+                aggregate: {
+                    args: Prisma.BidAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateBid>;
+                };
+                groupBy: {
+                    args: Prisma.BidGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.BidGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.BidCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.BidCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -672,12 +822,14 @@ export declare const RelationLoadStrategy: {
 export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy];
 export declare const KycProfileScalarFieldEnum: {
     readonly id: "id";
-    readonly userId: "userId";
     readonly status: "status";
     readonly fullName: "fullName";
     readonly dateOfBirth: "dateOfBirth";
-    readonly alienIdNumber: "alienIdNumber";
+    readonly nationality: "nationality";
+    readonly documentType: "documentType";
+    readonly idDocumentNumber: "idDocumentNumber";
     readonly idDocumentUrl: "idDocumentUrl";
+    readonly proofOfAddressUrl: "proofOfAddressUrl";
     readonly selfieUrl: "selfieUrl";
     readonly rejectionReason: "rejectionReason";
     readonly reviewedBy: "reviewedBy";
@@ -751,6 +903,35 @@ export declare const ProductScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum];
+export declare const AuctionScalarFieldEnum: {
+    readonly id: "id";
+    readonly productId: "productId";
+    readonly title: "title";
+    readonly description: "description";
+    readonly prizeValue: "prizeValue";
+    readonly entryFee: "entryFee";
+    readonly startDate: "startDate";
+    readonly endDate: "endDate";
+    readonly status: "status";
+    readonly winnerId: "winnerId";
+    readonly winningBidAmount: "winningBidAmount";
+    readonly totalBidsCount: "totalBidsCount";
+    readonly totalRevenue: "totalRevenue";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AuctionScalarFieldEnum = (typeof AuctionScalarFieldEnum)[keyof typeof AuctionScalarFieldEnum];
+export declare const BidScalarFieldEnum: {
+    readonly id: "id";
+    readonly auctionId: "auctionId";
+    readonly bidderId: "bidderId";
+    readonly bidderName: "bidderName";
+    readonly bidAmount: "bidAmount";
+    readonly isUnique: "isUnique";
+    readonly isWinning: "isWinning";
+    readonly placedAt: "placedAt";
+};
+export type BidScalarFieldEnum = (typeof BidScalarFieldEnum)[keyof typeof BidScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -780,10 +961,11 @@ export declare const AccountOrderByRelevanceFieldEnum: {
 export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum];
 export declare const KycProfileOrderByRelevanceFieldEnum: {
     readonly id: "id";
-    readonly userId: "userId";
     readonly fullName: "fullName";
-    readonly alienIdNumber: "alienIdNumber";
+    readonly nationality: "nationality";
+    readonly idDocumentNumber: "idDocumentNumber";
     readonly idDocumentUrl: "idDocumentUrl";
+    readonly proofOfAddressUrl: "proofOfAddressUrl";
     readonly selfieUrl: "selfieUrl";
     readonly rejectionReason: "rejectionReason";
     readonly reviewedBy: "reviewedBy";
@@ -835,12 +1017,29 @@ export declare const ProductOrderByRelevanceFieldEnum: {
     readonly sellerName: "sellerName";
 };
 export type ProductOrderByRelevanceFieldEnum = (typeof ProductOrderByRelevanceFieldEnum)[keyof typeof ProductOrderByRelevanceFieldEnum];
+export declare const AuctionOrderByRelevanceFieldEnum: {
+    readonly id: "id";
+    readonly productId: "productId";
+    readonly title: "title";
+    readonly description: "description";
+    readonly winnerId: "winnerId";
+};
+export type AuctionOrderByRelevanceFieldEnum = (typeof AuctionOrderByRelevanceFieldEnum)[keyof typeof AuctionOrderByRelevanceFieldEnum];
+export declare const BidOrderByRelevanceFieldEnum: {
+    readonly id: "id";
+    readonly auctionId: "auctionId";
+    readonly bidderId: "bidderId";
+    readonly bidderName: "bidderName";
+};
+export type BidOrderByRelevanceFieldEnum = (typeof BidOrderByRelevanceFieldEnum)[keyof typeof BidOrderByRelevanceFieldEnum];
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 export type EnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus'>;
 export type ListEnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus[]'>;
+export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType'>;
+export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>;
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
@@ -850,6 +1049,8 @@ export type EnumProductConditionFieldRefInput<$PrismaModel> = FieldRefInputType<
 export type ListEnumProductConditionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductCondition[]'>;
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
+export type EnumAuctionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuctionStatus'>;
+export type ListEnumAuctionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuctionStatus[]'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type BatchPayload = {
@@ -881,6 +1082,8 @@ export type GlobalOmitConfig = {
     address?: Prisma.AddressOmit;
     category?: Prisma.CategoryOmit;
     product?: Prisma.ProductOmit;
+    auction?: Prisma.AuctionOmit;
+    bid?: Prisma.BidOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

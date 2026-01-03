@@ -12,3 +12,5 @@ export type SellerDetails = Prisma.SellerDetailsModel;
 export type Address = Prisma.AddressModel;
 export type Category = Prisma.CategoryModel;
 export type Product = Prisma.ProductModel;
+export type Auction = Prisma.AuctionModel;
+export type Bid = Prisma.BidModel;

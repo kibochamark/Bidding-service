@@ -56,4 +56,11 @@ export class KycService {
         this.logger.log(`Deleting KYC profile: ${id}`);
         return await this.kycRepository.deleteKyc(id);
     }
+
+
+    // upload kyc document
+    async uploadKycDocument(accountId: string, documentType: "NATIONAL_ID" | "PASSPORT" | "DRIVER_LICENSE" | "PROOF_OF_ADDRESS" | "SELFIE", documentUrl: string, documentIdNumber?: string) {
+        this.logger.log(`Uploading KYC document for account: ${accountId}, type: ${documentType}`);
+        return await this.kycRepository.uploadKycDocument(accountId, documentType, documentUrl, documentIdNumber);
+    }
 }

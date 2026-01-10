@@ -37,7 +37,8 @@ export class CreateProductDto {
 
     @IsArray()
     @IsString({ each: true })
-    images: string[];
+    @IsOptional()
+    images?: string[];
 
     @IsNotEmpty()
     @IsNumber()

@@ -19,10 +19,12 @@ const platform_express_1 = require("@nestjs/platform-express");
 const s3module_service_1 = require("../../Domains/s3module/s3module.service");
 const kyc_dto_1 = require("./dto/kyc.dto");
 const kyc_service_1 = require("../../Domains/Accounts/kyc.service");
+const product_service_1 = require("../../Domains/Products/product.service");
 let UploadController = UploadController_1 = class UploadController {
-    constructor(s3Service, kycservice) {
+    constructor(s3Service, kycservice, productServive) {
         this.s3Service = s3Service;
         this.kycservice = kycservice;
+        this.productServive = productServive;
         this.logger = new common_1.Logger(UploadController_1.name);
     }
     async uploadKycDocument(file, body) {
@@ -68,7 +70,7 @@ let UploadController = UploadController_1 = class UploadController {
             throw new common_1.BadRequestException('Failed to upload file');
         }
     }
-    async uploadProductImages(files) {
+    async uploadProductImages(files, params) {
         if (!files || files.length === 0) {
             throw new common_1.BadRequestException('No files uploaded');
         }
@@ -83,8 +85,10 @@ let UploadController = UploadController_1 = class UploadController {
                 throw new common_1.BadRequestException(`File ${file.originalname} exceeds 2MB size limit`);
             }
         }
+        let results;
         try {
-            const results = await this.s3Service.uploadMultipleFiles(files, 'product-images');
+            results = await this.s3Service.uploadMultipleFiles(files, 'product-images');
+            await this.productServive.updateProduct(params.id, { images: results.map(r => r.secure_url) });
             return {
                 success: true,
                 count: results.length,
@@ -100,6 +104,12 @@ let UploadController = UploadController_1 = class UploadController {
         }
         catch (error) {
             this.logger.error('Upload failed:', error);
+            if (results.length > 0) {
+                results.map(async (resource) => {
+                    return await this.s3Service.deleteFile(resource.public_id);
+                });
+            }
+            throw new common_1.BadRequestException('Failed to upload file');
             throw new common_1.BadRequestException('Failed to upload product images');
         }
     }
@@ -115,15 +125,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UploadController.prototype, "uploadKycDocument", null);
 __decorate([
-    (0, common_1.Post)('product-images'),
+    (0, common_1.Post)('product-images/:id'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files', 10)),
     __param(0, (0, common_1.UploadedFiles)()),
+    __param(1, (0, common_1.Param)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array]),
+    __metadata("design:paramtypes", [Array, Object]),
     __metadata("design:returntype", Promise)
 ], UploadController.prototype, "uploadProductImages", null);
 exports.UploadController = UploadController = UploadController_1 = __decorate([
     (0, common_1.Controller)('upload'),
-    __metadata("design:paramtypes", [s3module_service_1.S3moduleService, kyc_service_1.KycService])
+    __metadata("design:paramtypes", [s3module_service_1.S3moduleService, kyc_service_1.KycService, product_service_1.ProductService])
 ], UploadController);
 //# sourceMappingURL=upload.controller.js.map

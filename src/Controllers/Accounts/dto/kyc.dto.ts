@@ -91,7 +91,7 @@ export class UpdateKycStatusDto {
  */
 export class KycParamDto {
     @IsNotEmpty()
-    @IsUUID()
+    @IsString()
     id: string;
 }
 

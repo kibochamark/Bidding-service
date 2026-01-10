@@ -10,7 +10,9 @@ exports.KycStatus = {
 exports.DocumentType = {
     NATIONAL_ID: 'NATIONAL_ID',
     PASSPORT: 'PASSPORT',
-    DRIVERS_LICENSE: 'DRIVERS_LICENSE'
+    DRIVERS_LICENSE: 'DRIVERS_LICENSE',
+    SELFIE: 'SELFIE',
+    PROOF_OF_ADDRESS: 'PROOF_OF_ADDRESS'
 };
 exports.ProductCondition = {
     MINT: 'MINT',

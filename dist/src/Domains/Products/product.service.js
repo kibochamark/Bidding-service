@@ -70,6 +70,12 @@ let ProductService = ProductService_1 = class ProductService {
         this.logger.log(`Found ${products.length} newest products`);
         return products;
     }
+    async getAllProducts(page, limit) {
+        this.logger.log(`Fetching all products (page: ${page}, limit: ${limit})`);
+        const result = await this.productRepository.findAllProducts(page, limit);
+        this.logger.log(`Found ${result.data.length} products (total: ${result.pagination.total})`);
+        return result;
+    }
 };
 exports.ProductService = ProductService;
 exports.ProductService = ProductService = ProductService_1 = __decorate([

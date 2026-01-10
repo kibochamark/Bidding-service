@@ -20,20 +20,17 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
     }
     async createProduct(data) {
         this.logger.log(`Creating product: ${data.title}`);
+        let query_data = {
+            ...data,
+            endDate: new Date(data.endDate),
+            currentBid: data.startingPrice
+        };
+        if (data.images) {
+            query_data["images"] = data.images;
+        }
         return await this.prisma.product.create({
             data: {
-                title: data.title,
-                description: data.description,
-                categoryId: data.categoryId,
-                condition: data.condition,
-                images: data.images,
-                startingPrice: data.startingPrice,
-                currentBid: data.startingPrice,
-                reservePrice: data.reservePrice,
-                buyNowPrice: data.buyNowPrice,
-                endDate: new Date(data.endDate),
-                sellerId: data.sellerId,
-                sellerName: data.sellerName,
+                ...query_data,
                 specifications: data.specifications,
             },
             include: {
@@ -59,15 +56,7 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
         return await this.prisma.product.update({
             where: { id },
             data: {
-                title: data.title,
-                description: data.description,
-                condition: data.condition,
-                images: data.images,
-                reservePrice: data.reservePrice,
-                buyNowPrice: data.buyNowPrice,
-                endDate: data.endDate ? new Date(data.endDate) : undefined,
-                specifications: data.specifications,
-                isActive: data.isActive,
+                ...data
             },
             include: {
                 category: true,
@@ -332,6 +321,50 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
                 category: true,
             },
         });
+    }
+    async findAllProducts(page = '1', limit = '20') {
+        const pageNumber = Math.max(1, parseInt(page) || 1);
+        const limitNumber = limit === 'All' ? 'All' : parseInt(limit) || 20;
+        let skip = 0;
+        if (limitNumber !== 'All') {
+            skip = (pageNumber - 1) * limitNumber;
+        }
+        this.logger.log(`findAllProducts called with page=${page} (normalized to ${pageNumber}), limit=${limit}, calculated skip=${skip}`);
+        const query = {
+            where: {
+                isActive: true,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+            skip: Math.abs(skip),
+            include: {
+                category: true,
+            },
+        };
+        if (limitNumber !== 'All') {
+            query.take = limitNumber;
+        }
+        this.logger.log(`Query object: ${JSON.stringify(query, null, 2)}`);
+        const [products, total] = await Promise.all([
+            this.prisma.product.findMany({ ...query }),
+            this.prisma.product.count({
+                where: {
+                    isActive: true,
+                },
+            }),
+        ]);
+        const totalPages = limitNumber === 'All' ? 1 : Math.ceil(total / limitNumber);
+        return {
+            data: products,
+            pagination: {
+                total,
+                page: pageNumber,
+                limit: limitNumber === 'All' ? total : limitNumber,
+                totalPages,
+                hasMore: pageNumber < totalPages,
+            },
+        };
     }
 };
 exports.ProductRepository = ProductRepository;

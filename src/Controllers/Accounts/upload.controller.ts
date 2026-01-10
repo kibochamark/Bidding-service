@@ -7,17 +7,19 @@ import {
     BadRequestException,
     Logger,
     Body,
+    Param,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { S3moduleService } from '../../Domains/s3module/s3module.service';
 import { KycDocumentDto } from './dto/kyc.dto';
 import { KycService } from 'src/Domains/Accounts/kyc.service';
+import { ProductService } from 'src/Domains/Products/product.service';
 
 @Controller('upload')
 export class UploadController {
     private readonly logger = new Logger(UploadController.name);
 
-    constructor(private s3Service: S3moduleService, private kycservice: KycService) {}
+    constructor(private s3Service: S3moduleService, private kycservice: KycService, private productServive: ProductService) {}
 
     /**
      * Upload a single KYC document (ID card, passport, etc.)
@@ -91,9 +93,9 @@ export class UploadController {
      * Max files: 10
      * Max file size per image: 2MB
      */
-    @Post('product-images')
+    @Post('product-images/:id')
     @UseInterceptors(FilesInterceptor('files', 10))
-    async uploadProductImages(@UploadedFiles() files: Express.Multer.File[]) {
+    async uploadProductImages(@UploadedFiles() files: Express.Multer.File[], @Param() params:{id:string} ) {
         if (!files || files.length === 0) {
             throw new BadRequestException('No files uploaded');
         }
@@ -116,9 +118,13 @@ export class UploadController {
                 );
             }
         }
+        let results
 
         try {
-            const results = await this.s3Service.uploadMultipleFiles(files, 'product-images');
+            results = await this.s3Service.uploadMultipleFiles(files, 'product-images');
+
+            // update the product with the uploaded images
+            await this.productServive.updateProduct(params.id, {images:results.map(r => r.secure_url)})
 
             return {
                 success: true,
@@ -134,6 +140,15 @@ export class UploadController {
             };
         } catch (error) {
             this.logger.error('Upload failed:', error);
+            // delete the file uploaded to s3
+            // delete the uploaded file from Cloudinary if needed
+            if (results.length > 0) {
+                results.map(async (resource)=>{
+                    return await this.s3Service.deleteFile(resource.public_id)
+                })
+                
+            }
+            throw new BadRequestException('Failed to upload file');
             throw new BadRequestException('Failed to upload product images');
         }
     }

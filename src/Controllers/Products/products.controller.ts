@@ -41,6 +41,14 @@ export class ProductsController {
         return await this.productService.createProduct(dto);
     }
 
+    @Get()
+    async getAllProducts(
+        @Query('page') page?: string,
+        @Query('limit') limit?: string,
+    ) {
+        return await this.productService.getAllProducts(page, limit);
+    }
+
     /**
      * GET /products/search
      * Search products with filters and pagination

@@ -8,6 +8,7 @@ import { PrismaService } from '../../../src/prisma/prisma.service';
 import { SubmitKycDto, UpdateKycStatusDto } from '../../../src/Controllers/Accounts/dto';
 import { KycStatus } from '../../../generated/prisma/enums';
 import { S3moduleService } from '../s3module/s3module.service';
+import { stat } from 'fs';
 
 @Injectable()
 export class KycRepository {
@@ -78,9 +79,18 @@ export class KycRepository {
      * Get all KYC submissions (for admin)
      */
     async findAllKyc(status?: KycStatus) {
+        let query ={
+            
+        }
+        if(status){
+            where:status
+        }
+        
         this.logger.log(`Fetching all KYC profiles with status: ${status || 'any'}`);
         return await this.prisma.kycProfile.findMany({
-            where: status ? { status } : undefined,
+            where:{
+                ...query
+            },
             include: {
                 account: {
                     select: {

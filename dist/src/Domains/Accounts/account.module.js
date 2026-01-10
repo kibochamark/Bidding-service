@@ -19,12 +19,13 @@ const address_controller_1 = require("../../../src/Controllers/Accounts/address.
 const kyc_controller_1 = require("../../../src/Controllers/Accounts/kyc.controller");
 const upload_controller_1 = require("../../../src/Controllers/Accounts/upload.controller");
 const s3module_module_1 = require("../s3module/s3module.module");
+const product_module_1 = require("../Products/product.module");
 let AccountModule = class AccountModule {
 };
 exports.AccountModule = AccountModule;
 exports.AccountModule = AccountModule = __decorate([
     (0, common_1.Module)({
-        imports: [s3module_module_1.S3moduleModule],
+        imports: [s3module_module_1.S3moduleModule, product_module_1.ProductModule],
         controllers: [accounts_controller_js_1.AccountsController, address_controller_1.AddressController, kyc_controller_1.KycController, upload_controller_1.UploadController],
         providers: [
             accounts_service_1.AccountsService,

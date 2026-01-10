@@ -47,6 +47,11 @@ export class KycController {
         return await this.kycService.getKycById(params.id);
     }
 
+    @Get('status/:id')
+    async getKycStatusById(@Param() params: KycParamDto) {
+        return await this.kycService.getKycByAccountId(params.id);
+    }
+
     /**
      * Submit KYC documents for verification
      * TODO: Add @UseGuards(KindeAuthGuard)

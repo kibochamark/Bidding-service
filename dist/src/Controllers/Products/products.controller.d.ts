@@ -38,6 +38,7 @@ export declare class ProductsController {
         reviewCount: number;
         specifications: import("@prisma/client/runtime/client").JsonValue;
     }>;
+    getAllProducts(page?: string, limit?: string): Promise<import("../../Domains/Products/product.repository").PaginatedResponse<any>>;
     searchProducts(filters: SearchProductsDto): Promise<import("../../Domains/Products/product.repository").PaginatedResponse<any>>;
     getEndingSoon(limit?: string): Promise<({
         category: {

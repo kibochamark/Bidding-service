@@ -30,6 +30,9 @@ let KycController = class KycController {
     async getKycById(params) {
         return await this.kycService.getKycById(params.id);
     }
+    async getKycStatusById(params) {
+        return await this.kycService.getKycByAccountId(params.id);
+    }
     async submitKyc(submitKycDto) {
         return await this.kycService.submitKyc(submitKycDto);
     }
@@ -62,6 +65,13 @@ __decorate([
     __metadata("design:paramtypes", [dto_1.KycParamDto]),
     __metadata("design:returntype", Promise)
 ], KycController.prototype, "getKycById", null);
+__decorate([
+    (0, common_1.Get)('status/:id'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.KycParamDto]),
+    __metadata("design:returntype", Promise)
+], KycController.prototype, "getKycStatusById", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),

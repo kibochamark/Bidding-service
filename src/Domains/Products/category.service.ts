@@ -11,13 +11,17 @@ export class CategoryService {
     async createCategory(data: CreateCategoryDto) {
         this.logger.log(`Creating category: ${data.name}`);
 
+        let query_data ={
+            ...data
+        }
+
+        if(data.parentId){
+            query_data["parentId"]=data.parentId
+        }
+
         return await this.prisma.category.create({
             data: {
-                slug: data.slug,
-                name: data.name,
-                description: data.description,
-                icon: data.icon,
-                parentId: data.parentId,
+                ...query_data
             },
             include: {
                 parent: true,

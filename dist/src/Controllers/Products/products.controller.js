@@ -23,6 +23,9 @@ let ProductsController = class ProductsController {
     async createProduct(dto) {
         return await this.productService.createProduct(dto);
     }
+    async getAllProducts(page, limit) {
+        return await this.productService.getAllProducts(page, limit);
+    }
     async searchProducts(filters) {
         return await this.productService.searchProducts(filters);
     }
@@ -56,6 +59,14 @@ __decorate([
     __metadata("design:paramtypes", [dto_1.CreateProductDto]),
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "createProduct", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], ProductsController.prototype, "getAllProducts", null);
 __decorate([
     (0, common_1.Get)('search'),
     __param(0, (0, common_1.Query)()),

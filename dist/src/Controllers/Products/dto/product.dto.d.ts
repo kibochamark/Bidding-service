@@ -4,7 +4,7 @@ export declare class CreateProductDto {
     description: string;
     categoryId: string;
     condition: ProductCondition;
-    images: string[];
+    images?: string[];
     startingPrice: number;
     reservePrice?: number;
     buyNowPrice?: number;

@@ -10,9 +10,10 @@ import { AddressController } from '../../../src/Controllers/Accounts/address.con
 import { KycController } from '../../../src/Controllers/Accounts/kyc.controller';
 import { UploadController } from '../../../src/Controllers/Accounts/upload.controller';
 import { S3moduleModule } from '../s3module/s3module.module';
+import { ProductModule } from '../Products/product.module';
 
 @Module({
-  imports: [S3moduleModule],
+  imports: [S3moduleModule, ProductModule],
   controllers: [AccountsController, AddressController, KycController, UploadController],
   providers: [
     AccountsService,

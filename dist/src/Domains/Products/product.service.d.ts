@@ -206,4 +206,5 @@ export declare class ProductService {
         reviewCount: number;
         specifications: import("@prisma/client/runtime/client").JsonValue;
     })[]>;
+    getAllProducts(page?: string, limit?: string): Promise<import("./product.repository").PaginatedResponse<any>>;
 }

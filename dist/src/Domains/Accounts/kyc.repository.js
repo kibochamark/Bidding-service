@@ -66,9 +66,15 @@ let KycRepository = KycRepository_1 = class KycRepository {
         return kyc;
     }
     async findAllKyc(status) {
+        let query = {};
+        if (status) {
+            where: status;
+        }
         this.logger.log(`Fetching all KYC profiles with status: ${status || 'any'}`);
         return await this.prisma.kycProfile.findMany({
-            where: status ? { status } : undefined,
+            where: {
+                ...query
+            },
             include: {
                 account: {
                     select: {

@@ -9,6 +9,8 @@ export declare const DocumentType: {
     readonly NATIONAL_ID: "NATIONAL_ID";
     readonly PASSPORT: "PASSPORT";
     readonly DRIVERS_LICENSE: "DRIVERS_LICENSE";
+    readonly SELFIE: "SELFIE";
+    readonly PROOF_OF_ADDRESS: "PROOF_OF_ADDRESS";
 };
 export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType];
 export declare const ProductCondition: {

@@ -85,7 +85,7 @@ export declare class ProductRepository {
         reviewCount: number;
         specifications: import("@prisma/client/runtime/client").JsonValue;
     }>;
-    updateProduct(id: string, data: UpdateProductDto): Promise<{
+    updateProduct(id: string, data: Partial<UpdateProductDto>): Promise<{
         category: {
             id: string;
             createdAt: Date;
@@ -218,4 +218,5 @@ export declare class ProductRepository {
         reviewCount: number;
         specifications: import("@prisma/client/runtime/client").JsonValue;
     })[]>;
+    findAllProducts(page?: string, limit?: string): Promise<PaginatedResponse<any>>;
 }

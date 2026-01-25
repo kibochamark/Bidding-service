@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Inject, Logger, Param, Post, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Inject, Logger, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { BidService } from '../../Domains/Bidding/bid.service';
 import { BidParamDto, PlaceBidDto, InitiateBidPaymentDto, ConfirmBidPaymentDto } from './dto';
 import { ConfigService } from '@nestjs/config';
@@ -7,6 +7,9 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { JOB_NAMES } from 'src/queue/constants';
 import { STRIPE_CLIENT } from '../../providers/stripe.provider';
+import { KindeAuthGuard } from '../../Guards/kinde-auth.guard';
+import { CurrentUser } from '../../Guards/current-user.decorator';
+import type { KindeUser } from '../../Guards/current-user.decorator';
 
 @Controller('bids')
 export class BidController {
@@ -28,8 +31,9 @@ export class BidController {
      * Place a new bid (legacy - without payment)
      */
     @Post()
-    async placeBid(@Body() placeBidDto: PlaceBidDto) {
-        this.logger.log(`Placing bid for auction ${placeBidDto.auctionId} by ${placeBidDto.bidderName}`);
+    @UseGuards(KindeAuthGuard)
+    async placeBid(@Body() placeBidDto: PlaceBidDto, @CurrentUser() user: KindeUser) {
+        this.logger.log(`Placing bid for auction ${placeBidDto.auctionId} by ${user.kindeId}`);
         return await this.bidService.placeBid(placeBidDto);
     }
 
@@ -47,7 +51,8 @@ export class BidController {
      * Query parameter: bidderId
      */
     @Get('bidder/:bidderId')
-    async getBidsByBidderId(@Param('bidderId') bidderId: string) {
+    @UseGuards(KindeAuthGuard)
+    async getBidsByBidderId(@Param('bidderId') bidderId: string, @CurrentUser() user: KindeUser) {
         return await this.bidService.getBidsByBidderId(bidderId);
     }
 

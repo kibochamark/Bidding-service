@@ -1,4 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums.js";
 import type * as Prisma from "../internal/prismaNamespace.js";
 export type BidModel = runtime.Types.Result.DefaultSelection<Prisma.$BidPayload>;
 export type AggregateBid = {
@@ -10,9 +11,13 @@ export type AggregateBid = {
 };
 export type BidAvgAggregateOutputType = {
     bidAmount: runtime.Decimal | null;
+    entryFeePaid: runtime.Decimal | null;
+    totalPaid: runtime.Decimal | null;
 };
 export type BidSumAggregateOutputType = {
     bidAmount: runtime.Decimal | null;
+    entryFeePaid: runtime.Decimal | null;
+    totalPaid: runtime.Decimal | null;
 };
 export type BidMinAggregateOutputType = {
     id: string | null;
@@ -20,6 +25,10 @@ export type BidMinAggregateOutputType = {
     bidderId: string | null;
     bidderName: string | null;
     bidAmount: runtime.Decimal | null;
+    entryFeePaid: runtime.Decimal | null;
+    totalPaid: runtime.Decimal | null;
+    paymentIntentId: string | null;
+    paymentStatus: $Enums.PaymentStatus | null;
     isUnique: boolean | null;
     isWinning: boolean | null;
     placedAt: Date | null;
@@ -30,6 +39,10 @@ export type BidMaxAggregateOutputType = {
     bidderId: string | null;
     bidderName: string | null;
     bidAmount: runtime.Decimal | null;
+    entryFeePaid: runtime.Decimal | null;
+    totalPaid: runtime.Decimal | null;
+    paymentIntentId: string | null;
+    paymentStatus: $Enums.PaymentStatus | null;
     isUnique: boolean | null;
     isWinning: boolean | null;
     placedAt: Date | null;
@@ -40,6 +53,10 @@ export type BidCountAggregateOutputType = {
     bidderId: number;
     bidderName: number;
     bidAmount: number;
+    entryFeePaid: number;
+    totalPaid: number;
+    paymentIntentId: number;
+    paymentStatus: number;
     isUnique: number;
     isWinning: number;
     placedAt: number;
@@ -47,9 +64,13 @@ export type BidCountAggregateOutputType = {
 };
 export type BidAvgAggregateInputType = {
     bidAmount?: true | runtime.Types.Skip;
+    entryFeePaid?: true | runtime.Types.Skip;
+    totalPaid?: true | runtime.Types.Skip;
 };
 export type BidSumAggregateInputType = {
     bidAmount?: true | runtime.Types.Skip;
+    entryFeePaid?: true | runtime.Types.Skip;
+    totalPaid?: true | runtime.Types.Skip;
 };
 export type BidMinAggregateInputType = {
     id?: true | runtime.Types.Skip;
@@ -57,6 +78,10 @@ export type BidMinAggregateInputType = {
     bidderId?: true | runtime.Types.Skip;
     bidderName?: true | runtime.Types.Skip;
     bidAmount?: true | runtime.Types.Skip;
+    entryFeePaid?: true | runtime.Types.Skip;
+    totalPaid?: true | runtime.Types.Skip;
+    paymentIntentId?: true | runtime.Types.Skip;
+    paymentStatus?: true | runtime.Types.Skip;
     isUnique?: true | runtime.Types.Skip;
     isWinning?: true | runtime.Types.Skip;
     placedAt?: true | runtime.Types.Skip;
@@ -67,6 +92,10 @@ export type BidMaxAggregateInputType = {
     bidderId?: true | runtime.Types.Skip;
     bidderName?: true | runtime.Types.Skip;
     bidAmount?: true | runtime.Types.Skip;
+    entryFeePaid?: true | runtime.Types.Skip;
+    totalPaid?: true | runtime.Types.Skip;
+    paymentIntentId?: true | runtime.Types.Skip;
+    paymentStatus?: true | runtime.Types.Skip;
     isUnique?: true | runtime.Types.Skip;
     isWinning?: true | runtime.Types.Skip;
     placedAt?: true | runtime.Types.Skip;
@@ -77,6 +106,10 @@ export type BidCountAggregateInputType = {
     bidderId?: true | runtime.Types.Skip;
     bidderName?: true | runtime.Types.Skip;
     bidAmount?: true | runtime.Types.Skip;
+    entryFeePaid?: true | runtime.Types.Skip;
+    totalPaid?: true | runtime.Types.Skip;
+    paymentIntentId?: true | runtime.Types.Skip;
+    paymentStatus?: true | runtime.Types.Skip;
     isUnique?: true | runtime.Types.Skip;
     isWinning?: true | runtime.Types.Skip;
     placedAt?: true | runtime.Types.Skip;
@@ -116,6 +149,10 @@ export type BidGroupByOutputType = {
     bidderId: string;
     bidderName: string;
     bidAmount: runtime.Decimal;
+    entryFeePaid: runtime.Decimal;
+    totalPaid: runtime.Decimal;
+    paymentIntentId: string;
+    paymentStatus: $Enums.PaymentStatus;
     isUnique: boolean;
     isWinning: boolean;
     placedAt: Date;
@@ -137,6 +174,10 @@ export type BidWhereInput = {
     bidderId?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFilter<"Bid"> | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFilter<"Bid"> | Date | string | runtime.Types.Skip;
@@ -148,6 +189,10 @@ export type BidOrderByWithRelationInput = {
     bidderId?: Prisma.SortOrder | runtime.Types.Skip;
     bidderName?: Prisma.SortOrder | runtime.Types.Skip;
     bidAmount?: Prisma.SortOrder | runtime.Types.Skip;
+    entryFeePaid?: Prisma.SortOrder | runtime.Types.Skip;
+    totalPaid?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentIntentId?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentStatus?: Prisma.SortOrder | runtime.Types.Skip;
     isUnique?: Prisma.SortOrder | runtime.Types.Skip;
     isWinning?: Prisma.SortOrder | runtime.Types.Skip;
     placedAt?: Prisma.SortOrder | runtime.Types.Skip;
@@ -156,7 +201,7 @@ export type BidOrderByWithRelationInput = {
 };
 export type BidWhereUniqueInput = Prisma.AtLeast<{
     id?: string | runtime.Types.Skip;
-    auctionId_bidderId?: Prisma.BidAuctionIdBidderIdCompoundUniqueInput | runtime.Types.Skip;
+    paymentIntentId?: string | runtime.Types.Skip;
     AND?: Prisma.BidWhereInput | Prisma.BidWhereInput[] | runtime.Types.Skip;
     OR?: Prisma.BidWhereInput[] | runtime.Types.Skip;
     NOT?: Prisma.BidWhereInput | Prisma.BidWhereInput[] | runtime.Types.Skip;
@@ -164,17 +209,24 @@ export type BidWhereUniqueInput = Prisma.AtLeast<{
     bidderId?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFilter<"Bid"> | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFilter<"Bid"> | Date | string | runtime.Types.Skip;
     auction?: Prisma.XOR<Prisma.AuctionScalarRelationFilter, Prisma.AuctionWhereInput> | runtime.Types.Skip;
-}, "id" | "auctionId_bidderId">;
+}, "id" | "paymentIntentId">;
 export type BidOrderByWithAggregationInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
     auctionId?: Prisma.SortOrder | runtime.Types.Skip;
     bidderId?: Prisma.SortOrder | runtime.Types.Skip;
     bidderName?: Prisma.SortOrder | runtime.Types.Skip;
     bidAmount?: Prisma.SortOrder | runtime.Types.Skip;
+    entryFeePaid?: Prisma.SortOrder | runtime.Types.Skip;
+    totalPaid?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentIntentId?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentStatus?: Prisma.SortOrder | runtime.Types.Skip;
     isUnique?: Prisma.SortOrder | runtime.Types.Skip;
     isWinning?: Prisma.SortOrder | runtime.Types.Skip;
     placedAt?: Prisma.SortOrder | runtime.Types.Skip;
@@ -193,6 +245,10 @@ export type BidScalarWhereWithAggregatesInput = {
     bidderId?: Prisma.StringWithAggregatesFilter<"Bid"> | string | runtime.Types.Skip;
     bidderName?: Prisma.StringWithAggregatesFilter<"Bid"> | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalWithAggregatesFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalWithAggregatesFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalWithAggregatesFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringWithAggregatesFilter<"Bid"> | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Bid"> | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolWithAggregatesFilter<"Bid"> | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolWithAggregatesFilter<"Bid"> | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeWithAggregatesFilter<"Bid"> | Date | string | runtime.Types.Skip;
@@ -202,6 +258,10 @@ export type BidCreateInput = {
     bidderId: string;
     bidderName: string;
     bidAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    entryFeePaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    totalPaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentIntentId: string;
+    paymentStatus?: $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: Date | string | runtime.Types.Skip;
@@ -213,6 +273,10 @@ export type BidUncheckedCreateInput = {
     bidderId: string;
     bidderName: string;
     bidAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    entryFeePaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    totalPaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentIntentId: string;
+    paymentStatus?: $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: Date | string | runtime.Types.Skip;
@@ -222,6 +286,10 @@ export type BidUpdateInput = {
     bidderId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
@@ -233,6 +301,10 @@ export type BidUncheckedUpdateInput = {
     bidderId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
@@ -243,6 +315,10 @@ export type BidCreateManyInput = {
     bidderId: string;
     bidderName: string;
     bidAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    entryFeePaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    totalPaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentIntentId: string;
+    paymentStatus?: $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: Date | string | runtime.Types.Skip;
@@ -252,6 +328,10 @@ export type BidUpdateManyMutationInput = {
     bidderId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
@@ -262,6 +342,10 @@ export type BidUncheckedUpdateManyInput = {
     bidderId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
@@ -279,22 +363,24 @@ export type BidOrderByRelevanceInput = {
     sort: Prisma.SortOrder;
     search: string;
 };
-export type BidAuctionIdBidderIdCompoundUniqueInput = {
-    auctionId: string;
-    bidderId: string;
-};
 export type BidCountOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
     auctionId?: Prisma.SortOrder | runtime.Types.Skip;
     bidderId?: Prisma.SortOrder | runtime.Types.Skip;
     bidderName?: Prisma.SortOrder | runtime.Types.Skip;
     bidAmount?: Prisma.SortOrder | runtime.Types.Skip;
+    entryFeePaid?: Prisma.SortOrder | runtime.Types.Skip;
+    totalPaid?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentIntentId?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentStatus?: Prisma.SortOrder | runtime.Types.Skip;
     isUnique?: Prisma.SortOrder | runtime.Types.Skip;
     isWinning?: Prisma.SortOrder | runtime.Types.Skip;
     placedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type BidAvgOrderByAggregateInput = {
     bidAmount?: Prisma.SortOrder | runtime.Types.Skip;
+    entryFeePaid?: Prisma.SortOrder | runtime.Types.Skip;
+    totalPaid?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type BidMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder | runtime.Types.Skip;
@@ -302,6 +388,10 @@ export type BidMaxOrderByAggregateInput = {
     bidderId?: Prisma.SortOrder | runtime.Types.Skip;
     bidderName?: Prisma.SortOrder | runtime.Types.Skip;
     bidAmount?: Prisma.SortOrder | runtime.Types.Skip;
+    entryFeePaid?: Prisma.SortOrder | runtime.Types.Skip;
+    totalPaid?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentIntentId?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentStatus?: Prisma.SortOrder | runtime.Types.Skip;
     isUnique?: Prisma.SortOrder | runtime.Types.Skip;
     isWinning?: Prisma.SortOrder | runtime.Types.Skip;
     placedAt?: Prisma.SortOrder | runtime.Types.Skip;
@@ -312,12 +402,18 @@ export type BidMinOrderByAggregateInput = {
     bidderId?: Prisma.SortOrder | runtime.Types.Skip;
     bidderName?: Prisma.SortOrder | runtime.Types.Skip;
     bidAmount?: Prisma.SortOrder | runtime.Types.Skip;
+    entryFeePaid?: Prisma.SortOrder | runtime.Types.Skip;
+    totalPaid?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentIntentId?: Prisma.SortOrder | runtime.Types.Skip;
+    paymentStatus?: Prisma.SortOrder | runtime.Types.Skip;
     isUnique?: Prisma.SortOrder | runtime.Types.Skip;
     isWinning?: Prisma.SortOrder | runtime.Types.Skip;
     placedAt?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type BidSumOrderByAggregateInput = {
     bidAmount?: Prisma.SortOrder | runtime.Types.Skip;
+    entryFeePaid?: Prisma.SortOrder | runtime.Types.Skip;
+    totalPaid?: Prisma.SortOrder | runtime.Types.Skip;
 };
 export type BidCreateNestedManyWithoutAuctionInput = {
     create?: Prisma.XOR<Prisma.BidCreateWithoutAuctionInput, Prisma.BidUncheckedCreateWithoutAuctionInput> | Prisma.BidCreateWithoutAuctionInput[] | Prisma.BidUncheckedCreateWithoutAuctionInput[] | runtime.Types.Skip;
@@ -357,11 +453,18 @@ export type BidUncheckedUpdateManyWithoutAuctionNestedInput = {
     updateMany?: Prisma.BidUpdateManyWithWhereWithoutAuctionInput | Prisma.BidUpdateManyWithWhereWithoutAuctionInput[] | runtime.Types.Skip;
     deleteMany?: Prisma.BidScalarWhereInput | Prisma.BidScalarWhereInput[] | runtime.Types.Skip;
 };
+export type EnumPaymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentStatus | runtime.Types.Skip;
+};
 export type BidCreateWithoutAuctionInput = {
     id?: string | runtime.Types.Skip;
     bidderId: string;
     bidderName: string;
     bidAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    entryFeePaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    totalPaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentIntentId: string;
+    paymentStatus?: $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: Date | string | runtime.Types.Skip;
@@ -371,6 +474,10 @@ export type BidUncheckedCreateWithoutAuctionInput = {
     bidderId: string;
     bidderName: string;
     bidAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    entryFeePaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    totalPaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentIntentId: string;
+    paymentStatus?: $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: Date | string | runtime.Types.Skip;
@@ -405,6 +512,10 @@ export type BidScalarWhereInput = {
     bidderId?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFilter<"Bid"> | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFilter<"Bid"> | Date | string | runtime.Types.Skip;
@@ -414,6 +525,10 @@ export type BidCreateManyAuctionInput = {
     bidderId: string;
     bidderName: string;
     bidAmount: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    entryFeePaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    totalPaid: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    paymentIntentId: string;
+    paymentStatus?: $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: Date | string | runtime.Types.Skip;
@@ -423,6 +538,10 @@ export type BidUpdateWithoutAuctionInput = {
     bidderId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
@@ -432,6 +551,10 @@ export type BidUncheckedUpdateWithoutAuctionInput = {
     bidderId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
@@ -441,6 +564,10 @@ export type BidUncheckedUpdateManyWithoutAuctionInput = {
     bidderId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidderName?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
     bidAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    entryFeePaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    totalPaid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip;
+    paymentIntentId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip;
+    paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus | runtime.Types.Skip;
     isUnique?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     isWinning?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip;
     placedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip;
@@ -451,6 +578,10 @@ export type BidSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
     bidderId?: boolean | runtime.Types.Skip;
     bidderName?: boolean | runtime.Types.Skip;
     bidAmount?: boolean | runtime.Types.Skip;
+    entryFeePaid?: boolean | runtime.Types.Skip;
+    totalPaid?: boolean | runtime.Types.Skip;
+    paymentIntentId?: boolean | runtime.Types.Skip;
+    paymentStatus?: boolean | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: boolean | runtime.Types.Skip;
@@ -462,6 +593,10 @@ export type BidSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
     bidderId?: boolean | runtime.Types.Skip;
     bidderName?: boolean | runtime.Types.Skip;
     bidAmount?: boolean | runtime.Types.Skip;
+    entryFeePaid?: boolean | runtime.Types.Skip;
+    totalPaid?: boolean | runtime.Types.Skip;
+    paymentIntentId?: boolean | runtime.Types.Skip;
+    paymentStatus?: boolean | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: boolean | runtime.Types.Skip;
@@ -473,6 +608,10 @@ export type BidSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
     bidderId?: boolean | runtime.Types.Skip;
     bidderName?: boolean | runtime.Types.Skip;
     bidAmount?: boolean | runtime.Types.Skip;
+    entryFeePaid?: boolean | runtime.Types.Skip;
+    totalPaid?: boolean | runtime.Types.Skip;
+    paymentIntentId?: boolean | runtime.Types.Skip;
+    paymentStatus?: boolean | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: boolean | runtime.Types.Skip;
@@ -484,11 +623,15 @@ export type BidSelectScalar = {
     bidderId?: boolean | runtime.Types.Skip;
     bidderName?: boolean | runtime.Types.Skip;
     bidAmount?: boolean | runtime.Types.Skip;
+    entryFeePaid?: boolean | runtime.Types.Skip;
+    totalPaid?: boolean | runtime.Types.Skip;
+    paymentIntentId?: boolean | runtime.Types.Skip;
+    paymentStatus?: boolean | runtime.Types.Skip;
     isUnique?: boolean | runtime.Types.Skip;
     isWinning?: boolean | runtime.Types.Skip;
     placedAt?: boolean | runtime.Types.Skip;
 };
-export type BidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "auctionId" | "bidderId" | "bidderName" | "bidAmount" | "isUnique" | "isWinning" | "placedAt", ExtArgs["result"]["bid"], runtime.Types.Skip>;
+export type BidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "auctionId" | "bidderId" | "bidderName" | "bidAmount" | "entryFeePaid" | "totalPaid" | "paymentIntentId" | "paymentStatus" | "isUnique" | "isWinning" | "placedAt", ExtArgs["result"]["bid"], runtime.Types.Skip>;
 export type BidInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     auction?: boolean | Prisma.AuctionDefaultArgs<ExtArgs> | runtime.Types.Skip;
 };
@@ -509,6 +652,10 @@ export type $BidPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
         bidderId: string;
         bidderName: string;
         bidAmount: runtime.Decimal;
+        entryFeePaid: runtime.Decimal;
+        totalPaid: runtime.Decimal;
+        paymentIntentId: string;
+        paymentStatus: $Enums.PaymentStatus;
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
@@ -575,6 +722,10 @@ export interface BidFieldRefs {
     readonly bidderId: Prisma.FieldRef<"Bid", 'String'>;
     readonly bidderName: Prisma.FieldRef<"Bid", 'String'>;
     readonly bidAmount: Prisma.FieldRef<"Bid", 'Decimal'>;
+    readonly entryFeePaid: Prisma.FieldRef<"Bid", 'Decimal'>;
+    readonly totalPaid: Prisma.FieldRef<"Bid", 'Decimal'>;
+    readonly paymentIntentId: Prisma.FieldRef<"Bid", 'String'>;
+    readonly paymentStatus: Prisma.FieldRef<"Bid", 'PaymentStatus'>;
     readonly isUnique: Prisma.FieldRef<"Bid", 'Boolean'>;
     readonly isWinning: Prisma.FieldRef<"Bid", 'Boolean'>;
     readonly placedAt: Prisma.FieldRef<"Bid", 'DateTime'>;

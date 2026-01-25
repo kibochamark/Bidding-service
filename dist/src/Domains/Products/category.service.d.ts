@@ -137,7 +137,7 @@ export declare class CategoryService {
         icon: string | null;
         parentId: string | null;
     }>;
-    updateCategory(id: string, data: UpdateCategoryDto): Promise<{
+    updateCategory(id: string, data: Partial<UpdateCategoryDto>): Promise<{
         parent: {
             id: string;
             createdAt: Date;

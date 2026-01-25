@@ -16,4 +16,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./auction.dto"), exports);
 __exportStar(require("./bid.dto"), exports);
+__exportStar(require("./payment.dto"), exports);
 //# sourceMappingURL=index.js.map

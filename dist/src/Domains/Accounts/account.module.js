@@ -12,11 +12,8 @@ const accounts_service_1 = require("./accounts.service");
 const accounts_repository_1 = require("./accounts.repository");
 const address_service_1 = require("./address.service");
 const address_repository_1 = require("./address.repository");
-const kyc_service_1 = require("./kyc.service");
-const kyc_repository_1 = require("./kyc.repository");
 const accounts_controller_js_1 = require("../../../src/Controllers/Accounts/accounts.controller.js");
 const address_controller_1 = require("../../../src/Controllers/Accounts/address.controller");
-const kyc_controller_1 = require("../../../src/Controllers/Accounts/kyc.controller");
 const upload_controller_1 = require("../../../src/Controllers/Accounts/upload.controller");
 const s3module_module_1 = require("../s3module/s3module.module");
 const product_module_1 = require("../Products/product.module");
@@ -26,14 +23,12 @@ exports.AccountModule = AccountModule;
 exports.AccountModule = AccountModule = __decorate([
     (0, common_1.Module)({
         imports: [s3module_module_1.S3moduleModule, product_module_1.ProductModule],
-        controllers: [accounts_controller_js_1.AccountsController, address_controller_1.AddressController, kyc_controller_1.KycController, upload_controller_1.UploadController],
+        controllers: [accounts_controller_js_1.AccountsController, address_controller_1.AddressController, upload_controller_1.UploadController],
         providers: [
             accounts_service_1.AccountsService,
             accounts_repository_1.AccountsRepository,
             address_service_1.AddressService,
             address_repository_1.AddressRepository,
-            kyc_service_1.KycService,
-            kyc_repository_1.KycRepository,
         ],
     })
 ], AccountModule);

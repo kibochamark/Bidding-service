@@ -1,6 +1,7 @@
-import { Injectable, Logger, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PlaceBidDto } from '../../Controllers/Bidding/dto';
+import { BidJobDto } from '../../queue/dto/bid-dto';
 
 @Injectable()
 export class BidRepository {
@@ -8,7 +9,92 @@ export class BidRepository {
     constructor(private prisma: PrismaService) {}
 
     /**
-     * Place a bid in an auction
+     * Place a bid with payment information (used by queue processor)
+     * This is the core logic for the Lowest Unique Bid system with payment tracking
+     */
+    async placeBidWithPayment(data: BidJobDto) {
+        this.logger.log(`Processing paid bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
+
+        // Verify auction exists and is ACTIVE
+        const auction = await this.prisma.auction.findUnique({
+            where: { id: data.auctionId },
+        });
+
+        if (!auction) {
+            throw new NotFoundException(`Auction with ID ${data.auctionId} not found`);
+        }
+
+        if (auction.status !== 'ACTIVE') {
+            throw new BadRequestException(`Auction is not active. Current status: ${auction.status}`);
+        }
+
+        // Check if auction has ended - allow a 2-minute grace period for payment processing
+        const gracePeriodMs = 2 * 60 * 1000; // 2 minutes
+        const auctionEndWithGrace = new Date(auction.endDate.getTime() + gracePeriodMs);
+        const now = new Date();
+        const isAfterAuctionEnd = now > auction.endDate;
+        const isWithinGracePeriod = now <= auctionEndWithGrace;
+
+        if (now > auctionEndWithGrace) {
+            throw new BadRequestException('Auction has ended and grace period expired. Bid cannot be placed.');
+        }
+
+        // Check if this bid amount already exists (to determine if it's unique)
+        const existingBidWithSameAmount = await this.prisma.bid.findFirst({
+            where: {
+                auctionId: data.auctionId,
+                bidAmount: data.bidAmount,
+            }
+        });
+
+        const isUnique = !existingBidWithSameAmount;
+
+        // Create the new bid with payment information
+        const newBid = await this.prisma.bid.create({
+            data: {
+                auctionId: data.auctionId,
+                bidderId: data.bidderId,
+                bidderName: data.bidderName,
+                bidAmount: data.bidAmount,
+                entryFeePaid: data.entryFee,
+                totalPaid: data.totalPaid,
+                paymentIntentId: data.paymentIntentId,
+                paymentStatus: 'PAID',
+                isUnique: isUnique,
+            }
+        });
+
+        // If a bid with the same amount already exists, mark it as NOT unique
+        if (existingBidWithSameAmount) {
+            await this.prisma.bid.update({
+                where: { id: existingBidWithSameAmount.id },
+                data: { isUnique: false }
+            });
+        }
+
+        // Update auction stats
+        await this.prisma.auction.update({
+            where: { id: data.auctionId },
+            data: {
+                totalBidsCount: { increment: 1 },
+                totalRevenue: { increment: data.totalPaid }
+            }
+        });
+
+        // Recalculate which bid is winning
+        await this.recalculateWinningBid(data.auctionId);
+
+        this.logger.log(`Bid placed successfully. Is unique: ${isUnique}. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
+
+        return {
+            ...newBid,
+            processedAfterAuctionEnd: isAfterAuctionEnd,
+            withinGracePeriod: isWithinGracePeriod,
+        };
+    }
+
+    /**
+     * Place a bid in an auction (legacy method - without payment)
      * This is the core logic for the Lowest Unique Bid system
      */
     async placeBid(data: PlaceBidDto) {
@@ -31,19 +117,8 @@ export class BidRepository {
             throw new BadRequestException('Auction has ended');
         }
 
-        // Check if bidder already has a bid in this auction
-        const existingBid = await this.prisma.bid.findUnique({
-            where: {
-                auctionId_bidderId: {
-                    auctionId: data.auctionId,
-                    bidderId: data.bidderId,
-                }
-            }
-        });
-
-        if (existingBid) {
-            throw new ConflictException('You can only place ONE bid per auction. Your bid has already been placed.');
-        }
+        // NOTE: Multiple bids per user are now allowed
+        // The old unique constraint has been removed from the schema
 
         // Check if this bid amount already exists (to determine if it's unique)
         const existingBidWithSameAmount = await this.prisma.bid.findFirst({
@@ -56,15 +131,15 @@ export class BidRepository {
         const isUnique = !existingBidWithSameAmount;
 
         // Create the new bid
-        const newBid = await this.prisma.bid.create({
-            data: {
-                auctionId: data.auctionId,
-                bidderId: data.bidderId,
-                bidderName: data.bidderName,
-                bidAmount: data.bidAmount,
-                isUnique: isUnique,
-            }
-        });
+        // const newBid = await this.prisma.bid.create({
+        //     data: {
+        //         auctionId: data.auctionId,
+        //         bidderId: data.bidderId,
+        //         bidderName: data.bidderName,
+        //         bidAmount: data.bidAmount,
+        //         isUnique: isUnique,
+        //     }
+        // });
 
         // If a bid with the same amount already exists, mark it as NOT unique
         if (existingBidWithSameAmount) {
@@ -87,7 +162,9 @@ export class BidRepository {
         await this.recalculateWinningBid(data.auctionId);
 
         this.logger.log(`Bid placed successfully. Is unique: ${isUnique}`);
-        return newBid;
+        return {
+            
+        };
     }
 
     /**

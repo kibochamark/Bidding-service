@@ -5,9 +5,8 @@ export declare class CreateProductDto {
     categoryId: string;
     condition: ProductCondition;
     images?: string[];
-    startingPrice: number;
-    reservePrice?: number;
-    buyNowPrice?: number;
+    retailValue: number;
+    entryFee: number;
     endDate: string;
     sellerId: string;
     sellerName: string;
@@ -18,8 +17,8 @@ export declare class UpdateProductDto {
     description?: string;
     condition?: ProductCondition;
     images?: string[];
-    reservePrice?: number;
-    buyNowPrice?: number;
+    retailValue?: number;
+    entryFee?: number;
     endDate?: string;
     specifications?: Record<string, any>;
     isActive?: boolean;

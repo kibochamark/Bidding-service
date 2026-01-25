@@ -1,9 +1,12 @@
 import { CategoryService } from '../../../src/Domains/Products/category.service';
 import { CategoryParamDto, CategorySlugDto, CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { S3moduleService } from 'src/Domains/s3module/s3module.service';
 export declare class CategoriesController {
     private categoryService;
-    constructor(categoryService: CategoryService);
-    createCategory(dto: CreateCategoryDto): Promise<{
+    private s3Service;
+    private logger;
+    constructor(categoryService: CategoryService, s3Service: S3moduleService);
+    createCategory(file: Express.Multer.File, dto: CreateCategoryDto): Promise<{
         parent: {
             id: string;
             createdAt: Date;
@@ -160,7 +163,7 @@ export declare class CategoriesController {
         icon: string | null;
         parentId: string | null;
     }>;
-    updateCategory(params: CategoryParamDto, dto: UpdateCategoryDto): Promise<{
+    updateCategory(file: Express.Multer.File, params: CategoryParamDto, dto: UpdateCategoryDto): Promise<{
         parent: {
             id: string;
             createdAt: Date;

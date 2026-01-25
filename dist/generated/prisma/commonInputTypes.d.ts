@@ -94,59 +94,6 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedDateTimeFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedDateTimeFilter<$PrismaModel> | runtime.Types.Skip;
 };
-export type EnumKycStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.KycStatus | Prisma.EnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    in?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    notIn?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedEnumKycStatusFilter<$PrismaModel> | $Enums.KycStatus | runtime.Types.Skip;
-};
-export type EnumDocumentTypeNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.DocumentType | Prisma.EnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    not?: Prisma.NestedEnumDocumentTypeNullableFilter<$PrismaModel> | $Enums.DocumentType | null | runtime.Types.Skip;
-};
-export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    lt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    lte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null | runtime.Types.Skip;
-};
-export type EnumKycStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.KycStatus | Prisma.EnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    in?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    notIn?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedEnumKycStatusWithAggregatesFilter<$PrismaModel> | $Enums.KycStatus | runtime.Types.Skip;
-    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedEnumKycStatusFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedEnumKycStatusFilter<$PrismaModel> | runtime.Types.Skip;
-};
-export type EnumDocumentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.DocumentType | Prisma.EnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    not?: Prisma.NestedEnumDocumentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.DocumentType | null | runtime.Types.Skip;
-    _count?: Prisma.NestedIntNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedEnumDocumentTypeNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedEnumDocumentTypeNullableFilter<$PrismaModel> | runtime.Types.Skip;
-};
-export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    lt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    lte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null | runtime.Types.Skip;
-    _count?: Prisma.NestedIntNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | runtime.Types.Skip;
-};
 export type DecimalFilter<$PrismaModel = never> = {
     equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[] | Prisma.ListDecimalFieldRefInput<$PrismaModel> | runtime.Types.Skip;
@@ -300,6 +247,21 @@ export type EnumAuctionStatusWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedEnumAuctionStatusFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedEnumAuctionStatusFilter<$PrismaModel> | runtime.Types.Skip;
 };
+export type EnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | Prisma.EnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    in?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    notIn?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus | runtime.Types.Skip;
+};
+export type EnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | Prisma.EnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    in?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    notIn?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus | runtime.Types.Skip;
+    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
+    _min?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel> | runtime.Types.Skip;
+    _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel> | runtime.Types.Skip;
+};
 export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | runtime.Types.Skip;
     in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | runtime.Types.Skip;
@@ -404,59 +366,6 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
     _min?: Prisma.NestedDateTimeFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedDateTimeFilter<$PrismaModel> | runtime.Types.Skip;
-};
-export type NestedEnumKycStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.KycStatus | Prisma.EnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    in?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    notIn?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedEnumKycStatusFilter<$PrismaModel> | $Enums.KycStatus | runtime.Types.Skip;
-};
-export type NestedEnumDocumentTypeNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.DocumentType | Prisma.EnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    not?: Prisma.NestedEnumDocumentTypeNullableFilter<$PrismaModel> | $Enums.DocumentType | null | runtime.Types.Skip;
-};
-export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    lt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    lte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null | runtime.Types.Skip;
-};
-export type NestedEnumKycStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.KycStatus | Prisma.EnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    in?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    notIn?: $Enums.KycStatus[] | Prisma.ListEnumKycStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedEnumKycStatusWithAggregatesFilter<$PrismaModel> | $Enums.KycStatus | runtime.Types.Skip;
-    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedEnumKycStatusFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedEnumKycStatusFilter<$PrismaModel> | runtime.Types.Skip;
-};
-export type NestedEnumDocumentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.DocumentType | Prisma.EnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: $Enums.DocumentType[] | Prisma.ListEnumDocumentTypeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    not?: Prisma.NestedEnumDocumentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.DocumentType | null | runtime.Types.Skip;
-    _count?: Prisma.NestedIntNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedEnumDocumentTypeNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedEnumDocumentTypeNullableFilter<$PrismaModel> | runtime.Types.Skip;
-};
-export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    notIn?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null | runtime.Types.Skip;
-    lt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    lte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | runtime.Types.Skip;
-    not?: Prisma.NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null | runtime.Types.Skip;
-    _count?: Prisma.NestedIntNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | runtime.Types.Skip;
-    _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | runtime.Types.Skip;
 };
 export type NestedDecimalFilter<$PrismaModel = never> = {
     equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel> | runtime.Types.Skip;
@@ -590,4 +499,19 @@ export type NestedEnumAuctionStatusWithAggregatesFilter<$PrismaModel = never> = 
     _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
     _min?: Prisma.NestedEnumAuctionStatusFilter<$PrismaModel> | runtime.Types.Skip;
     _max?: Prisma.NestedEnumAuctionStatusFilter<$PrismaModel> | runtime.Types.Skip;
+};
+export type NestedEnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | Prisma.EnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    in?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    notIn?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus | runtime.Types.Skip;
+};
+export type NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | Prisma.EnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    in?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    notIn?: $Enums.PaymentStatus[] | Prisma.ListEnumPaymentStatusFieldRefInput<$PrismaModel> | runtime.Types.Skip;
+    not?: Prisma.NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus | runtime.Types.Skip;
+    _count?: Prisma.NestedIntFilter<$PrismaModel> | runtime.Types.Skip;
+    _min?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel> | runtime.Types.Skip;
+    _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel> | runtime.Types.Skip;
 };

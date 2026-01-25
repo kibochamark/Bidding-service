@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuctionStatus = exports.ProductCondition = exports.DocumentType = exports.KycStatus = void 0;
+exports.AuctionStatus = exports.ProductCondition = exports.DocumentType = exports.KycStatus = exports.PaymentStatus = void 0;
+exports.PaymentStatus = {
+    PENDING: 'PENDING',
+    PAID: 'PAID',
+    REFUNDED: 'REFUNDED',
+    FAILED: 'FAILED'
+};
 exports.KycStatus = {
     PENDING: 'PENDING',
     VERIFIED: 'VERIFIED',

@@ -31,9 +31,6 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get account(): Prisma.AccountDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
-    get kycProfile(): Prisma.KycProfileDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
     get sellerDetails(): Prisma.SellerDetailsDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;

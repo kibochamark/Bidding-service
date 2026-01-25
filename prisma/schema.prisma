@@ -19,29 +19,10 @@ model Account {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   addresses     Address[]
-  kyc           KycProfile?
   sellerProfile SellerDetails?
 }
 
-model KycProfile {
-  id                String       @id @default(uuid())
-  status            KycStatus    @default(PENDING)
-  fullName          String
-  dateOfBirth       DateTime
-  nationality       String
-  documentType      DocumentType?
-  idDocumentNumber  String?       @unique
-  idDocumentUrl     String?
-  proofOfAddressUrl String?
-  selfieUrl         String?
-  rejectionReason   String?
-  reviewedBy        String?
-  verifiedAt        DateTime?
-  accountId         String       @unique
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  account           Account      @relation(fields: [accountId], references: [kindeId])
-}
+
 
 model SellerDetails {
   id           String   @id @default(uuid())
@@ -97,11 +78,8 @@ model Product {
   categoryId     String
   condition      ProductCondition         @default(GOOD)
   images         String[]
-  startingPrice  Decimal                  @db.Decimal(10, 2)
-  currentBid     Decimal                  @db.Decimal(10, 2)
-  bidsCount      Int                      @default(0)
-  reservePrice   Decimal?                 @db.Decimal(10, 2)
-  buyNowPrice    Decimal?                 @db.Decimal(10, 2)
+  retailValue    Decimal                  @db.Decimal(10, 2)
+  entryFee       Decimal                  @db.Decimal(10, 2)
   startDate      DateTime                 @default(now())
   endDate        DateTime
   isActive       Boolean                  @default(true)
@@ -120,11 +98,10 @@ model Product {
   @@index([categoryId, isActive, endDate(sort: Desc)])
   @@index([sellerId, isActive])
   @@index([isActive, endDate])
-  @@index([isActive, currentBid(sort: Desc)])
   @@index([isActive, createdAt(sort: Desc)])
   @@index([condition, isActive])
   @@index([title])
-  @@index([startingPrice, currentBid])
+  @@index([retailValue])
   @@index([search_vector], type: Gin)
 }
 
@@ -158,15 +135,25 @@ model Bid {
   bidderId    String
   bidderName  String
   bidAmount   Decimal  @db.Decimal(10, 2)
+  entryFeePaid     Decimal       @db.Decimal(10, 2)
+  totalPaid        Decimal       @db.Decimal(10, 2)
+  paymentIntentId  String        @unique  // Stripe payment intent ID
+  paymentStatus    PaymentStatus @default(PAID)
   isUnique    Boolean  @default(true)
   isWinning   Boolean  @default(false)
   placedAt    DateTime @default(now())
   auction     Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
 
-  @@unique([auctionId, bidderId])
   @@index([auctionId, bidAmount])
   @@index([auctionId, isUnique, bidAmount])
   @@index([bidderId])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
 }
 
 enum KycStatus {

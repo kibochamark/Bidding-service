@@ -8,83 +8,34 @@ export declare class AccountsController {
     private jwtBodyParser;
     private readonly logger;
     constructor(accountsService: AccountsService, configService: ConfigService);
-    getAllAccounts(): Promise<({
-        kyc: {
-            fullName: string;
-            accountId: string;
-            id: string;
-            documentType: import("../../../generated/prisma/enums").DocumentType | null;
-            idDocumentNumber: string | null;
-            idDocumentUrl: string | null;
-            proofOfAddressUrl: string | null;
-            selfieUrl: string | null;
-            dateOfBirth: Date;
-            nationality: string;
-            status: import("../../../generated/prisma/enums").KycStatus;
-            rejectionReason: string | null;
-            reviewedBy: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            verifiedAt: Date | null;
-        } | null;
-        sellerProfile: {
-            accountId: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            companyName: string;
-            taxId: string | null;
-            rating: import("@prisma/client-runtime-utils").Decimal;
-            totalSales: number;
-            responseRate: import("@prisma/client-runtime-utils").Decimal | null;
-        } | null;
-    } & {
+    getAllAccounts(): Promise<{
+        id: string;
         kindeId: string;
         email: string | null;
         contact: string | null;
         fullName: string | null;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
-    })[]>;
+    }[]>;
     createAccount(req: express.Request, res: express.Response): Promise<void>;
     deleteAccount(req: express.Request, res: express.Response): Promise<void>;
     getAccountByKindeId(params: AccountParamDto): Promise<{
         addresses: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
             accountId: string;
+            recipientname: string;
             phone: string;
             label: string | null;
             street: string;
-            state: string;
             city: string;
+            state: string;
             zipCode: string;
             country: string;
             isPrimary: boolean;
-            recipientname: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
         }[];
-        kyc: {
-            fullName: string;
-            accountId: string;
-            id: string;
-            documentType: import("../../../generated/prisma/enums").DocumentType | null;
-            idDocumentNumber: string | null;
-            idDocumentUrl: string | null;
-            proofOfAddressUrl: string | null;
-            selfieUrl: string | null;
-            dateOfBirth: Date;
-            nationality: string;
-            status: import("../../../generated/prisma/enums").KycStatus;
-            rejectionReason: string | null;
-            reviewedBy: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            verifiedAt: Date | null;
-        } | null;
         sellerProfile: {
-            accountId: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
@@ -92,23 +43,24 @@ export declare class AccountsController {
             taxId: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             totalSales: number;
+            accountId: string;
             responseRate: import("@prisma/client-runtime-utils").Decimal | null;
         } | null;
     } & {
+        id: string;
         kindeId: string;
         email: string | null;
         contact: string | null;
         fullName: string | null;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
     updateAccountData(params: AccountParamDto, body: Partial<UpdateAccountDto>): Promise<{
+        id: string;
         kindeId: string;
         email: string | null;
         contact: string | null;
         fullName: string | null;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
     }>;

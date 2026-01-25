@@ -89,19 +89,14 @@ export class CategoryService {
         return category;
     }
 
-    async updateCategory(id: string, data: UpdateCategoryDto) {
+    async updateCategory(id: string, data: Partial<UpdateCategoryDto>) {
         await this.getCategoryById(id);
 
         this.logger.log(`Updating category: ${id}`);
 
         return await this.prisma.category.update({
             where: { id },
-            data: {
-                name: data.name,
-                description: data.description,
-                icon: data.icon,
-                parentId: data.parentId,
-            },
+            data,
             include: {
                 parent: true,
                 children: true,

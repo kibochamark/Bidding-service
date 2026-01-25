@@ -13,15 +13,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
 const common_1 = require("@nestjs/common");
 const product_repository_1 = require("./product.repository");
+const auction_service_1 = require("../Bidding/auction.service");
 let ProductService = ProductService_1 = class ProductService {
-    constructor(productRepository) {
+    constructor(productRepository, auction) {
         this.productRepository = productRepository;
+        this.auction = auction;
         this.logger = new common_1.Logger(ProductService_1.name);
     }
     async createProduct(data) {
         this.logger.log(`Creating product: ${data.title} by seller: ${data.sellerId}`);
         const product = await this.productRepository.createProduct(data);
         this.logger.log(`Product created successfully with ID: ${product.id}`);
+        if (product.id) {
+            this.logger.log("Creating auction for product");
+            await this.auction.createAuction({
+                productId: product.id,
+                title: product.title,
+                description: product.description,
+                prizeValue: parseFloat(product.retailValue.toString()),
+                entryFee: parseFloat(product.entryFee.toString()),
+                endDate: data.endDate,
+            });
+            this.logger.log(`Auction created for product ${product.id}`);
+        }
         return product;
     }
     async getProductById(id) {
@@ -80,6 +94,6 @@ let ProductService = ProductService_1 = class ProductService {
 exports.ProductService = ProductService;
 exports.ProductService = ProductService = ProductService_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [product_repository_1.ProductRepository])
+    __metadata("design:paramtypes", [product_repository_1.ProductRepository, auction_service_1.AuctionService])
 ], ProductService);
 //# sourceMappingURL=product.service.js.map

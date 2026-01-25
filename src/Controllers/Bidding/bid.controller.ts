@@ -1,15 +1,31 @@
-import { Body, Controller, Get, Logger, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Inject, Logger, Param, Post, Query, Req, Res } from '@nestjs/common';
 import { BidService } from '../../Domains/Bidding/bid.service';
-import { BidParamDto, PlaceBidDto } from './dto';
+import { BidParamDto, PlaceBidDto, InitiateBidPaymentDto, ConfirmBidPaymentDto } from './dto';
+import { ConfigService } from '@nestjs/config';
+import Stripe from "stripe"
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
+import { JOB_NAMES } from 'src/queue/constants';
+import { STRIPE_CLIENT } from '../../providers/stripe.provider';
 
 @Controller('bids')
 export class BidController {
     private readonly logger = new Logger(BidController.name);
 
-    constructor(private bidService: BidService) {}
+    constructor(
+        private bidService: BidService,
+        private configService: ConfigService,
+        @InjectQueue(JOB_NAMES.PROCESS_BID) private bidQueue: Queue,
+        @Inject(STRIPE_CLIENT) private stripe: Stripe
+    ) {}
 
     /**
-     * Place a new bid
+     * Initiate a bid payment
+     * This creates a payment intent and returns payment details
+     */
+    
+    /**
+     * Place a new bid (legacy - without payment)
      */
     @Post()
     async placeBid(@Body() placeBidDto: PlaceBidDto) {
@@ -57,5 +73,61 @@ export class BidController {
     @Get('auction/:auctionId/statistics')
     async getBidStatistics(@Param('auctionId') auctionId: string) {
         return await this.bidService.getBidStatistics(auctionId);
+    }
+
+
+
+    // Get stripe payment event
+
+    @Post('stripe/webhook')
+    async getStripePaymentEvent(@Req() req, @Res() res){
+        /**
+         * verify stripe tokem
+         *  extract event data
+         * queue job for processing
+         */
+
+        const endpoint_secret= this.configService.get("ENDPOINT_SECRET")
+        let event
+        // retrive stripe headers
+        if (endpoint_secret){
+            this.logger.log("stripe secret present,....decoding event")
+            const signature = req.headers['stripe-signature']
+            console.log(signature, "sig")
+            try {
+                event = this.stripe.webhooks.constructEvent(
+                    req.rawBody,
+                    signature.toString(),
+                    endpoint_secret
+                );
+
+                this.logger.log("event received...proceeding to queue job")
+
+                this.logger.log(`event: ${JSON.stringify(event)}`)
+
+                const job = await this.bidQueue.add(JOB_NAMES.PROCESS_BID, { 
+                    paymentIntentId: event.data.object.payment_intent,
+                    ...event.data.object.metadata
+                }, {
+                    jobId: event.paymentIntentId, // Use payment intent ID as job ID (prevents duplicates)
+                });
+
+                this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+
+            } catch (err) {
+                console.log(`⚠️ Webhook signature verification failed.`, err.message);
+                return res.status(400).json({
+                    status:"failed",
+                    message:err.message
+                });
+            }
+        }else{
+            return res.status(403).json({
+                status: "forbidden",
+                message: new ForbiddenException("stripe secret key not provided")
+            });
+        }
+
+
     }
 }

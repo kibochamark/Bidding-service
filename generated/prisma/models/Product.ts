@@ -27,22 +27,16 @@ export type AggregateProduct = {
 }
 
 export type ProductAvgAggregateOutputType = {
-  startingPrice: runtime.Decimal | null
-  currentBid: runtime.Decimal | null
-  bidsCount: number | null
-  reservePrice: runtime.Decimal | null
-  buyNowPrice: runtime.Decimal | null
+  retailValue: runtime.Decimal | null
+  entryFee: runtime.Decimal | null
   sellerRating: runtime.Decimal | null
   rating: runtime.Decimal | null
   reviewCount: number | null
 }
 
 export type ProductSumAggregateOutputType = {
-  startingPrice: runtime.Decimal | null
-  currentBid: runtime.Decimal | null
-  bidsCount: number | null
-  reservePrice: runtime.Decimal | null
-  buyNowPrice: runtime.Decimal | null
+  retailValue: runtime.Decimal | null
+  entryFee: runtime.Decimal | null
   sellerRating: runtime.Decimal | null
   rating: runtime.Decimal | null
   reviewCount: number | null
@@ -54,11 +48,8 @@ export type ProductMinAggregateOutputType = {
   description: string | null
   categoryId: string | null
   condition: $Enums.ProductCondition | null
-  startingPrice: runtime.Decimal | null
-  currentBid: runtime.Decimal | null
-  bidsCount: number | null
-  reservePrice: runtime.Decimal | null
-  buyNowPrice: runtime.Decimal | null
+  retailValue: runtime.Decimal | null
+  entryFee: runtime.Decimal | null
   startDate: Date | null
   endDate: Date | null
   isActive: boolean | null
@@ -77,11 +68,8 @@ export type ProductMaxAggregateOutputType = {
   description: string | null
   categoryId: string | null
   condition: $Enums.ProductCondition | null
-  startingPrice: runtime.Decimal | null
-  currentBid: runtime.Decimal | null
-  bidsCount: number | null
-  reservePrice: runtime.Decimal | null
-  buyNowPrice: runtime.Decimal | null
+  retailValue: runtime.Decimal | null
+  entryFee: runtime.Decimal | null
   startDate: Date | null
   endDate: Date | null
   isActive: boolean | null
@@ -101,11 +89,8 @@ export type ProductCountAggregateOutputType = {
   categoryId: number
   condition: number
   images: number
-  startingPrice: number
-  currentBid: number
-  bidsCount: number
-  reservePrice: number
-  buyNowPrice: number
+  retailValue: number
+  entryFee: number
   startDate: number
   endDate: number
   isActive: number
@@ -122,22 +107,16 @@ export type ProductCountAggregateOutputType = {
 
 
 export type ProductAvgAggregateInputType = {
-  startingPrice?: true | runtime.Types.Skip
-  currentBid?: true | runtime.Types.Skip
-  bidsCount?: true | runtime.Types.Skip
-  reservePrice?: true | runtime.Types.Skip
-  buyNowPrice?: true | runtime.Types.Skip
+  retailValue?: true | runtime.Types.Skip
+  entryFee?: true | runtime.Types.Skip
   sellerRating?: true | runtime.Types.Skip
   rating?: true | runtime.Types.Skip
   reviewCount?: true | runtime.Types.Skip
 }
 
 export type ProductSumAggregateInputType = {
-  startingPrice?: true | runtime.Types.Skip
-  currentBid?: true | runtime.Types.Skip
-  bidsCount?: true | runtime.Types.Skip
-  reservePrice?: true | runtime.Types.Skip
-  buyNowPrice?: true | runtime.Types.Skip
+  retailValue?: true | runtime.Types.Skip
+  entryFee?: true | runtime.Types.Skip
   sellerRating?: true | runtime.Types.Skip
   rating?: true | runtime.Types.Skip
   reviewCount?: true | runtime.Types.Skip
@@ -149,11 +128,8 @@ export type ProductMinAggregateInputType = {
   description?: true | runtime.Types.Skip
   categoryId?: true | runtime.Types.Skip
   condition?: true | runtime.Types.Skip
-  startingPrice?: true | runtime.Types.Skip
-  currentBid?: true | runtime.Types.Skip
-  bidsCount?: true | runtime.Types.Skip
-  reservePrice?: true | runtime.Types.Skip
-  buyNowPrice?: true | runtime.Types.Skip
+  retailValue?: true | runtime.Types.Skip
+  entryFee?: true | runtime.Types.Skip
   startDate?: true | runtime.Types.Skip
   endDate?: true | runtime.Types.Skip
   isActive?: true | runtime.Types.Skip
@@ -172,11 +148,8 @@ export type ProductMaxAggregateInputType = {
   description?: true | runtime.Types.Skip
   categoryId?: true | runtime.Types.Skip
   condition?: true | runtime.Types.Skip
-  startingPrice?: true | runtime.Types.Skip
-  currentBid?: true | runtime.Types.Skip
-  bidsCount?: true | runtime.Types.Skip
-  reservePrice?: true | runtime.Types.Skip
-  buyNowPrice?: true | runtime.Types.Skip
+  retailValue?: true | runtime.Types.Skip
+  entryFee?: true | runtime.Types.Skip
   startDate?: true | runtime.Types.Skip
   endDate?: true | runtime.Types.Skip
   isActive?: true | runtime.Types.Skip
@@ -196,11 +169,8 @@ export type ProductCountAggregateInputType = {
   categoryId?: true | runtime.Types.Skip
   condition?: true | runtime.Types.Skip
   images?: true | runtime.Types.Skip
-  startingPrice?: true | runtime.Types.Skip
-  currentBid?: true | runtime.Types.Skip
-  bidsCount?: true | runtime.Types.Skip
-  reservePrice?: true | runtime.Types.Skip
-  buyNowPrice?: true | runtime.Types.Skip
+  retailValue?: true | runtime.Types.Skip
+  entryFee?: true | runtime.Types.Skip
   startDate?: true | runtime.Types.Skip
   endDate?: true | runtime.Types.Skip
   isActive?: true | runtime.Types.Skip
@@ -308,11 +278,8 @@ export type ProductGroupByOutputType = {
   categoryId: string
   condition: $Enums.ProductCondition
   images: string[]
-  startingPrice: runtime.Decimal
-  currentBid: runtime.Decimal
-  bidsCount: number
-  reservePrice: runtime.Decimal | null
-  buyNowPrice: runtime.Decimal | null
+  retailValue: runtime.Decimal
+  entryFee: runtime.Decimal
   startDate: Date
   endDate: Date
   isActive: boolean
@@ -356,11 +323,8 @@ export type ProductWhereInput = {
   categoryId?: Prisma.StringFilter<"Product"> | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFilter<"Product"> | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.StringNullableListFilter<"Product"> | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFilter<"Product"> | number | runtime.Types.Skip
-  reservePrice?: Prisma.DecimalNullableFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.DecimalNullableFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFilter<"Product"> | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFilter<"Product"> | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFilter<"Product"> | boolean | runtime.Types.Skip
@@ -383,11 +347,8 @@ export type ProductOrderByWithRelationInput = {
   categoryId?: Prisma.SortOrder | runtime.Types.Skip
   condition?: Prisma.SortOrder | runtime.Types.Skip
   images?: Prisma.SortOrder | runtime.Types.Skip
-  startingPrice?: Prisma.SortOrder | runtime.Types.Skip
-  currentBid?: Prisma.SortOrder | runtime.Types.Skip
-  bidsCount?: Prisma.SortOrder | runtime.Types.Skip
-  reservePrice?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip
-  buyNowPrice?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip
+  retailValue?: Prisma.SortOrder | runtime.Types.Skip
+  entryFee?: Prisma.SortOrder | runtime.Types.Skip
   startDate?: Prisma.SortOrder | runtime.Types.Skip
   endDate?: Prisma.SortOrder | runtime.Types.Skip
   isActive?: Prisma.SortOrder | runtime.Types.Skip
@@ -414,11 +375,8 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   categoryId?: Prisma.StringFilter<"Product"> | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFilter<"Product"> | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.StringNullableListFilter<"Product"> | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFilter<"Product"> | number | runtime.Types.Skip
-  reservePrice?: Prisma.DecimalNullableFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.DecimalNullableFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFilter<"Product"> | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFilter<"Product"> | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFilter<"Product"> | boolean | runtime.Types.Skip
@@ -441,11 +399,8 @@ export type ProductOrderByWithAggregationInput = {
   categoryId?: Prisma.SortOrder | runtime.Types.Skip
   condition?: Prisma.SortOrder | runtime.Types.Skip
   images?: Prisma.SortOrder | runtime.Types.Skip
-  startingPrice?: Prisma.SortOrder | runtime.Types.Skip
-  currentBid?: Prisma.SortOrder | runtime.Types.Skip
-  bidsCount?: Prisma.SortOrder | runtime.Types.Skip
-  reservePrice?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip
-  buyNowPrice?: Prisma.SortOrderInput | Prisma.SortOrder | runtime.Types.Skip
+  retailValue?: Prisma.SortOrder | runtime.Types.Skip
+  entryFee?: Prisma.SortOrder | runtime.Types.Skip
   startDate?: Prisma.SortOrder | runtime.Types.Skip
   endDate?: Prisma.SortOrder | runtime.Types.Skip
   isActive?: Prisma.SortOrder | runtime.Types.Skip
@@ -474,11 +429,8 @@ export type ProductScalarWhereWithAggregatesInput = {
   categoryId?: Prisma.StringWithAggregatesFilter<"Product"> | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionWithAggregatesFilter<"Product"> | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.StringNullableListFilter<"Product"> | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalWithAggregatesFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalWithAggregatesFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntWithAggregatesFilter<"Product"> | number | runtime.Types.Skip
-  reservePrice?: Prisma.DecimalNullableWithAggregatesFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalWithAggregatesFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalWithAggregatesFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean | runtime.Types.Skip
@@ -498,11 +450,8 @@ export type ProductCreateInput = {
   description: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -525,11 +474,8 @@ export type ProductUncheckedCreateInput = {
   categoryId: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -550,11 +496,8 @@ export type ProductUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -577,11 +520,8 @@ export type ProductUncheckedUpdateInput = {
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -603,11 +543,8 @@ export type ProductCreateManyInput = {
   categoryId: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -627,11 +564,8 @@ export type ProductUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -652,11 +586,8 @@ export type ProductUncheckedUpdateManyInput = {
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -701,11 +632,8 @@ export type ProductCountOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder | runtime.Types.Skip
   condition?: Prisma.SortOrder | runtime.Types.Skip
   images?: Prisma.SortOrder | runtime.Types.Skip
-  startingPrice?: Prisma.SortOrder | runtime.Types.Skip
-  currentBid?: Prisma.SortOrder | runtime.Types.Skip
-  bidsCount?: Prisma.SortOrder | runtime.Types.Skip
-  reservePrice?: Prisma.SortOrder | runtime.Types.Skip
-  buyNowPrice?: Prisma.SortOrder | runtime.Types.Skip
+  retailValue?: Prisma.SortOrder | runtime.Types.Skip
+  entryFee?: Prisma.SortOrder | runtime.Types.Skip
   startDate?: Prisma.SortOrder | runtime.Types.Skip
   endDate?: Prisma.SortOrder | runtime.Types.Skip
   isActive?: Prisma.SortOrder | runtime.Types.Skip
@@ -720,11 +648,8 @@ export type ProductCountOrderByAggregateInput = {
 }
 
 export type ProductAvgOrderByAggregateInput = {
-  startingPrice?: Prisma.SortOrder | runtime.Types.Skip
-  currentBid?: Prisma.SortOrder | runtime.Types.Skip
-  bidsCount?: Prisma.SortOrder | runtime.Types.Skip
-  reservePrice?: Prisma.SortOrder | runtime.Types.Skip
-  buyNowPrice?: Prisma.SortOrder | runtime.Types.Skip
+  retailValue?: Prisma.SortOrder | runtime.Types.Skip
+  entryFee?: Prisma.SortOrder | runtime.Types.Skip
   sellerRating?: Prisma.SortOrder | runtime.Types.Skip
   rating?: Prisma.SortOrder | runtime.Types.Skip
   reviewCount?: Prisma.SortOrder | runtime.Types.Skip
@@ -736,11 +661,8 @@ export type ProductMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder | runtime.Types.Skip
   categoryId?: Prisma.SortOrder | runtime.Types.Skip
   condition?: Prisma.SortOrder | runtime.Types.Skip
-  startingPrice?: Prisma.SortOrder | runtime.Types.Skip
-  currentBid?: Prisma.SortOrder | runtime.Types.Skip
-  bidsCount?: Prisma.SortOrder | runtime.Types.Skip
-  reservePrice?: Prisma.SortOrder | runtime.Types.Skip
-  buyNowPrice?: Prisma.SortOrder | runtime.Types.Skip
+  retailValue?: Prisma.SortOrder | runtime.Types.Skip
+  entryFee?: Prisma.SortOrder | runtime.Types.Skip
   startDate?: Prisma.SortOrder | runtime.Types.Skip
   endDate?: Prisma.SortOrder | runtime.Types.Skip
   isActive?: Prisma.SortOrder | runtime.Types.Skip
@@ -759,11 +681,8 @@ export type ProductMinOrderByAggregateInput = {
   description?: Prisma.SortOrder | runtime.Types.Skip
   categoryId?: Prisma.SortOrder | runtime.Types.Skip
   condition?: Prisma.SortOrder | runtime.Types.Skip
-  startingPrice?: Prisma.SortOrder | runtime.Types.Skip
-  currentBid?: Prisma.SortOrder | runtime.Types.Skip
-  bidsCount?: Prisma.SortOrder | runtime.Types.Skip
-  reservePrice?: Prisma.SortOrder | runtime.Types.Skip
-  buyNowPrice?: Prisma.SortOrder | runtime.Types.Skip
+  retailValue?: Prisma.SortOrder | runtime.Types.Skip
+  entryFee?: Prisma.SortOrder | runtime.Types.Skip
   startDate?: Prisma.SortOrder | runtime.Types.Skip
   endDate?: Prisma.SortOrder | runtime.Types.Skip
   isActive?: Prisma.SortOrder | runtime.Types.Skip
@@ -777,11 +696,8 @@ export type ProductMinOrderByAggregateInput = {
 }
 
 export type ProductSumOrderByAggregateInput = {
-  startingPrice?: Prisma.SortOrder | runtime.Types.Skip
-  currentBid?: Prisma.SortOrder | runtime.Types.Skip
-  bidsCount?: Prisma.SortOrder | runtime.Types.Skip
-  reservePrice?: Prisma.SortOrder | runtime.Types.Skip
-  buyNowPrice?: Prisma.SortOrder | runtime.Types.Skip
+  retailValue?: Prisma.SortOrder | runtime.Types.Skip
+  entryFee?: Prisma.SortOrder | runtime.Types.Skip
   sellerRating?: Prisma.SortOrder | runtime.Types.Skip
   rating?: Prisma.SortOrder | runtime.Types.Skip
   reviewCount?: Prisma.SortOrder | runtime.Types.Skip
@@ -867,11 +783,8 @@ export type ProductCreateWithoutCategoryInput = {
   description: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -892,11 +805,8 @@ export type ProductUncheckedCreateWithoutCategoryInput = {
   description: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -947,11 +857,8 @@ export type ProductScalarWhereInput = {
   categoryId?: Prisma.StringFilter<"Product"> | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFilter<"Product"> | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.StringNullableListFilter<"Product"> | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFilter<"Product"> | number | runtime.Types.Skip
-  reservePrice?: Prisma.DecimalNullableFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.DecimalNullableFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFilter<"Product"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFilter<"Product"> | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFilter<"Product"> | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFilter<"Product"> | boolean | runtime.Types.Skip
@@ -971,11 +878,8 @@ export type ProductCreateWithoutAuctionsInput = {
   description: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -997,11 +901,8 @@ export type ProductUncheckedCreateWithoutAuctionsInput = {
   categoryId: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -1037,11 +938,8 @@ export type ProductUpdateWithoutAuctionsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -1063,11 +961,8 @@ export type ProductUncheckedUpdateWithoutAuctionsInput = {
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -1087,11 +982,8 @@ export type ProductCreateManyCategoryInput = {
   description: string
   condition?: $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductCreateimagesInput | string[] | runtime.Types.Skip
-  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currentBid: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bidsCount?: number | runtime.Types.Skip
-  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  entryFee: runtime.Decimal | runtime.DecimalJsLike | number | string
   startDate?: Date | string | runtime.Types.Skip
   endDate: Date | string
   isActive?: boolean | runtime.Types.Skip
@@ -1111,11 +1003,8 @@ export type ProductUpdateWithoutCategoryInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -1136,11 +1025,8 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -1161,11 +1047,8 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
   condition?: Prisma.EnumProductConditionFieldUpdateOperationsInput | $Enums.ProductCondition | runtime.Types.Skip
   images?: Prisma.ProductUpdateimagesInput | string[] | runtime.Types.Skip
-  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  currentBid?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
-  bidsCount?: Prisma.IntFieldUpdateOperationsInput | number | runtime.Types.Skip
-  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
-  buyNowPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null | runtime.Types.Skip
+  retailValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  entryFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean | runtime.Types.Skip
@@ -1217,11 +1100,8 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   categoryId?: boolean | runtime.Types.Skip
   condition?: boolean | runtime.Types.Skip
   images?: boolean | runtime.Types.Skip
-  startingPrice?: boolean | runtime.Types.Skip
-  currentBid?: boolean | runtime.Types.Skip
-  bidsCount?: boolean | runtime.Types.Skip
-  reservePrice?: boolean | runtime.Types.Skip
-  buyNowPrice?: boolean | runtime.Types.Skip
+  retailValue?: boolean | runtime.Types.Skip
+  entryFee?: boolean | runtime.Types.Skip
   startDate?: boolean | runtime.Types.Skip
   endDate?: boolean | runtime.Types.Skip
   isActive?: boolean | runtime.Types.Skip
@@ -1245,11 +1125,8 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   categoryId?: boolean | runtime.Types.Skip
   condition?: boolean | runtime.Types.Skip
   images?: boolean | runtime.Types.Skip
-  startingPrice?: boolean | runtime.Types.Skip
-  currentBid?: boolean | runtime.Types.Skip
-  bidsCount?: boolean | runtime.Types.Skip
-  reservePrice?: boolean | runtime.Types.Skip
-  buyNowPrice?: boolean | runtime.Types.Skip
+  retailValue?: boolean | runtime.Types.Skip
+  entryFee?: boolean | runtime.Types.Skip
   startDate?: boolean | runtime.Types.Skip
   endDate?: boolean | runtime.Types.Skip
   isActive?: boolean | runtime.Types.Skip
@@ -1271,11 +1148,8 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   categoryId?: boolean | runtime.Types.Skip
   condition?: boolean | runtime.Types.Skip
   images?: boolean | runtime.Types.Skip
-  startingPrice?: boolean | runtime.Types.Skip
-  currentBid?: boolean | runtime.Types.Skip
-  bidsCount?: boolean | runtime.Types.Skip
-  reservePrice?: boolean | runtime.Types.Skip
-  buyNowPrice?: boolean | runtime.Types.Skip
+  retailValue?: boolean | runtime.Types.Skip
+  entryFee?: boolean | runtime.Types.Skip
   startDate?: boolean | runtime.Types.Skip
   endDate?: boolean | runtime.Types.Skip
   isActive?: boolean | runtime.Types.Skip
@@ -1297,11 +1171,8 @@ export type ProductSelectScalar = {
   categoryId?: boolean | runtime.Types.Skip
   condition?: boolean | runtime.Types.Skip
   images?: boolean | runtime.Types.Skip
-  startingPrice?: boolean | runtime.Types.Skip
-  currentBid?: boolean | runtime.Types.Skip
-  bidsCount?: boolean | runtime.Types.Skip
-  reservePrice?: boolean | runtime.Types.Skip
-  buyNowPrice?: boolean | runtime.Types.Skip
+  retailValue?: boolean | runtime.Types.Skip
+  entryFee?: boolean | runtime.Types.Skip
   startDate?: boolean | runtime.Types.Skip
   endDate?: boolean | runtime.Types.Skip
   isActive?: boolean | runtime.Types.Skip
@@ -1315,7 +1186,7 @@ export type ProductSelectScalar = {
   updatedAt?: boolean | runtime.Types.Skip
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "categoryId" | "condition" | "images" | "startingPrice" | "currentBid" | "bidsCount" | "reservePrice" | "buyNowPrice" | "startDate" | "endDate" | "isActive" | "sellerId" | "sellerName" | "sellerRating" | "rating" | "reviewCount" | "specifications" | "createdAt" | "updatedAt", ExtArgs["result"]["product"], runtime.Types.Skip>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "categoryId" | "condition" | "images" | "retailValue" | "entryFee" | "startDate" | "endDate" | "isActive" | "sellerId" | "sellerName" | "sellerRating" | "rating" | "reviewCount" | "specifications" | "createdAt" | "updatedAt", ExtArgs["result"]["product"], runtime.Types.Skip>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs> | runtime.Types.Skip
   auctions?: boolean | Prisma.Product$auctionsArgs<ExtArgs> | runtime.Types.Skip
@@ -1341,11 +1212,8 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     categoryId: string
     condition: $Enums.ProductCondition
     images: string[]
-    startingPrice: runtime.Decimal
-    currentBid: runtime.Decimal
-    bidsCount: number
-    reservePrice: runtime.Decimal | null
-    buyNowPrice: runtime.Decimal | null
+    retailValue: runtime.Decimal
+    entryFee: runtime.Decimal
     startDate: Date
     endDate: Date
     isActive: boolean
@@ -1788,11 +1656,8 @@ export interface ProductFieldRefs {
   readonly categoryId: Prisma.FieldRef<"Product", 'String'>
   readonly condition: Prisma.FieldRef<"Product", 'ProductCondition'>
   readonly images: Prisma.FieldRef<"Product", 'String[]'>
-  readonly startingPrice: Prisma.FieldRef<"Product", 'Decimal'>
-  readonly currentBid: Prisma.FieldRef<"Product", 'Decimal'>
-  readonly bidsCount: Prisma.FieldRef<"Product", 'Int'>
-  readonly reservePrice: Prisma.FieldRef<"Product", 'Decimal'>
-  readonly buyNowPrice: Prisma.FieldRef<"Product", 'Decimal'>
+  readonly retailValue: Prisma.FieldRef<"Product", 'Decimal'>
+  readonly entryFee: Prisma.FieldRef<"Product", 'Decimal'>
   readonly startDate: Prisma.FieldRef<"Product", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"Product", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"Product", 'Boolean'>

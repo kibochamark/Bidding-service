@@ -24,11 +24,8 @@ export declare class ProductsController {
         categoryId: string;
         condition: import("../../../generated/prisma/enums").ProductCondition;
         images: string[];
-        startingPrice: import("@prisma/client-runtime-utils").Decimal;
-        currentBid: import("@prisma/client-runtime-utils").Decimal;
-        bidsCount: number;
-        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
-        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        retailValue: import("@prisma/client-runtime-utils").Decimal;
+        entryFee: import("@prisma/client-runtime-utils").Decimal;
         startDate: Date;
         endDate: Date;
         isActive: boolean;
@@ -51,6 +48,23 @@ export declare class ProductsController {
             icon: string | null;
             parentId: string | null;
         };
+        auctions: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string;
+            title: string;
+            entryFee: import("@prisma/client-runtime-utils").Decimal;
+            startDate: Date;
+            endDate: Date;
+            productId: string;
+            prizeValue: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums").AuctionStatus;
+            winnerId: string | null;
+            winningBidAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            totalBidsCount: number;
+            totalRevenue: import("@prisma/client-runtime-utils").Decimal;
+        }[];
     } & {
         id: string;
         createdAt: Date;
@@ -61,11 +75,8 @@ export declare class ProductsController {
         categoryId: string;
         condition: import("../../../generated/prisma/enums").ProductCondition;
         images: string[];
-        startingPrice: import("@prisma/client-runtime-utils").Decimal;
-        currentBid: import("@prisma/client-runtime-utils").Decimal;
-        bidsCount: number;
-        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
-        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        retailValue: import("@prisma/client-runtime-utils").Decimal;
+        entryFee: import("@prisma/client-runtime-utils").Decimal;
         startDate: Date;
         endDate: Date;
         isActive: boolean;
@@ -86,6 +97,23 @@ export declare class ProductsController {
             icon: string | null;
             parentId: string | null;
         };
+        auctions: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string;
+            title: string;
+            entryFee: import("@prisma/client-runtime-utils").Decimal;
+            startDate: Date;
+            endDate: Date;
+            productId: string;
+            prizeValue: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums").AuctionStatus;
+            winnerId: string | null;
+            winningBidAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            totalBidsCount: number;
+            totalRevenue: import("@prisma/client-runtime-utils").Decimal;
+        }[];
     } & {
         id: string;
         createdAt: Date;
@@ -96,11 +124,8 @@ export declare class ProductsController {
         categoryId: string;
         condition: import("../../../generated/prisma/enums").ProductCondition;
         images: string[];
-        startingPrice: import("@prisma/client-runtime-utils").Decimal;
-        currentBid: import("@prisma/client-runtime-utils").Decimal;
-        bidsCount: number;
-        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
-        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        retailValue: import("@prisma/client-runtime-utils").Decimal;
+        entryFee: import("@prisma/client-runtime-utils").Decimal;
         startDate: Date;
         endDate: Date;
         isActive: boolean;
@@ -123,6 +148,23 @@ export declare class ProductsController {
             icon: string | null;
             parentId: string | null;
         };
+        auctions: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string;
+            title: string;
+            entryFee: import("@prisma/client-runtime-utils").Decimal;
+            startDate: Date;
+            endDate: Date;
+            productId: string;
+            prizeValue: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums").AuctionStatus;
+            winnerId: string | null;
+            winningBidAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            totalBidsCount: number;
+            totalRevenue: import("@prisma/client-runtime-utils").Decimal;
+        }[];
     } & {
         id: string;
         createdAt: Date;
@@ -133,11 +175,8 @@ export declare class ProductsController {
         categoryId: string;
         condition: import("../../../generated/prisma/enums").ProductCondition;
         images: string[];
-        startingPrice: import("@prisma/client-runtime-utils").Decimal;
-        currentBid: import("@prisma/client-runtime-utils").Decimal;
-        bidsCount: number;
-        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
-        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        retailValue: import("@prisma/client-runtime-utils").Decimal;
+        entryFee: import("@prisma/client-runtime-utils").Decimal;
         startDate: Date;
         endDate: Date;
         isActive: boolean;
@@ -148,6 +187,24 @@ export declare class ProductsController {
         specifications: import("@prisma/client/runtime/client").JsonValue;
     }>;
     updateProduct(params: ProductParamDto, dto: UpdateProductDto): Promise<{
+        auctions: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string;
+            title: string;
+            entryFee: import("@prisma/client-runtime-utils").Decimal;
+            startDate: Date;
+            endDate: Date;
+            productId: string;
+            prizeValue: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums").AuctionStatus;
+            winnerId: string | null;
+            winningBidAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            totalBidsCount: number;
+            totalRevenue: import("@prisma/client-runtime-utils").Decimal;
+        }[];
+    } | ({
         category: {
             id: string;
             createdAt: Date;
@@ -168,11 +225,8 @@ export declare class ProductsController {
         categoryId: string;
         condition: import("../../../generated/prisma/enums").ProductCondition;
         images: string[];
-        startingPrice: import("@prisma/client-runtime-utils").Decimal;
-        currentBid: import("@prisma/client-runtime-utils").Decimal;
-        bidsCount: number;
-        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
-        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        retailValue: import("@prisma/client-runtime-utils").Decimal;
+        entryFee: import("@prisma/client-runtime-utils").Decimal;
         startDate: Date;
         endDate: Date;
         isActive: boolean;
@@ -181,7 +235,7 @@ export declare class ProductsController {
         sellerRating: import("@prisma/client-runtime-utils").Decimal;
         reviewCount: number;
         specifications: import("@prisma/client/runtime/client").JsonValue;
-    }>;
+    })>;
     deleteProduct(params: ProductParamDto): Promise<{
         id: string;
         createdAt: Date;
@@ -192,11 +246,8 @@ export declare class ProductsController {
         categoryId: string;
         condition: import("../../../generated/prisma/enums").ProductCondition;
         images: string[];
-        startingPrice: import("@prisma/client-runtime-utils").Decimal;
-        currentBid: import("@prisma/client-runtime-utils").Decimal;
-        bidsCount: number;
-        reservePrice: import("@prisma/client-runtime-utils").Decimal | null;
-        buyNowPrice: import("@prisma/client-runtime-utils").Decimal | null;
+        retailValue: import("@prisma/client-runtime-utils").Decimal;
+        entryFee: import("@prisma/client-runtime-utils").Decimal;
         startDate: Date;
         endDate: Date;
         isActive: boolean;

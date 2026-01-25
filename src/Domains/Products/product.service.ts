@@ -1,17 +1,31 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { CreateProductDto, SearchProductsDto, UpdateProductDto } from '../../../src/Controllers/Products/dto';
+import { AuctionService } from '../Bidding/auction.service';
 
 @Injectable()
 export class ProductService {
     private readonly logger = new Logger(ProductService.name);
 
-    constructor(private productRepository: ProductRepository) {}
+    constructor(private productRepository: ProductRepository, private auction:AuctionService) {}
 
     async createProduct(data: CreateProductDto) {
         this.logger.log(`Creating product: ${data.title} by seller: ${data.sellerId}`);
         const product = await this.productRepository.createProduct(data);
+
         this.logger.log(`Product created successfully with ID: ${product.id}`);
+        if (product.id) {
+            this.logger.log("Creating auction for product");
+            await this.auction.createAuction({
+                productId: product.id,
+                title: product.title,
+                description: product.description,
+                prizeValue: parseFloat(product.retailValue.toString()),
+                entryFee: parseFloat(product.entryFee.toString()),
+                endDate: data.endDate,
+            });
+            this.logger.log(`Auction created for product ${product.id}`);
+        }
         return product;
     }
 
@@ -20,7 +34,7 @@ export class ProductService {
         return await this.productRepository.findProductById(id);
     }
 
-    async updateProduct(id: string, data: UpdateProductDto) {
+    async updateProduct(id: string, data: Partial<UpdateProductDto>) {
         this.logger.log(`Updating product: ${id}`);
         const product = await this.productRepository.updateProduct(id, data);
         this.logger.log(`Product updated successfully: ${id}`);

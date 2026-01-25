@@ -46,19 +46,13 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
-], CreateProductDto.prototype, "startingPrice", void 0);
+], CreateProductDto.prototype, "retailValue", void 0);
 __decorate([
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.Min)(0),
+    (0, class_validator_1.Min)(0.01),
     __metadata("design:type", Number)
-], CreateProductDto.prototype, "reservePrice", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.Min)(0),
-    __metadata("design:type", Number)
-], CreateProductDto.prototype, "buyNowPrice", void 0);
+], CreateProductDto.prototype, "entryFee", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsDateString)(),
@@ -108,13 +102,13 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
-], UpdateProductDto.prototype, "reservePrice", void 0);
+], UpdateProductDto.prototype, "retailValue", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.Min)(0),
+    (0, class_validator_1.Min)(0.01),
     __metadata("design:type", Number)
-], UpdateProductDto.prototype, "buyNowPrice", void 0);
+], UpdateProductDto.prototype, "entryFee", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),

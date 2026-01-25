@@ -199,7 +199,6 @@ export type AccountWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Account"> | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFilter<"Account"> | Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressListRelationFilter | runtime.Types.Skip
-  kyc?: Prisma.XOR<Prisma.KycProfileNullableScalarRelationFilter, Prisma.KycProfileWhereInput> | null | runtime.Types.Skip
   sellerProfile?: Prisma.XOR<Prisma.SellerDetailsNullableScalarRelationFilter, Prisma.SellerDetailsWhereInput> | null | runtime.Types.Skip
 }
 
@@ -212,7 +211,6 @@ export type AccountOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder | runtime.Types.Skip
   updatedAt?: Prisma.SortOrder | runtime.Types.Skip
   addresses?: Prisma.AddressOrderByRelationAggregateInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileOrderByWithRelationInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsOrderByWithRelationInput | runtime.Types.Skip
   _relevance?: Prisma.AccountOrderByRelevanceInput | runtime.Types.Skip
 }
@@ -229,7 +227,6 @@ export type AccountWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Account"> | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFilter<"Account"> | Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressListRelationFilter | runtime.Types.Skip
-  kyc?: Prisma.XOR<Prisma.KycProfileNullableScalarRelationFilter, Prisma.KycProfileWhereInput> | null | runtime.Types.Skip
   sellerProfile?: Prisma.XOR<Prisma.SellerDetailsNullableScalarRelationFilter, Prisma.SellerDetailsWhereInput> | null | runtime.Types.Skip
 }, "id" | "kindeId" | "email">
 
@@ -268,7 +265,6 @@ export type AccountCreateInput = {
   createdAt?: Date | string | runtime.Types.Skip
   updatedAt?: Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressCreateNestedManyWithoutAccountInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileCreateNestedOneWithoutAccountInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsCreateNestedOneWithoutAccountInput | runtime.Types.Skip
 }
 
@@ -281,7 +277,6 @@ export type AccountUncheckedCreateInput = {
   createdAt?: Date | string | runtime.Types.Skip
   updatedAt?: Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutAccountInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUncheckedCreateNestedOneWithoutAccountInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsUncheckedCreateNestedOneWithoutAccountInput | runtime.Types.Skip
 }
 
@@ -294,7 +289,6 @@ export type AccountUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressUpdateManyWithoutAccountNestedInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
 }
 
@@ -307,7 +301,6 @@ export type AccountUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutAccountNestedInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUncheckedUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsUncheckedUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
 }
 
@@ -394,20 +387,6 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string | runtime.Types.Skip
 }
 
-export type AccountCreateNestedOneWithoutKycInput = {
-  create?: Prisma.XOR<Prisma.AccountCreateWithoutKycInput, Prisma.AccountUncheckedCreateWithoutKycInput> | runtime.Types.Skip
-  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutKycInput | runtime.Types.Skip
-  connect?: Prisma.AccountWhereUniqueInput | runtime.Types.Skip
-}
-
-export type AccountUpdateOneRequiredWithoutKycNestedInput = {
-  create?: Prisma.XOR<Prisma.AccountCreateWithoutKycInput, Prisma.AccountUncheckedCreateWithoutKycInput> | runtime.Types.Skip
-  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutKycInput | runtime.Types.Skip
-  upsert?: Prisma.AccountUpsertWithoutKycInput | runtime.Types.Skip
-  connect?: Prisma.AccountWhereUniqueInput | runtime.Types.Skip
-  update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutKycInput, Prisma.AccountUpdateWithoutKycInput>, Prisma.AccountUncheckedUpdateWithoutKycInput> | runtime.Types.Skip
-}
-
 export type AccountCreateNestedOneWithoutSellerProfileInput = {
   create?: Prisma.XOR<Prisma.AccountCreateWithoutSellerProfileInput, Prisma.AccountUncheckedCreateWithoutSellerProfileInput> | runtime.Types.Skip
   connectOrCreate?: Prisma.AccountCreateOrConnectWithoutSellerProfileInput | runtime.Types.Skip
@@ -436,70 +415,6 @@ export type AccountUpdateOneRequiredWithoutAddressesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutAddressesInput, Prisma.AccountUpdateWithoutAddressesInput>, Prisma.AccountUncheckedUpdateWithoutAddressesInput> | runtime.Types.Skip
 }
 
-export type AccountCreateWithoutKycInput = {
-  id?: string | runtime.Types.Skip
-  kindeId: string
-  email?: string | null | runtime.Types.Skip
-  contact?: string | null | runtime.Types.Skip
-  fullName?: string | null | runtime.Types.Skip
-  createdAt?: Date | string | runtime.Types.Skip
-  updatedAt?: Date | string | runtime.Types.Skip
-  addresses?: Prisma.AddressCreateNestedManyWithoutAccountInput | runtime.Types.Skip
-  sellerProfile?: Prisma.SellerDetailsCreateNestedOneWithoutAccountInput | runtime.Types.Skip
-}
-
-export type AccountUncheckedCreateWithoutKycInput = {
-  id?: string | runtime.Types.Skip
-  kindeId: string
-  email?: string | null | runtime.Types.Skip
-  contact?: string | null | runtime.Types.Skip
-  fullName?: string | null | runtime.Types.Skip
-  createdAt?: Date | string | runtime.Types.Skip
-  updatedAt?: Date | string | runtime.Types.Skip
-  addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutAccountInput | runtime.Types.Skip
-  sellerProfile?: Prisma.SellerDetailsUncheckedCreateNestedOneWithoutAccountInput | runtime.Types.Skip
-}
-
-export type AccountCreateOrConnectWithoutKycInput = {
-  where: Prisma.AccountWhereUniqueInput
-  create: Prisma.XOR<Prisma.AccountCreateWithoutKycInput, Prisma.AccountUncheckedCreateWithoutKycInput>
-}
-
-export type AccountUpsertWithoutKycInput = {
-  update: Prisma.XOR<Prisma.AccountUpdateWithoutKycInput, Prisma.AccountUncheckedUpdateWithoutKycInput>
-  create: Prisma.XOR<Prisma.AccountCreateWithoutKycInput, Prisma.AccountUncheckedCreateWithoutKycInput>
-  where?: Prisma.AccountWhereInput | runtime.Types.Skip
-}
-
-export type AccountUpdateToOneWithWhereWithoutKycInput = {
-  where?: Prisma.AccountWhereInput | runtime.Types.Skip
-  data: Prisma.XOR<Prisma.AccountUpdateWithoutKycInput, Prisma.AccountUncheckedUpdateWithoutKycInput>
-}
-
-export type AccountUpdateWithoutKycInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
-  kindeId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
-  addresses?: Prisma.AddressUpdateManyWithoutAccountNestedInput | runtime.Types.Skip
-  sellerProfile?: Prisma.SellerDetailsUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
-}
-
-export type AccountUncheckedUpdateWithoutKycInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
-  kindeId?: Prisma.StringFieldUpdateOperationsInput | string | runtime.Types.Skip
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
-  addresses?: Prisma.AddressUncheckedUpdateManyWithoutAccountNestedInput | runtime.Types.Skip
-  sellerProfile?: Prisma.SellerDetailsUncheckedUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
-}
-
 export type AccountCreateWithoutSellerProfileInput = {
   id?: string | runtime.Types.Skip
   kindeId: string
@@ -509,7 +424,6 @@ export type AccountCreateWithoutSellerProfileInput = {
   createdAt?: Date | string | runtime.Types.Skip
   updatedAt?: Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressCreateNestedManyWithoutAccountInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileCreateNestedOneWithoutAccountInput | runtime.Types.Skip
 }
 
 export type AccountUncheckedCreateWithoutSellerProfileInput = {
@@ -521,7 +435,6 @@ export type AccountUncheckedCreateWithoutSellerProfileInput = {
   createdAt?: Date | string | runtime.Types.Skip
   updatedAt?: Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutAccountInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUncheckedCreateNestedOneWithoutAccountInput | runtime.Types.Skip
 }
 
 export type AccountCreateOrConnectWithoutSellerProfileInput = {
@@ -549,7 +462,6 @@ export type AccountUpdateWithoutSellerProfileInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressUpdateManyWithoutAccountNestedInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
 }
 
 export type AccountUncheckedUpdateWithoutSellerProfileInput = {
@@ -561,7 +473,6 @@ export type AccountUncheckedUpdateWithoutSellerProfileInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutAccountNestedInput | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUncheckedUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
 }
 
 export type AccountCreateWithoutAddressesInput = {
@@ -572,7 +483,6 @@ export type AccountCreateWithoutAddressesInput = {
   fullName?: string | null | runtime.Types.Skip
   createdAt?: Date | string | runtime.Types.Skip
   updatedAt?: Date | string | runtime.Types.Skip
-  kyc?: Prisma.KycProfileCreateNestedOneWithoutAccountInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsCreateNestedOneWithoutAccountInput | runtime.Types.Skip
 }
 
@@ -584,7 +494,6 @@ export type AccountUncheckedCreateWithoutAddressesInput = {
   fullName?: string | null | runtime.Types.Skip
   createdAt?: Date | string | runtime.Types.Skip
   updatedAt?: Date | string | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUncheckedCreateNestedOneWithoutAccountInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsUncheckedCreateNestedOneWithoutAccountInput | runtime.Types.Skip
 }
 
@@ -612,7 +521,6 @@ export type AccountUpdateWithoutAddressesInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
 }
 
@@ -624,7 +532,6 @@ export type AccountUncheckedUpdateWithoutAddressesInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null | runtime.Types.Skip
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string | runtime.Types.Skip
-  kyc?: Prisma.KycProfileUncheckedUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
   sellerProfile?: Prisma.SellerDetailsUncheckedUpdateOneWithoutAccountNestedInput | runtime.Types.Skip
 }
 
@@ -668,7 +575,6 @@ export type AccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean | runtime.Types.Skip
   updatedAt?: boolean | runtime.Types.Skip
   addresses?: boolean | Prisma.Account$addressesArgs<ExtArgs> | runtime.Types.Skip
-  kyc?: boolean | Prisma.Account$kycArgs<ExtArgs> | runtime.Types.Skip
   sellerProfile?: boolean | Prisma.Account$sellerProfileArgs<ExtArgs> | runtime.Types.Skip
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs> | runtime.Types.Skip
 }, ExtArgs["result"]["account"]>
@@ -706,7 +612,6 @@ export type AccountSelectScalar = {
 export type AccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kindeId" | "email" | "contact" | "fullName" | "createdAt" | "updatedAt", ExtArgs["result"]["account"], runtime.Types.Skip>
 export type AccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   addresses?: boolean | Prisma.Account$addressesArgs<ExtArgs> | runtime.Types.Skip
-  kyc?: boolean | Prisma.Account$kycArgs<ExtArgs> | runtime.Types.Skip
   sellerProfile?: boolean | Prisma.Account$sellerProfileArgs<ExtArgs> | runtime.Types.Skip
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs> | runtime.Types.Skip
 }
@@ -717,7 +622,6 @@ export type $AccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Account"
   objects: {
     addresses: Prisma.$AddressPayload<ExtArgs>[]
-    kyc: Prisma.$KycProfilePayload<ExtArgs> | null
     sellerProfile: Prisma.$SellerDetailsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1123,7 +1027,6 @@ readonly fields: AccountFieldRefs;
 export interface Prisma__AccountClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   addresses<T extends Prisma.Account$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  kyc<T extends Prisma.Account$kycArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$kycArgs<ExtArgs>>): Prisma.Prisma__KycProfileClient<runtime.Types.Result.GetResult<Prisma.$KycProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sellerProfile<T extends Prisma.Account$sellerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$sellerProfileArgs<ExtArgs>>): Prisma.Prisma__SellerDetailsClient<runtime.Types.Result.GetResult<Prisma.$SellerDetailsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1579,25 +1482,6 @@ export type Account$addressesArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number | runtime.Types.Skip
   skip?: number | runtime.Types.Skip
   distinct?: Prisma.AddressScalarFieldEnum | Prisma.AddressScalarFieldEnum[] | runtime.Types.Skip
-}
-
-/**
- * Account.kyc
- */
-export type Account$kycArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the KycProfile
-   */
-  select?: Prisma.KycProfileSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the KycProfile
-   */
-  omit?: Prisma.KycProfileOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.KycProfileInclude<ExtArgs> | null
-  where?: Prisma.KycProfileWhereInput | runtime.Types.Skip
 }
 
 /**

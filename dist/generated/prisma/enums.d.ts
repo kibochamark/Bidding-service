@@ -1,3 +1,10 @@
+export declare const PaymentStatus: {
+    readonly PENDING: "PENDING";
+    readonly PAID: "PAID";
+    readonly REFUNDED: "REFUNDED";
+    readonly FAILED: "FAILED";
+};
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus];
 export declare const KycStatus: {
     readonly PENDING: "PENDING";
     readonly VERIFIED: "VERIFIED";

@@ -18,8 +18,8 @@ let BidRepository = BidRepository_1 = class BidRepository {
         this.prisma = prisma;
         this.logger = new common_1.Logger(BidRepository_1.name);
     }
-    async placeBid(data) {
-        this.logger.log(`Placing bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
+    async placeBidWithPayment(data) {
+        this.logger.log(`Processing paid bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
         const auction = await this.prisma.auction.findUnique({
             where: { id: data.auctionId },
         });
@@ -29,19 +29,13 @@ let BidRepository = BidRepository_1 = class BidRepository {
         if (auction.status !== 'ACTIVE') {
             throw new common_1.BadRequestException(`Auction is not active. Current status: ${auction.status}`);
         }
-        if (new Date() > auction.endDate) {
-            throw new common_1.BadRequestException('Auction has ended');
-        }
-        const existingBid = await this.prisma.bid.findUnique({
-            where: {
-                auctionId_bidderId: {
-                    auctionId: data.auctionId,
-                    bidderId: data.bidderId,
-                }
-            }
-        });
-        if (existingBid) {
-            throw new common_1.ConflictException('You can only place ONE bid per auction. Your bid has already been placed.');
+        const gracePeriodMs = 2 * 60 * 1000;
+        const auctionEndWithGrace = new Date(auction.endDate.getTime() + gracePeriodMs);
+        const now = new Date();
+        const isAfterAuctionEnd = now > auction.endDate;
+        const isWithinGracePeriod = now <= auctionEndWithGrace;
+        if (now > auctionEndWithGrace) {
+            throw new common_1.BadRequestException('Auction has ended and grace period expired. Bid cannot be placed.');
         }
         const existingBidWithSameAmount = await this.prisma.bid.findFirst({
             where: {
@@ -56,9 +50,55 @@ let BidRepository = BidRepository_1 = class BidRepository {
                 bidderId: data.bidderId,
                 bidderName: data.bidderName,
                 bidAmount: data.bidAmount,
+                entryFeePaid: data.entryFee,
+                totalPaid: data.totalPaid,
+                paymentIntentId: data.paymentIntentId,
+                paymentStatus: 'PAID',
                 isUnique: isUnique,
             }
         });
+        if (existingBidWithSameAmount) {
+            await this.prisma.bid.update({
+                where: { id: existingBidWithSameAmount.id },
+                data: { isUnique: false }
+            });
+        }
+        await this.prisma.auction.update({
+            where: { id: data.auctionId },
+            data: {
+                totalBidsCount: { increment: 1 },
+                totalRevenue: { increment: data.totalPaid }
+            }
+        });
+        await this.recalculateWinningBid(data.auctionId);
+        this.logger.log(`Bid placed successfully. Is unique: ${isUnique}. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
+        return {
+            ...newBid,
+            processedAfterAuctionEnd: isAfterAuctionEnd,
+            withinGracePeriod: isWithinGracePeriod,
+        };
+    }
+    async placeBid(data) {
+        this.logger.log(`Placing bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
+        const auction = await this.prisma.auction.findUnique({
+            where: { id: data.auctionId },
+        });
+        if (!auction) {
+            throw new common_1.NotFoundException(`Auction with ID ${data.auctionId} not found`);
+        }
+        if (auction.status !== 'ACTIVE') {
+            throw new common_1.BadRequestException(`Auction is not active. Current status: ${auction.status}`);
+        }
+        if (new Date() > auction.endDate) {
+            throw new common_1.BadRequestException('Auction has ended');
+        }
+        const existingBidWithSameAmount = await this.prisma.bid.findFirst({
+            where: {
+                auctionId: data.auctionId,
+                bidAmount: data.bidAmount,
+            }
+        });
+        const isUnique = !existingBidWithSameAmount;
         if (existingBidWithSameAmount) {
             await this.prisma.bid.update({
                 where: { id: existingBidWithSameAmount.id },
@@ -74,7 +114,7 @@ let BidRepository = BidRepository_1 = class BidRepository {
         });
         await this.recalculateWinningBid(data.auctionId);
         this.logger.log(`Bid placed successfully. Is unique: ${isUnique}`);
-        return newBid;
+        return {};
     }
     async recalculateWinningBid(auctionId) {
         this.logger.log(`Recalculating winning bid for auction ${auctionId}`);

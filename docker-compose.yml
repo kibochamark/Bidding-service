@@ -92,6 +92,21 @@ services:
     volumes:
       - ./src:/usr/src/app/src
 
+
+  redis-service:
+    image: redis:7-alpine
+    container_name: bidding-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 # ==============================================
 # Networks
 # ==============================================
@@ -108,3 +123,4 @@ volumes:
   postgres_data:
     # Named volume for PostgreSQL data
     # Data persists even when containers are removed!
+  redis-data:

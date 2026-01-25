@@ -8,7 +8,9 @@ import { useNestTreblle } from "treblle";
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    rawBody: true
+  });
 
 
   // // const app = await NestFactory.create(AppModule);

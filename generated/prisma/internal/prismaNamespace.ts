@@ -390,7 +390,6 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Account: 'Account',
-  KycProfile: 'KycProfile',
   SellerDetails: 'SellerDetails',
   Address: 'Address',
   Category: 'Category',
@@ -412,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "kycProfile" | "sellerDetails" | "address" | "category" | "product" | "auction" | "bid"
+    modelProps: "account" | "sellerDetails" | "address" | "category" | "product" | "auction" | "bid"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -487,80 +486,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AccountCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AccountCountAggregateOutputType> | number
-        }
-      }
-    }
-    KycProfile: {
-      payload: Prisma.$KycProfilePayload<ExtArgs>
-      fields: Prisma.KycProfileFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.KycProfileFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.KycProfileFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>
-        }
-        findFirst: {
-          args: Prisma.KycProfileFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.KycProfileFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>
-        }
-        findMany: {
-          args: Prisma.KycProfileFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>[]
-        }
-        create: {
-          args: Prisma.KycProfileCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>
-        }
-        createMany: {
-          args: Prisma.KycProfileCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.KycProfileCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>[]
-        }
-        delete: {
-          args: Prisma.KycProfileDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>
-        }
-        update: {
-          args: Prisma.KycProfileUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>
-        }
-        deleteMany: {
-          args: Prisma.KycProfileDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.KycProfileUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.KycProfileUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>[]
-        }
-        upsert: {
-          args: Prisma.KycProfileUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>
-        }
-        aggregate: {
-          args: Prisma.KycProfileAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateKycProfile>
-        }
-        groupBy: {
-          args: Prisma.KycProfileGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.KycProfileGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.KycProfileCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.KycProfileCountAggregateOutputType> | number
         }
       }
     }
@@ -1068,28 +993,6 @@ export const RelationLoadStrategy = {
 export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
 
 
-export const KycProfileScalarFieldEnum = {
-  id: 'id',
-  status: 'status',
-  fullName: 'fullName',
-  dateOfBirth: 'dateOfBirth',
-  nationality: 'nationality',
-  documentType: 'documentType',
-  idDocumentNumber: 'idDocumentNumber',
-  idDocumentUrl: 'idDocumentUrl',
-  proofOfAddressUrl: 'proofOfAddressUrl',
-  selfieUrl: 'selfieUrl',
-  rejectionReason: 'rejectionReason',
-  reviewedBy: 'reviewedBy',
-  verifiedAt: 'verifiedAt',
-  accountId: 'accountId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type KycProfileScalarFieldEnum = (typeof KycProfileScalarFieldEnum)[keyof typeof KycProfileScalarFieldEnum]
-
-
 export const SellerDetailsScalarFieldEnum = {
   id: 'id',
   companyName: 'companyName',
@@ -1145,11 +1048,8 @@ export const ProductScalarFieldEnum = {
   categoryId: 'categoryId',
   condition: 'condition',
   images: 'images',
-  startingPrice: 'startingPrice',
-  currentBid: 'currentBid',
-  bidsCount: 'bidsCount',
-  reservePrice: 'reservePrice',
-  buyNowPrice: 'buyNowPrice',
+  retailValue: 'retailValue',
+  entryFee: 'entryFee',
   startDate: 'startDate',
   endDate: 'endDate',
   isActive: 'isActive',
@@ -1193,6 +1093,10 @@ export const BidScalarFieldEnum = {
   bidderId: 'bidderId',
   bidderName: 'bidderName',
   bidAmount: 'bidAmount',
+  entryFeePaid: 'entryFeePaid',
+  totalPaid: 'totalPaid',
+  paymentIntentId: 'paymentIntentId',
+  paymentStatus: 'paymentStatus',
   isUnique: 'isUnique',
   isWinning: 'isWinning',
   placedAt: 'placedAt'
@@ -1241,22 +1145,6 @@ export const AccountOrderByRelevanceFieldEnum = {
 } as const
 
 export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum]
-
-
-export const KycProfileOrderByRelevanceFieldEnum = {
-  id: 'id',
-  fullName: 'fullName',
-  nationality: 'nationality',
-  idDocumentNumber: 'idDocumentNumber',
-  idDocumentUrl: 'idDocumentUrl',
-  proofOfAddressUrl: 'proofOfAddressUrl',
-  selfieUrl: 'selfieUrl',
-  rejectionReason: 'rejectionReason',
-  reviewedBy: 'reviewedBy',
-  accountId: 'accountId'
-} as const
-
-export type KycProfileOrderByRelevanceFieldEnum = (typeof KycProfileOrderByRelevanceFieldEnum)[keyof typeof KycProfileOrderByRelevanceFieldEnum]
 
 
 export const SellerDetailsOrderByRelevanceFieldEnum = {
@@ -1334,7 +1222,8 @@ export const BidOrderByRelevanceFieldEnum = {
   id: 'id',
   auctionId: 'auctionId',
   bidderId: 'bidderId',
-  bidderName: 'bidderName'
+  bidderName: 'bidderName',
+  paymentIntentId: 'paymentIntentId'
 } as const
 
 export type BidOrderByRelevanceFieldEnum = (typeof BidOrderByRelevanceFieldEnum)[keyof typeof BidOrderByRelevanceFieldEnum]
@@ -1371,34 +1260,6 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
- * Reference to a field of type 'KycStatus'
- */
-export type EnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus'>
-    
-
-
-/**
- * Reference to a field of type 'KycStatus[]'
- */
-export type ListEnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'DocumentType'
- */
-export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType'>
-    
-
-
-/**
- * Reference to a field of type 'DocumentType[]'
- */
-export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>
     
 
 
@@ -1476,6 +1337,20 @@ export type EnumAuctionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'AuctionStatus[]'
  */
 export type ListEnumAuctionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuctionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
     
 
 
@@ -1572,7 +1447,6 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
-  kycProfile?: Prisma.KycProfileOmit
   sellerDetails?: Prisma.SellerDetailsOmit
   address?: Prisma.AddressOmit
   category?: Prisma.CategoryOmit

@@ -17,58 +17,12 @@ exports.UploadController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const s3module_service_1 = require("../../Domains/s3module/s3module.service");
-const kyc_dto_1 = require("./dto/kyc.dto");
-const kyc_service_1 = require("../../Domains/Accounts/kyc.service");
 const product_service_1 = require("../../Domains/Products/product.service");
 let UploadController = UploadController_1 = class UploadController {
-    constructor(s3Service, kycservice, productServive) {
+    constructor(s3Service, productServive) {
         this.s3Service = s3Service;
-        this.kycservice = kycservice;
         this.productServive = productServive;
         this.logger = new common_1.Logger(UploadController_1.name);
-    }
-    async uploadKycDocument(file, body) {
-        if (!file) {
-            throw new common_1.BadRequestException('No file uploaded');
-        }
-        this.logger.log(`Uploading KYC document: ${file.originalname} for account ID: ${body.accountId}`);
-        const allowedMimeTypes = [
-            'image/jpeg',
-            'image/jpg',
-            'image/png',
-            'image/webp',
-            'application/pdf',
-        ];
-        if (!allowedMimeTypes.includes(file.mimetype)) {
-            throw new common_1.BadRequestException('Invalid file type. Only JPEG, PNG, WEBP, and PDF are allowed');
-        }
-        const maxSize = 5 * 1024 * 1024;
-        if (file.size > maxSize) {
-            throw new common_1.BadRequestException('File size must be less than 5MB');
-        }
-        let result;
-        try {
-            result = await this.s3Service.uploadFile(file, 'kyc-documents');
-            if (result.public_id && body.accountId) {
-                this.logger.log(`KYC document uploaded with public ID: ${result.public_id} for account ID: ${body.accountId}`);
-                await this.kycservice.uploadKycDocument(body.accountId, body.documentType, result.secure_url, body.idDocumentNumber);
-            }
-            return {
-                success: true,
-                url: result.secure_url,
-                publicId: result.public_id,
-                format: result.format,
-                size: result.bytes,
-                message: 'KYC document uploaded successfully',
-            };
-        }
-        catch (error) {
-            this.logger.error('Upload failed:', error);
-            if (result.public_id) {
-                await this.s3Service.deleteFile(result.public_id);
-            }
-            throw new common_1.BadRequestException('Failed to upload file');
-        }
     }
     async uploadProductImages(files, params) {
         if (!files || files.length === 0) {
@@ -116,15 +70,6 @@ let UploadController = UploadController_1 = class UploadController {
 };
 exports.UploadController = UploadController;
 __decorate([
-    (0, common_1.Post)('kyc-document'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    __param(0, (0, common_1.UploadedFile)()),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, kyc_dto_1.KycDocumentDto]),
-    __metadata("design:returntype", Promise)
-], UploadController.prototype, "uploadKycDocument", null);
-__decorate([
     (0, common_1.Post)('product-images/:id'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files', 10)),
     __param(0, (0, common_1.UploadedFiles)()),
@@ -135,6 +80,6 @@ __decorate([
 ], UploadController.prototype, "uploadProductImages", null);
 exports.UploadController = UploadController = UploadController_1 = __decorate([
     (0, common_1.Controller)('upload'),
-    __metadata("design:paramtypes", [s3module_service_1.S3moduleService, kyc_service_1.KycService, product_service_1.ProductService])
+    __metadata("design:paramtypes", [s3module_service_1.S3moduleService, product_service_1.ProductService])
 ], UploadController);
 //# sourceMappingURL=upload.controller.js.map

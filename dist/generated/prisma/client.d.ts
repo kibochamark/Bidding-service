@@ -7,7 +7,6 @@ export declare const PrismaClient: $Class.PrismaClientConstructor;
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>;
 export { Prisma };
 export type Account = Prisma.AccountModel;
-export type KycProfile = Prisma.KycProfileModel;
 export type SellerDetails = Prisma.SellerDetailsModel;
 export type Address = Prisma.AddressModel;
 export type Category = Prisma.CategoryModel;

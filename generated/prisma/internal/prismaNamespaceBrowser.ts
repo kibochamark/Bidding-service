@@ -52,7 +52,6 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Account: 'Account',
-  KycProfile: 'KycProfile',
   SellerDetails: 'SellerDetails',
   Address: 'Address',
   Category: 'Category',
@@ -96,28 +95,6 @@ export const RelationLoadStrategy = {
 } as const
 
 export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
-
-
-export const KycProfileScalarFieldEnum = {
-  id: 'id',
-  status: 'status',
-  fullName: 'fullName',
-  dateOfBirth: 'dateOfBirth',
-  nationality: 'nationality',
-  documentType: 'documentType',
-  idDocumentNumber: 'idDocumentNumber',
-  idDocumentUrl: 'idDocumentUrl',
-  proofOfAddressUrl: 'proofOfAddressUrl',
-  selfieUrl: 'selfieUrl',
-  rejectionReason: 'rejectionReason',
-  reviewedBy: 'reviewedBy',
-  verifiedAt: 'verifiedAt',
-  accountId: 'accountId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type KycProfileScalarFieldEnum = (typeof KycProfileScalarFieldEnum)[keyof typeof KycProfileScalarFieldEnum]
 
 
 export const SellerDetailsScalarFieldEnum = {
@@ -175,11 +152,8 @@ export const ProductScalarFieldEnum = {
   categoryId: 'categoryId',
   condition: 'condition',
   images: 'images',
-  startingPrice: 'startingPrice',
-  currentBid: 'currentBid',
-  bidsCount: 'bidsCount',
-  reservePrice: 'reservePrice',
-  buyNowPrice: 'buyNowPrice',
+  retailValue: 'retailValue',
+  entryFee: 'entryFee',
   startDate: 'startDate',
   endDate: 'endDate',
   isActive: 'isActive',
@@ -223,6 +197,10 @@ export const BidScalarFieldEnum = {
   bidderId: 'bidderId',
   bidderName: 'bidderName',
   bidAmount: 'bidAmount',
+  entryFeePaid: 'entryFeePaid',
+  totalPaid: 'totalPaid',
+  paymentIntentId: 'paymentIntentId',
+  paymentStatus: 'paymentStatus',
   isUnique: 'isUnique',
   isWinning: 'isWinning',
   placedAt: 'placedAt'
@@ -271,22 +249,6 @@ export const AccountOrderByRelevanceFieldEnum = {
 } as const
 
 export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum]
-
-
-export const KycProfileOrderByRelevanceFieldEnum = {
-  id: 'id',
-  fullName: 'fullName',
-  nationality: 'nationality',
-  idDocumentNumber: 'idDocumentNumber',
-  idDocumentUrl: 'idDocumentUrl',
-  proofOfAddressUrl: 'proofOfAddressUrl',
-  selfieUrl: 'selfieUrl',
-  rejectionReason: 'rejectionReason',
-  reviewedBy: 'reviewedBy',
-  accountId: 'accountId'
-} as const
-
-export type KycProfileOrderByRelevanceFieldEnum = (typeof KycProfileOrderByRelevanceFieldEnum)[keyof typeof KycProfileOrderByRelevanceFieldEnum]
 
 
 export const SellerDetailsOrderByRelevanceFieldEnum = {
@@ -364,7 +326,8 @@ export const BidOrderByRelevanceFieldEnum = {
   id: 'id',
   auctionId: 'auctionId',
   bidderId: 'bidderId',
-  bidderName: 'bidderName'
+  bidderName: 'bidderName',
+  paymentIntentId: 'paymentIntentId'
 } as const
 
 export type BidOrderByRelevanceFieldEnum = (typeof BidOrderByRelevanceFieldEnum)[keyof typeof BidOrderByRelevanceFieldEnum]

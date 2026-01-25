@@ -1,25 +1,26 @@
 import { BidService } from '../../Domains/Bidding/bid.service';
 import { BidParamDto, PlaceBidDto } from './dto';
+import { ConfigService } from '@nestjs/config';
+import Stripe from "stripe";
+import { Queue } from 'bullmq';
 export declare class BidController {
     private bidService;
+    private configService;
+    private bidQueue;
+    private stripe;
     private readonly logger;
-    constructor(bidService: BidService);
-    placeBid(placeBidDto: PlaceBidDto): Promise<{
-        id: string;
-        auctionId: string;
-        bidderId: string;
-        bidderName: string;
-        bidAmount: import("@prisma/client-runtime-utils").Decimal;
-        isUnique: boolean;
-        isWinning: boolean;
-        placedAt: Date;
-    }>;
+    constructor(bidService: BidService, configService: ConfigService, bidQueue: Queue, stripe: Stripe);
+    placeBid(placeBidDto: PlaceBidDto): Promise<{}>;
     getBidsByAuctionId(auctionId: string): Promise<{
         id: string;
         auctionId: string;
         bidderId: string;
         bidderName: string;
         bidAmount: import("@prisma/client-runtime-utils").Decimal;
+        entryFeePaid: import("@prisma/client-runtime-utils").Decimal;
+        totalPaid: import("@prisma/client-runtime-utils").Decimal;
+        paymentIntentId: string;
+        paymentStatus: import("../../../generated/prisma/enums").PaymentStatus;
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
@@ -27,9 +28,9 @@ export declare class BidController {
     getBidsByBidderId(bidderId: string): Promise<({
         auction: {
             id: string;
-            status: import("../../../generated/prisma/enums").AuctionStatus;
             title: string;
             endDate: Date;
+            status: import("../../../generated/prisma/enums").AuctionStatus;
         };
     } & {
         id: string;
@@ -37,6 +38,10 @@ export declare class BidController {
         bidderId: string;
         bidderName: string;
         bidAmount: import("@prisma/client-runtime-utils").Decimal;
+        entryFeePaid: import("@prisma/client-runtime-utils").Decimal;
+        totalPaid: import("@prisma/client-runtime-utils").Decimal;
+        paymentIntentId: string;
+        paymentStatus: import("../../../generated/prisma/enums").PaymentStatus;
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
@@ -44,16 +49,16 @@ export declare class BidController {
     getBidById(params: BidParamDto): Promise<{
         auction: {
             id: string;
-            status: import("../../../generated/prisma/enums").AuctionStatus;
             createdAt: Date;
             updatedAt: Date;
             description: string;
             title: string;
+            entryFee: import("@prisma/client-runtime-utils").Decimal;
             startDate: Date;
             endDate: Date;
             productId: string;
             prizeValue: import("@prisma/client-runtime-utils").Decimal;
-            entryFee: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums").AuctionStatus;
             winnerId: string | null;
             winningBidAmount: import("@prisma/client-runtime-utils").Decimal | null;
             totalBidsCount: number;
@@ -65,6 +70,10 @@ export declare class BidController {
         bidderId: string;
         bidderName: string;
         bidAmount: import("@prisma/client-runtime-utils").Decimal;
+        entryFeePaid: import("@prisma/client-runtime-utils").Decimal;
+        totalPaid: import("@prisma/client-runtime-utils").Decimal;
+        paymentIntentId: string;
+        paymentStatus: import("../../../generated/prisma/enums").PaymentStatus;
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
@@ -75,6 +84,10 @@ export declare class BidController {
         bidderId: string;
         bidderName: string;
         bidAmount: import("@prisma/client-runtime-utils").Decimal;
+        entryFeePaid: import("@prisma/client-runtime-utils").Decimal;
+        totalPaid: import("@prisma/client-runtime-utils").Decimal;
+        paymentIntentId: string;
+        paymentStatus: import("../../../generated/prisma/enums").PaymentStatus;
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
@@ -85,4 +98,5 @@ export declare class BidController {
         isUnique: boolean;
         bidders: string[];
     }[]>;
+    getStripePaymentEvent(req: any, res: any): Promise<any>;
 }

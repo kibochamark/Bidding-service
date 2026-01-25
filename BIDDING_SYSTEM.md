@@ -8,10 +8,11 @@ This is a **Lowest Unique Bid** auction system where the winner is determined by
 
 ### The Rules
 
-1. **Entry Fee**: Each player pays a fixed entry fee (e.g., $2) to place ONE bid
-2. **One Bid Only**: Each player can only place ONE bid per auction
+1. **Entry Fee**: Each player pays a fixed entry fee (e.g., $2) per bid
+2. **Multiple Bids Allowed**: Each player can place MULTIPLE bids per auction (each bid requires payment)
 3. **Unique Wins**: Only bids that are unique (no one else placed the same amount) are eligible to win
 4. **Lowest Wins**: Among all unique bids, the LOWEST amount wins the prize
+5. **Payment Required**: Each bid must be paid for before it's accepted into the auction
 
 ### Real Example
 
@@ -82,7 +83,9 @@ model Bid {
   placedAt    DateTime @default(now())
   auction     Auction  @relation(fields: [auctionId], references: [id])
 
-  @@unique([auctionId, bidderId]) // One bid per auction per bidder
+  @@index([auctionId, bidAmount])
+  @@index([auctionId, isUnique, bidAmount])
+  @@index([bidderId])
 }
 ```
 
@@ -98,9 +101,9 @@ enum AuctionStatus {
 
 ## Core Logic
 
-### 1. Placing a Bid
+### 1. Initiating a Bid with Payment
 
-**Endpoint**: `POST /bids`
+**Endpoint**: `POST /bids/initiate-payment`
 
 **Request Body**:
 ```json
@@ -114,17 +117,53 @@ enum AuctionStatus {
 
 **What Happens**:
 1. ✅ Verify auction exists and is ACTIVE
-2. ✅ Verify auction hasn't ended
-3. ✅ Check if bidder already placed a bid (ONE bid per auction rule)
-4. ✅ Check if another bid with the same amount already exists
-5. ✅ Create the new bid with `isUnique` flag:
+2. ✅ Verify auction hasn't ended (with grace period for payment processing)
+3. ✅ Calculate total payment (entry fee + any additional fees)
+4. ✅ Create payment intent (Stripe/dummy payment)
+5. ✅ Return payment details to frontend for payment completion
+
+**Response**:
+```json
+{
+  "paymentIntentId": "pi_dummy_123456",
+  "clientSecret": "secret_xyz",
+  "amount": 2.00,
+  "currency": "usd",
+  "auctionId": "auction-uuid",
+  "bidAmount": 3.50
+}
+```
+
+### 2. Confirming Payment and Placing Bid
+
+**Endpoint**: `POST /bids/confirm-payment`
+
+**Request Body**:
+```json
+{
+  "paymentIntentId": "pi_dummy_123456"
+}
+```
+
+**What Happens**:
+1. ✅ Verify payment was successful
+2. ✅ Add bid to processing queue (BullMQ)
+3. ✅ Return confirmation to user
+
+**Queue Processing** (Asynchronous):
+1. ✅ Verify auction is still accepting bids
+2. ✅ Check if another bid with the same amount already exists
+3. ✅ Create the new bid with `isUnique` flag:
    - `isUnique = true` if no other bid has this amount
    - `isUnique = false` if another bid already has this amount
-6. ✅ If another bid exists with same amount, mark it as `isUnique = false`
-7. ✅ Update auction stats (totalBidsCount, totalRevenue)
-8. ✅ Recalculate which bid is currently winning
+4. ✅ If another bid exists with same amount, mark it as `isUnique = false`
+5. ✅ Update auction stats (totalBidsCount, totalRevenue)
+6. ✅ Recalculate which bid is currently winning
 
-**Code Location**: [bid.repository.ts:18-92](src/Domains/Bidding/bid.repository.ts#L18-L92)
+**Edge Case Handling**:
+- If auction ended during payment processing, bid is accepted but marked with special flag
+- User is notified about the timing issue
+- Admin can review and decide whether to include the bid
 
 ### 2. Recalculating the Winning Bid
 

@@ -6,7 +6,6 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { S3moduleModule } from './Domains/s3module/s3module.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,7 +13,7 @@ import { S3moduleModule } from './Domains/s3module/s3module.module';
     }),
     AccountModule,
     ProductModule,
-    BiddingModule,
+    BiddingModule, // BiddingModule imports QueueModule internally
     PrismaModule,
     S3moduleModule,
   ],

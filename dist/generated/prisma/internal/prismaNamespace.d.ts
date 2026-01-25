@@ -159,7 +159,6 @@ export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 export declare const ModelName: {
     readonly Account: "Account";
-    readonly KycProfile: "KycProfile";
     readonly SellerDetails: "SellerDetails";
     readonly Address: "Address";
     readonly Category: "Category";
@@ -178,7 +177,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "account" | "kycProfile" | "sellerDetails" | "address" | "category" | "product" | "auction" | "bid";
+        modelProps: "account" | "sellerDetails" | "address" | "category" | "product" | "auction" | "bid";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -253,80 +252,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.AccountCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.AccountCountAggregateOutputType> | number;
-                };
-            };
-        };
-        KycProfile: {
-            payload: Prisma.$KycProfilePayload<ExtArgs>;
-            fields: Prisma.KycProfileFieldRefs;
-            operations: {
-                findUnique: {
-                    args: Prisma.KycProfileFindUniqueArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload> | null;
-                };
-                findUniqueOrThrow: {
-                    args: Prisma.KycProfileFindUniqueOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>;
-                };
-                findFirst: {
-                    args: Prisma.KycProfileFindFirstArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload> | null;
-                };
-                findFirstOrThrow: {
-                    args: Prisma.KycProfileFindFirstOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>;
-                };
-                findMany: {
-                    args: Prisma.KycProfileFindManyArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>[];
-                };
-                create: {
-                    args: Prisma.KycProfileCreateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>;
-                };
-                createMany: {
-                    args: Prisma.KycProfileCreateManyArgs<ExtArgs>;
-                    result: BatchPayload;
-                };
-                createManyAndReturn: {
-                    args: Prisma.KycProfileCreateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>[];
-                };
-                delete: {
-                    args: Prisma.KycProfileDeleteArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>;
-                };
-                update: {
-                    args: Prisma.KycProfileUpdateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>;
-                };
-                deleteMany: {
-                    args: Prisma.KycProfileDeleteManyArgs<ExtArgs>;
-                    result: BatchPayload;
-                };
-                updateMany: {
-                    args: Prisma.KycProfileUpdateManyArgs<ExtArgs>;
-                    result: BatchPayload;
-                };
-                updateManyAndReturn: {
-                    args: Prisma.KycProfileUpdateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>[];
-                };
-                upsert: {
-                    args: Prisma.KycProfileUpsertArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$KycProfilePayload>;
-                };
-                aggregate: {
-                    args: Prisma.KycProfileAggregateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.AggregateKycProfile>;
-                };
-                groupBy: {
-                    args: Prisma.KycProfileGroupByArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.KycProfileGroupByOutputType>[];
-                };
-                count: {
-                    args: Prisma.KycProfileCountArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.KycProfileCountAggregateOutputType> | number;
                 };
             };
         };
@@ -820,25 +745,6 @@ export declare const RelationLoadStrategy: {
     readonly join: "join";
 };
 export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy];
-export declare const KycProfileScalarFieldEnum: {
-    readonly id: "id";
-    readonly status: "status";
-    readonly fullName: "fullName";
-    readonly dateOfBirth: "dateOfBirth";
-    readonly nationality: "nationality";
-    readonly documentType: "documentType";
-    readonly idDocumentNumber: "idDocumentNumber";
-    readonly idDocumentUrl: "idDocumentUrl";
-    readonly proofOfAddressUrl: "proofOfAddressUrl";
-    readonly selfieUrl: "selfieUrl";
-    readonly rejectionReason: "rejectionReason";
-    readonly reviewedBy: "reviewedBy";
-    readonly verifiedAt: "verifiedAt";
-    readonly accountId: "accountId";
-    readonly createdAt: "createdAt";
-    readonly updatedAt: "updatedAt";
-};
-export type KycProfileScalarFieldEnum = (typeof KycProfileScalarFieldEnum)[keyof typeof KycProfileScalarFieldEnum];
 export declare const SellerDetailsScalarFieldEnum: {
     readonly id: "id";
     readonly companyName: "companyName";
@@ -885,11 +791,8 @@ export declare const ProductScalarFieldEnum: {
     readonly categoryId: "categoryId";
     readonly condition: "condition";
     readonly images: "images";
-    readonly startingPrice: "startingPrice";
-    readonly currentBid: "currentBid";
-    readonly bidsCount: "bidsCount";
-    readonly reservePrice: "reservePrice";
-    readonly buyNowPrice: "buyNowPrice";
+    readonly retailValue: "retailValue";
+    readonly entryFee: "entryFee";
     readonly startDate: "startDate";
     readonly endDate: "endDate";
     readonly isActive: "isActive";
@@ -927,6 +830,10 @@ export declare const BidScalarFieldEnum: {
     readonly bidderId: "bidderId";
     readonly bidderName: "bidderName";
     readonly bidAmount: "bidAmount";
+    readonly entryFeePaid: "entryFeePaid";
+    readonly totalPaid: "totalPaid";
+    readonly paymentIntentId: "paymentIntentId";
+    readonly paymentStatus: "paymentStatus";
     readonly isUnique: "isUnique";
     readonly isWinning: "isWinning";
     readonly placedAt: "placedAt";
@@ -959,19 +866,6 @@ export declare const AccountOrderByRelevanceFieldEnum: {
     readonly fullName: "fullName";
 };
 export type AccountOrderByRelevanceFieldEnum = (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum];
-export declare const KycProfileOrderByRelevanceFieldEnum: {
-    readonly id: "id";
-    readonly fullName: "fullName";
-    readonly nationality: "nationality";
-    readonly idDocumentNumber: "idDocumentNumber";
-    readonly idDocumentUrl: "idDocumentUrl";
-    readonly proofOfAddressUrl: "proofOfAddressUrl";
-    readonly selfieUrl: "selfieUrl";
-    readonly rejectionReason: "rejectionReason";
-    readonly reviewedBy: "reviewedBy";
-    readonly accountId: "accountId";
-};
-export type KycProfileOrderByRelevanceFieldEnum = (typeof KycProfileOrderByRelevanceFieldEnum)[keyof typeof KycProfileOrderByRelevanceFieldEnum];
 export declare const SellerDetailsOrderByRelevanceFieldEnum: {
     readonly id: "id";
     readonly companyName: "companyName";
@@ -1030,16 +924,13 @@ export declare const BidOrderByRelevanceFieldEnum: {
     readonly auctionId: "auctionId";
     readonly bidderId: "bidderId";
     readonly bidderName: "bidderName";
+    readonly paymentIntentId: "paymentIntentId";
 };
 export type BidOrderByRelevanceFieldEnum = (typeof BidOrderByRelevanceFieldEnum)[keyof typeof BidOrderByRelevanceFieldEnum];
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
-export type EnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus'>;
-export type ListEnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus[]'>;
-export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType'>;
-export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>;
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
@@ -1051,6 +942,8 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
 export type EnumAuctionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuctionStatus'>;
 export type ListEnumAuctionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuctionStatus[]'>;
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>;
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type BatchPayload = {
@@ -1077,7 +970,6 @@ export type PrismaClientOptions = ({
 };
 export type GlobalOmitConfig = {
     account?: Prisma.AccountOmit;
-    kycProfile?: Prisma.KycProfileOmit;
     sellerDetails?: Prisma.SellerDetailsOmit;
     address?: Prisma.AddressOmit;
     category?: Prisma.CategoryOmit;

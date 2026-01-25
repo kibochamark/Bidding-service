@@ -8,12 +8,7 @@ export class AccountsRepository {
     constructor(private prisma: PrismaService) {}
 
     async findAllAccounts() {
-        return await this.prisma.account.findMany({
-            include: {
-                kyc: true,
-                sellerProfile: true,
-            },
-        });
+        return await this.prisma.account.findMany();
     }
 
     /**
@@ -24,7 +19,6 @@ export class AccountsRepository {
         return await this.prisma.account.findUnique({
             where: { kindeId },
             include: {
-                kyc: true,
                 sellerProfile: true,
                 addresses: true,
             },

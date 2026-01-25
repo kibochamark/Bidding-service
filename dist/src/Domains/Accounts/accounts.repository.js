@@ -19,18 +19,12 @@ let AccountsRepository = AccountsRepository_1 = class AccountsRepository {
         this.logger = new common_1.Logger(AccountsRepository_1.name);
     }
     async findAllAccounts() {
-        return await this.prisma.account.findMany({
-            include: {
-                kyc: true,
-                sellerProfile: true,
-            },
-        });
+        return await this.prisma.account.findMany();
     }
     async findAccountByKindeIdRaw(kindeId) {
         return await this.prisma.account.findUnique({
             where: { kindeId },
             include: {
-                kyc: true,
                 sellerProfile: true,
                 addresses: true,
             },

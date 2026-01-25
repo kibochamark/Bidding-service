@@ -1,7 +1,8 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../src/prisma/prisma.service';
 import { CreateProductDto, SearchProductsDto, UpdateProductDto } from '../../../src/Controllers/Products/dto';
 import { Prisma } from '../../../generated/prisma/client';
+import { AuctionService } from '../Bidding/auction.service';
 
 export interface PaginatedResponse<T> {
     data: T[];
@@ -19,7 +20,7 @@ export interface PaginatedResponse<T> {
 export class ProductRepository {
     private readonly logger = new Logger(ProductRepository.name);
 
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService, private auctionService:AuctionService) {}
 
     /**
      * Create a new product listing
@@ -30,7 +31,6 @@ export class ProductRepository {
         let query_data ={
             ...data,
             endDate:new Date(data.endDate),
-            currentBid:data.startingPrice
         }
 
 
@@ -46,7 +46,7 @@ export class ProductRepository {
                 specifications: data.specifications as Prisma.InputJsonValue,
             },
             include: {
-                category: true,
+                category: true
             },
         });
     }
@@ -59,6 +59,11 @@ export class ProductRepository {
             where: { id },
             include: {
                 category: true,
+                auctions:{
+                    orderBy:{
+                        status:"asc"
+                    }
+                }
             },
         });
 
@@ -73,19 +78,67 @@ export class ProductRepository {
      * Update product
      */
     async updateProduct(id: string, data: Partial<UpdateProductDto>) {
-        await this.findProductById(id);
+        const located_product =await this.findProductById(id);
 
         this.logger.log(`Updating product: ${id}`);
 
-        return await this.prisma.product.update({
-            where: { id },
-            data: {
-                ...data
-            },
-            include: {
-                category: true,
-            },
-        });
+
+        if (located_product.id){
+
+            // check if we have an enddate
+            if(data.endDate){
+                return await this.prisma.$transaction(async(tx)=>{
+
+                    // update product
+                    const updatedproduct = await tx.product.update({
+                        where:{
+                            id
+                        },
+                        data:{
+                            ...data
+                        },
+                        select:{
+                            auctions:{
+                                where:{
+                                    status:"ACTIVE"
+                                },
+                                take:1
+                            }
+                        }
+                    }
+                    )
+
+
+                    // update auction
+                    await tx.auction.update({
+                        where:{
+                            id:updatedproduct.auctions[0].id
+                        },
+                        data:{
+                            endDate:new Date(data.endDate as string)
+                        }
+                    })
+
+                    return updatedproduct
+                })
+            }else{
+                return await this.prisma.product.update({
+                    where: { id },
+                    data: {
+                        ...data
+                    },
+                    include: {
+                        category: true,
+                    },
+                });
+            }
+        }else{
+            throw new BadRequestException(`product with id: ${id} not found`)
+        }
+
+
+
+       
     }
 
     /**
@@ -132,12 +185,12 @@ export class ProductRepository {
         }
 
         if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-            where.currentBid = {};
+            where.retailValue = {};
             if (filters.minPrice !== undefined) {
-                where.currentBid.gte = filters.minPrice;
+                where.retailValue.gte = filters.minPrice;
             }
             if (filters.maxPrice !== undefined) {
-                where.currentBid.lte = filters.maxPrice;
+                where.retailValue.lte = filters.maxPrice;
             }
         }
 
@@ -152,10 +205,10 @@ export class ProductRepository {
                 orderBy = { endDate: 'asc' };
                 break;
             case 'highest_bid':
-                orderBy = { currentBid: 'desc' };
+                orderBy = { retailValue: 'desc' };
                 break;
             case 'lowest_price':
-                orderBy = { currentBid: 'asc' };
+                orderBy = { retailValue: 'asc' };
                 break;
         }
 
@@ -173,6 +226,11 @@ export class ProductRepository {
                 take: limit,
                 include: {
                     category: true,
+                    auctions: {
+                        orderBy: {
+                            status: "asc"
+                        }
+                    }
                 },
             }),
             this.prisma.product.count({ where }),
@@ -242,15 +300,15 @@ export class ProductRepository {
             paramIndex++;
         }
 
-        if (where.currentBid) {
-            if ((where.currentBid as any).gte !== undefined) {
-                conditions.push(`"currentBid" >= $${paramIndex}`);
-                params.push((where.currentBid as any).gte);
+        if (where.retailValue) {
+            if ((where.retailValue as any).gte !== undefined) {
+                conditions.push(`"retailValue" >= $${paramIndex}`);
+                params.push((where.retailValue as any).gte);
                 paramIndex++;
             }
-            if ((where.currentBid as any).lte !== undefined) {
-                conditions.push(`"currentBid" <= $${paramIndex}`);
-                params.push((where.currentBid as any).lte);
+            if ((where.retailValue as any).lte !== undefined) {
+                conditions.push(`"retailValue" <= $${paramIndex}`);
+                params.push((where.retailValue as any).lte);
                 paramIndex++;
             }
         }
@@ -261,8 +319,8 @@ export class ProductRepository {
         let orderByClause = 'rank DESC, "createdAt" DESC';
         if (orderBy.endDate) {
             orderByClause = `rank DESC, "endDate" ${orderBy.endDate === 'asc' ? 'ASC' : 'DESC'}`;
-        } else if (orderBy.currentBid) {
-            orderByClause = `rank DESC, "currentBid" ${orderBy.currentBid === 'asc' ? 'ASC' : 'DESC'}`;
+        } else if (orderBy.retailValue) {
+            orderByClause = `rank DESC, "retailValue" ${orderBy.retailValue === 'asc' ? 'ASC' : 'DESC'}`;
         }
 
         // Execute full-text search with relevance ranking
@@ -322,12 +380,19 @@ export class ProductRepository {
                 take: parseInt(limit),
                 include: {
                     category: true,
+                    auctions: {
+                        orderBy: {
+                            status: "asc",
+                            createdAt: "desc"
+                        }
+                    }
                 },
             }),
             this.prisma.product.count({
                 where: {
                     categoryId,
                     isActive: true,
+                
                 },
             }),
         ]);
@@ -369,6 +434,12 @@ export class ProductRepository {
                 take: limit,
                 include: {
                     category: true,
+                    auctions: {
+                        orderBy: {
+                            status: "asc",
+                            createdAt: "desc"
+                        }
+                    }
                 },
             }),
             this.prisma.product.count({
@@ -414,6 +485,11 @@ export class ProductRepository {
             take: parseInt(limit),
             include: {
                 category: true,
+                auctions: {
+                    orderBy: {
+                        status: "asc"
+                    }
+                }
             },
         });
     }
@@ -432,6 +508,11 @@ export class ProductRepository {
             // take: parseInt(limit, 10),
             include: {
                 category: true,
+                auctions: {
+                    orderBy: {
+                        status: "asc"
+                    }
+                }
             },
         });
     }
@@ -460,6 +541,11 @@ export class ProductRepository {
             skip:Math.abs(skip),
             include: {
                 category: true,
+                auctions: {
+                    orderBy: {
+                        status: "asc",
+                    }
+                }
             },
         };
 

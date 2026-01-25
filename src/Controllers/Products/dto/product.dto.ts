@@ -2,7 +2,6 @@ import {
     IsArray,
     IsBoolean,
     IsDateString,
-    IsDecimal,
     IsEnum,
     IsInt,
     IsNotEmpty,
@@ -43,17 +42,12 @@ export class CreateProductDto {
     @IsNotEmpty()
     @IsNumber()
     @Min(0)
-    startingPrice: number;
+    retailValue: number;
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsNumber()
-    @Min(0)
-    reservePrice?: number;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(0)
-    buyNowPrice?: number;
+    @Min(0.01)
+    entryFee: number;
 
     @IsNotEmpty()
     @IsDateString()
@@ -96,12 +90,12 @@ export class UpdateProductDto {
     @IsOptional()
     @IsNumber()
     @Min(0)
-    reservePrice?: number;
+    retailValue?: number;
 
     @IsOptional()
     @IsNumber()
-    @Min(0)
-    buyNowPrice?: number;
+    @Min(0.01)
+    entryFee?: number;
 
     @IsOptional()
     @IsDateString()

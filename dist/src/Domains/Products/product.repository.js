@@ -13,9 +13,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductRepository = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../../src/prisma/prisma.service");
+const auction_service_1 = require("../Bidding/auction.service");
 let ProductRepository = ProductRepository_1 = class ProductRepository {
-    constructor(prisma) {
+    constructor(prisma, auctionService) {
         this.prisma = prisma;
+        this.auctionService = auctionService;
         this.logger = new common_1.Logger(ProductRepository_1.name);
     }
     async createProduct(data) {
@@ -23,7 +25,6 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
         let query_data = {
             ...data,
             endDate: new Date(data.endDate),
-            currentBid: data.startingPrice
         };
         if (data.images) {
             query_data["images"] = data.images;
@@ -34,7 +35,7 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
                 specifications: data.specifications,
             },
             include: {
-                category: true,
+                category: true
             },
         });
     }
@@ -43,6 +44,11 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             where: { id },
             include: {
                 category: true,
+                auctions: {
+                    orderBy: {
+                        status: "asc"
+                    }
+                }
             },
         });
         if (!product) {
@@ -51,17 +57,53 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
         return product;
     }
     async updateProduct(id, data) {
-        await this.findProductById(id);
+        const located_product = await this.findProductById(id);
         this.logger.log(`Updating product: ${id}`);
-        return await this.prisma.product.update({
-            where: { id },
-            data: {
-                ...data
-            },
-            include: {
-                category: true,
-            },
-        });
+        if (located_product.id) {
+            if (data.endDate) {
+                return await this.prisma.$transaction(async (tx) => {
+                    const updatedproduct = await tx.product.update({
+                        where: {
+                            id
+                        },
+                        data: {
+                            ...data
+                        },
+                        select: {
+                            auctions: {
+                                where: {
+                                    status: "ACTIVE"
+                                },
+                                take: 1
+                            }
+                        }
+                    });
+                    await tx.auction.update({
+                        where: {
+                            id: updatedproduct.auctions[0].id
+                        },
+                        data: {
+                            endDate: new Date(data.endDate)
+                        }
+                    });
+                    return updatedproduct;
+                });
+            }
+            else {
+                return await this.prisma.product.update({
+                    where: { id },
+                    data: {
+                        ...data
+                    },
+                    include: {
+                        category: true,
+                    },
+                });
+            }
+        }
+        else {
+            throw new common_1.BadRequestException(`product with id: ${id} not found`);
+        }
     }
     async deleteProduct(id) {
         await this.findProductById(id);
@@ -88,12 +130,12 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             where.sellerId = filters.sellerId;
         }
         if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-            where.currentBid = {};
+            where.retailValue = {};
             if (filters.minPrice !== undefined) {
-                where.currentBid.gte = filters.minPrice;
+                where.retailValue.gte = filters.minPrice;
             }
             if (filters.maxPrice !== undefined) {
-                where.currentBid.lte = filters.maxPrice;
+                where.retailValue.lte = filters.maxPrice;
             }
         }
         let orderBy = { createdAt: 'desc' };
@@ -105,10 +147,10 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
                 orderBy = { endDate: 'asc' };
                 break;
             case 'highest_bid':
-                orderBy = { currentBid: 'desc' };
+                orderBy = { retailValue: 'desc' };
                 break;
             case 'lowest_price':
-                orderBy = { currentBid: 'asc' };
+                orderBy = { retailValue: 'asc' };
                 break;
         }
         if (filters.query) {
@@ -122,6 +164,11 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
                 take: limit,
                 include: {
                     category: true,
+                    auctions: {
+                        orderBy: {
+                            status: "asc"
+                        }
+                    }
                 },
             }),
             this.prisma.product.count({ where }),
@@ -169,15 +216,15 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             params.push(where.sellerId);
             paramIndex++;
         }
-        if (where.currentBid) {
-            if (where.currentBid.gte !== undefined) {
-                conditions.push(`"currentBid" >= $${paramIndex}`);
-                params.push(where.currentBid.gte);
+        if (where.retailValue) {
+            if (where.retailValue.gte !== undefined) {
+                conditions.push(`"retailValue" >= $${paramIndex}`);
+                params.push(where.retailValue.gte);
                 paramIndex++;
             }
-            if (where.currentBid.lte !== undefined) {
-                conditions.push(`"currentBid" <= $${paramIndex}`);
-                params.push(where.currentBid.lte);
+            if (where.retailValue.lte !== undefined) {
+                conditions.push(`"retailValue" <= $${paramIndex}`);
+                params.push(where.retailValue.lte);
                 paramIndex++;
             }
         }
@@ -186,8 +233,8 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
         if (orderBy.endDate) {
             orderByClause = `rank DESC, "endDate" ${orderBy.endDate === 'asc' ? 'ASC' : 'DESC'}`;
         }
-        else if (orderBy.currentBid) {
-            orderByClause = `rank DESC, "currentBid" ${orderBy.currentBid === 'asc' ? 'ASC' : 'DESC'}`;
+        else if (orderBy.retailValue) {
+            orderByClause = `rank DESC, "retailValue" ${orderBy.retailValue === 'asc' ? 'ASC' : 'DESC'}`;
         }
         const products = await this.prisma.$queryRawUnsafe(`
             SELECT
@@ -232,6 +279,12 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
                 take: parseInt(limit),
                 include: {
                     category: true,
+                    auctions: {
+                        orderBy: {
+                            status: "asc",
+                            createdAt: "desc"
+                        }
+                    }
                 },
             }),
             this.prisma.product.count({
@@ -268,6 +321,12 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
                 take: limit,
                 include: {
                     category: true,
+                    auctions: {
+                        orderBy: {
+                            status: "asc",
+                            createdAt: "desc"
+                        }
+                    }
                 },
             }),
             this.prisma.product.count({
@@ -306,6 +365,11 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             take: parseInt(limit),
             include: {
                 category: true,
+                auctions: {
+                    orderBy: {
+                        status: "asc"
+                    }
+                }
             },
         });
     }
@@ -319,6 +383,11 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             },
             include: {
                 category: true,
+                auctions: {
+                    orderBy: {
+                        status: "asc"
+                    }
+                }
             },
         });
     }
@@ -340,6 +409,11 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             skip: Math.abs(skip),
             include: {
                 category: true,
+                auctions: {
+                    orderBy: {
+                        status: "asc",
+                    }
+                }
             },
         };
         if (limitNumber !== 'All') {
@@ -370,6 +444,6 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
 exports.ProductRepository = ProductRepository;
 exports.ProductRepository = ProductRepository = ProductRepository_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService, auction_service_1.AuctionService])
 ], ProductRepository);
 //# sourceMappingURL=product.repository.js.map

@@ -11,15 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var BidController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BidController = void 0;
 const common_1 = require("@nestjs/common");
 const bid_service_1 = require("../../Domains/Bidding/bid.service");
 const dto_1 = require("./dto");
+const config_1 = require("@nestjs/config");
+const stripe_1 = __importDefault(require("stripe"));
+const bullmq_1 = require("@nestjs/bullmq");
+const bullmq_2 = require("bullmq");
+const constants_1 = require("../../queue/constants");
+const stripe_provider_1 = require("../../providers/stripe.provider");
 let BidController = BidController_1 = class BidController {
-    constructor(bidService) {
+    constructor(bidService, configService, bidQueue, stripe) {
         this.bidService = bidService;
+        this.configService = configService;
+        this.bidQueue = bidQueue;
+        this.stripe = stripe;
         this.logger = new common_1.Logger(BidController_1.name);
     }
     async placeBid(placeBidDto) {
@@ -40,6 +52,40 @@ let BidController = BidController_1 = class BidController {
     }
     async getBidStatistics(auctionId) {
         return await this.bidService.getBidStatistics(auctionId);
+    }
+    async getStripePaymentEvent(req, res) {
+        const endpoint_secret = this.configService.get("ENDPOINT_SECRET");
+        let event;
+        if (endpoint_secret) {
+            this.logger.log("stripe secret present,....decoding event");
+            const signature = req.headers['stripe-signature'];
+            console.log(signature, "sig");
+            try {
+                event = this.stripe.webhooks.constructEvent(req.rawBody, signature.toString(), endpoint_secret);
+                this.logger.log("event received...proceeding to queue job");
+                this.logger.log(`event: ${JSON.stringify(event)}`);
+                const job = await this.bidQueue.add(constants_1.JOB_NAMES.PROCESS_BID, {
+                    paymentIntentId: event.data.object.payment_intent,
+                    ...event.data.object.metadata
+                }, {
+                    jobId: event.paymentIntentId,
+                });
+                this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+            }
+            catch (err) {
+                console.log(`⚠️ Webhook signature verification failed.`, err.message);
+                return res.status(400).json({
+                    status: "failed",
+                    message: err.message
+                });
+            }
+        }
+        else {
+            return res.status(403).json({
+                status: "forbidden",
+                message: new common_1.ForbiddenException("stripe secret key not provided")
+            });
+        }
     }
 };
 exports.BidController = BidController;
@@ -85,8 +131,21 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BidController.prototype, "getBidStatistics", null);
+__decorate([
+    (0, common_1.Post)('stripe/webhook'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BidController.prototype, "getStripePaymentEvent", null);
 exports.BidController = BidController = BidController_1 = __decorate([
     (0, common_1.Controller)('bids'),
-    __metadata("design:paramtypes", [bid_service_1.BidService])
+    __param(2, (0, bullmq_1.InjectQueue)(constants_1.JOB_NAMES.PROCESS_BID)),
+    __param(3, (0, common_1.Inject)(stripe_provider_1.STRIPE_CLIENT)),
+    __metadata("design:paramtypes", [bid_service_1.BidService,
+        config_1.ConfigService,
+        bullmq_2.Queue,
+        stripe_1.default])
 ], BidController);
 //# sourceMappingURL=bid.controller.js.map

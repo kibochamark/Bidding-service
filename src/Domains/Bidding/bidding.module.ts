@@ -6,8 +6,14 @@ import { AuctionService } from './auction.service';
 import { BidService } from './bid.service';
 import { AuctionRepository } from './auction.repository';
 import { BidRepository } from './bid.repository';
+import { BidProcessor } from './bid.processor';
+import { QueueModule } from '../../queue/queue.module';
+import { StripeProvider } from '../../providers/stripe.provider';
 
 @Module({
+    imports: [
+        QueueModule,
+    ],
     controllers: [AuctionController, BidController],
     providers: [
         PrismaService,
@@ -15,7 +21,9 @@ import { BidRepository } from './bid.repository';
         BidService,
         AuctionRepository,
         BidRepository,
+        BidProcessor,
+        StripeProvider,
     ],
-    exports: [AuctionService, BidService],
+    exports: [AuctionService, BidService, AuctionRepository, BidRepository],
 })
 export class BiddingModule {}

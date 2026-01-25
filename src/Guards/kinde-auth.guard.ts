@@ -15,7 +15,7 @@ export class KindeAuthGuard implements CanActivate {
     constructor() {
         // Initialize JWKS client to fetch Kinde's public keys
         this.jwksClient = jwksClient({
-            jwksUri: `https://kolakodhek.kinde.com/.well-known/jwks.json`,
+            jwksUri: process.env.KINDE_JWKS_URI || `${process.env.KINDE_ISSUER_URL}/.well-known/jwks.json`,
             cache: true,
             cacheMaxAge: 86400000, // 24 hours in ms
         });

@@ -1,5 +1,4 @@
 import { PrismaService } from '../../prisma/prisma.service';
-import { PlaceBidDto } from '../../Controllers/Bidding/dto';
 import { BidJobDto } from '../../queue/dto/bid-dto';
 export declare class BidRepository {
     private prisma;
@@ -21,7 +20,6 @@ export declare class BidRepository {
         isWinning: boolean;
         placedAt: Date;
     }>;
-    placeBid(data: PlaceBidDto): Promise<{}>;
     recalculateWinningBid(auctionId: string): Promise<{
         id: string;
         auctionId: string;

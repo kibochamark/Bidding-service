@@ -1,7 +1,8 @@
 export declare const QUEUE_NAMES: {
     readonly BID_PROCESSING: "bid-processing";
+    readonly AUCTION_FINALIZATION: "auction-finalization";
 };
 export declare const JOB_NAMES: {
     readonly PROCESS_BID: "process-bid";
-    readonly RECALCULATE_WINNER: "recalculate-winner";
+    readonly FINALIZE_AUCTION: "finalize-auction";
 };

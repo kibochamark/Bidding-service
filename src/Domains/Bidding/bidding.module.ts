@@ -7,6 +7,7 @@ import { BidService } from './bid.service';
 import { AuctionRepository } from './auction.repository';
 import { BidRepository } from './bid.repository';
 import { BidProcessor } from './bid.processor';
+import { AuctionProcessor } from './auction.processor';
 import { QueueModule } from '../../queue/queue.module';
 import { StripeProvider } from '../../providers/stripe.provider';
 
@@ -22,6 +23,7 @@ import { StripeProvider } from '../../providers/stripe.provider';
         AuctionRepository,
         BidRepository,
         BidProcessor,
+        AuctionProcessor,
         StripeProvider,
     ],
     exports: [AuctionService, BidService, AuctionRepository, BidRepository],

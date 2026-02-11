@@ -1,5 +1,5 @@
 import { BidRepository } from './bid.repository';
-import { InitiateBidPaymentDto, ConfirmBidPaymentDto, PlaceBidDto } from '../../Controllers/Bidding/dto';
+import { InitiateBidPaymentDto, ConfirmBidPaymentDto } from '../../Controllers/Bidding/dto';
 import { AuctionRepository } from './auction.repository';
 export declare class BidService {
     private bidRepository;
@@ -44,7 +44,6 @@ export declare class BidService {
         createdAt: Date;
         status: "pending" | "confirmed" | "expired";
     }>;
-    placeBid(data: PlaceBidDto): Promise<{}>;
     getBidsByAuctionId(auctionId: string): Promise<{
         id: string;
         auctionId: string;

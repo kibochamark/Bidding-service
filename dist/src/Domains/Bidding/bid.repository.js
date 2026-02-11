@@ -70,51 +70,12 @@ let BidRepository = BidRepository_1 = class BidRepository {
                 totalRevenue: { increment: data.totalPaid }
             }
         });
-        await this.recalculateWinningBid(data.auctionId);
         this.logger.log(`Bid placed successfully. Is unique: ${isUnique}. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
         return {
             ...newBid,
             processedAfterAuctionEnd: isAfterAuctionEnd,
             withinGracePeriod: isWithinGracePeriod,
         };
-    }
-    async placeBid(data) {
-        this.logger.log(`Placing bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
-        const auction = await this.prisma.auction.findUnique({
-            where: { id: data.auctionId },
-        });
-        if (!auction) {
-            throw new common_1.NotFoundException(`Auction with ID ${data.auctionId} not found`);
-        }
-        if (auction.status !== 'ACTIVE') {
-            throw new common_1.BadRequestException(`Auction is not active. Current status: ${auction.status}`);
-        }
-        if (new Date() > auction.endDate) {
-            throw new common_1.BadRequestException('Auction has ended');
-        }
-        const existingBidWithSameAmount = await this.prisma.bid.findFirst({
-            where: {
-                auctionId: data.auctionId,
-                bidAmount: data.bidAmount,
-            }
-        });
-        const isUnique = !existingBidWithSameAmount;
-        if (existingBidWithSameAmount) {
-            await this.prisma.bid.update({
-                where: { id: existingBidWithSameAmount.id },
-                data: { isUnique: false }
-            });
-        }
-        await this.prisma.auction.update({
-            where: { id: data.auctionId },
-            data: {
-                totalBidsCount: { increment: 1 },
-                totalRevenue: { increment: auction.entryFee }
-            }
-        });
-        await this.recalculateWinningBid(data.auctionId);
-        this.logger.log(`Bid placed successfully. Is unique: ${isUnique}`);
-        return {};
     }
     async recalculateWinningBid(auctionId) {
         this.logger.log(`Recalculating winning bid for auction ${auctionId}`);

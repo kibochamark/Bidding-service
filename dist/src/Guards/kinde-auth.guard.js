@@ -52,7 +52,7 @@ const jwks_rsa_1 = __importDefault(require("jwks-rsa"));
 let KindeAuthGuard = class KindeAuthGuard {
     constructor() {
         this.jwksClient = (0, jwks_rsa_1.default)({
-            jwksUri: `https://kolakodhek.kinde.com/.well-known/jwks.json`,
+            jwksUri: process.env.KINDE_JWKS_URI || `${process.env.KINDE_ISSUER_URL}/.well-known/jwks.json`,
             cache: true,
             cacheMaxAge: 86400000,
         });

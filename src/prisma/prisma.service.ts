@@ -18,7 +18,7 @@ export class PrismaService extends PrismaClient {
     }
 
 
-    const adapter = new PrismaNeon({ connectionString: connectionString! });
+    const adapter = new PrismaPg({ connectionString: connectionString! });
 
 
     super({

@@ -1,98 +1,105 @@
 # Docker Compose file for local development
-# Runs PostgreSQL + NestJS app together
-# Command: docker-compose up -d
+version: '3.8'
 
 services:
   # ==============================================
   # PostgreSQL Database Service
   # ==============================================
   biddingservice:
-    # Use official PostgreSQL 16 image
     image: postgres:16-alpine
-
-    # Restart policy: always restart if it crashes
     restart: unless-stopped
-
-    # Environment variables for PostgreSQL
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: kibo_password
-      POSTGRES_DB: bidding_db
-
-    # Port mapping: host:container
-    # Access from host machine: localhost:5435
+    env_file:
+      - .env
     ports:
       - "5435:5432"
-
-    # Volume for data persistence
-    # Database data survives container restarts!
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-    # Health check: ensure database is ready before app starts
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-    # Connect to custom network
     networks:
       - bidding-network
+
+  prisma-migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: biddingservice-prisma-migrate
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
+    depends_on:
+      biddingservice:
+        condition: service_healthy
+    networks:
+      - bidding-network
+    healthcheck:
+      test: ["CMD-SHELL", 
+        "npx prisma migrate status || npx prisma db pull --force || exit 1"
+      ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    command: >
+      sh -c "
+        echo '🔄 Running database migrations...' &&
+        npx prisma db push --force-reset &&
+        echo '✅ Migrations completed successfully!' &&
+        echo '🔄 Generating Prisma client...' &&
+        npx prisma generate &&
+        echo '✅ Prisma client generated successfully!' &&
+        exit 0
+      "
+    restart: "no"  # Run once and exit
+  
 
   # ==============================================
   # NestJS Application Service
   # ==============================================
   app:
-    # Build from local Dockerfile
     build:
       context: .
       dockerfile: Dockerfile
-      target: production  # Use production stage
-
-    # Container name (easier to reference)
+      target: production
     container_name: biddingservice-app
-
-    # Restart policy
     restart: unless-stopped
-
-    # Port mapping: host:container
-    # Access app at: http://localhost:3000
     ports:
-      - "3000:4000"
-
-    # Environment variables for the app
+      - "4000:4000"
     environment:
-      # Database connection (using service name 'postgres')
-      DATABASE_URL: "postgresql://postgres:kibo_password@postgres:5432/bidding_db?schema=public"
-
-      # Kinde Auth configuration (from your .env)
-      KINDE_CLIENT_ID: "da1058d120914598aaae2d460c519278"
-      KINDE_CLIENT_SECRET: "cx5dq6QTl5qcGqfDHA45IgmkTpm0AYkwzCFyGJVyUnQYdyiFXnC"
-      KINDE_ISSUER_URL: "https://kolakodhek.kinde.com"
-      KINDE_SITE_URL: "http://localhost:3000"
-      KINDE_POST_LOGOUT_REDIRECT_URL: "http://localhost:3000"
-      KINDE_POST_LOGIN_REDIRECT_URL: "http://localhost:3000"
-      KINDE_WELL_KNOWN_URL: "https://kolakodhek.kinde.com/.well-known/jwks.json"
-
-      # Node environment
-      NODE_ENV: "production"
-
-    # Wait for postgres to be healthy before starting
+      - DATABASE_URL=${DATABASE_URL}
+      - TREBLLE_SDK_TOKEN=${TREBLLE_SDK_TOKEN}
+      - TREBLLE_API_KEY=${TREBLLE_API_KEY}
+      - KINDE_JWKS_URI=${KINDE_JWKS_URI}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - ENDPOINT_SECRET=${ENDPOINT_SECRET}
+      - NODE_ENV=production
+      - REDIS_HOST=redis-service  # Use service name, not localhost
+      - REDIS_PORT=6379
+      - REDIS_URL=redis://redis-service:6379  
+    env_file:
+      - .env
     depends_on:
       biddingservice:
         condition: service_healthy
-
-    # Connect to custom network
+      redis-service:
+        condition: service_healthy
     networks:
       - bidding-network
+    # Remove or comment out this volume for production mode:
+    # volumes:
+    #   - ./src:/usr/src/app/src  # Use this for development mode only
 
-    # Optional: Mount source code for development (hot reload)
-    # Uncomment these lines for development mode:
-    volumes:
-      - ./src:/usr/src/app/src
-
-
+  # ==============================================
+  # Redis Service
+  # ==============================================
   redis-service:
     image: redis:7-alpine
     container_name: bidding-redis
@@ -106,21 +113,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - bidding-network
 
-# ==============================================
-# Networks
-# ==============================================
 networks:
   bidding-network:
-    # Custom bridge network
-    # Allows services to communicate using service names
     driver: bridge
 
-# ==============================================
-# Volumes
-# ==============================================
 volumes:
   postgres_data:
-    # Named volume for PostgreSQL data
-    # Data persists even when containers are removed!
   redis-data:

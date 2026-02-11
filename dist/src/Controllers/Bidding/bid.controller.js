@@ -26,6 +26,8 @@ const bullmq_1 = require("@nestjs/bullmq");
 const bullmq_2 = require("bullmq");
 const constants_1 = require("../../queue/constants");
 const stripe_provider_1 = require("../../providers/stripe.provider");
+const kinde_auth_guard_1 = require("../../Guards/kinde-auth.guard");
+const current_user_decorator_1 = require("../../Guards/current-user.decorator");
 let BidController = BidController_1 = class BidController {
     constructor(bidService, configService, bidQueue, stripe) {
         this.bidService = bidService;
@@ -34,14 +36,10 @@ let BidController = BidController_1 = class BidController {
         this.stripe = stripe;
         this.logger = new common_1.Logger(BidController_1.name);
     }
-    async placeBid(placeBidDto) {
-        this.logger.log(`Placing bid for auction ${placeBidDto.auctionId} by ${placeBidDto.bidderName}`);
-        return await this.bidService.placeBid(placeBidDto);
-    }
     async getBidsByAuctionId(auctionId) {
         return await this.bidService.getBidsByAuctionId(auctionId);
     }
-    async getBidsByBidderId(bidderId) {
+    async getBidsByBidderId(bidderId, user) {
         return await this.bidService.getBidsByBidderId(bidderId);
     }
     async getBidById(params) {
@@ -90,13 +88,6 @@ let BidController = BidController_1 = class BidController {
 };
 exports.BidController = BidController;
 __decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dto_1.PlaceBidDto]),
-    __metadata("design:returntype", Promise)
-], BidController.prototype, "placeBid", null);
-__decorate([
     (0, common_1.Get)('auction/:auctionId'),
     __param(0, (0, common_1.Param)('auctionId')),
     __metadata("design:type", Function),
@@ -105,9 +96,11 @@ __decorate([
 ], BidController.prototype, "getBidsByAuctionId", null);
 __decorate([
     (0, common_1.Get)('bidder/:bidderId'),
+    (0, common_1.UseGuards)(kinde_auth_guard_1.KindeAuthGuard),
     __param(0, (0, common_1.Param)('bidderId')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], BidController.prototype, "getBidsByBidderId", null);
 __decorate([

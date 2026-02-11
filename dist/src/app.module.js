@@ -14,6 +14,7 @@ const bidding_module_1 = require("./Domains/Bidding/bidding.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const config_1 = require("@nestjs/config");
 const s3module_module_1 = require("./Domains/s3module/s3module.module");
+const schedule_1 = require("@nestjs/schedule");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -23,6 +24,7 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),
+            schedule_1.ScheduleModule.forRoot(),
             account_module_1.AccountModule,
             product_module_1.ProductModule,
             bidding_module_1.BiddingModule,

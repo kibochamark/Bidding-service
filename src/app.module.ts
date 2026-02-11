@@ -5,12 +5,13 @@ import { BiddingModule } from './Domains/Bidding/bidding.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { S3moduleModule } from './Domains/s3module/s3module.module';
-
+import { ScheduleModule } from "@nestjs/schedule"
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     AccountModule,
     ProductModule,
     BiddingModule, // BiddingModule imports QueueModule internally

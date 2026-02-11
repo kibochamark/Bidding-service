@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { QueueService } from './queue.service';
 import { BullModule } from '@nestjs/bullmq';
-import { JOB_NAMES } from './constants';
+import { JOB_NAMES, QUEUE_NAMES } from './constants';
 
 @Module({
   imports: [
     // forRoot configures the Redis connection globally (only call once in your app)
     BullModule.forRoot({
       connection: {
-        host: 'localhost',
-        port: 6379,
+        host: process.env.REDIS_HOST || 'redis-service', // Use env var with fallback
+        port: parseInt(process.env.REDIS_PORT as string) || 6379,
       },
       defaultJobOptions: {
         attempts: 3,
@@ -17,10 +17,11 @@ import { JOB_NAMES } from './constants';
         removeOnFail: 2000,
       },
     }),
-    // Register the queue that QueueService will use
-    BullModule.registerQueue({
-      name: JOB_NAMES.PROCESS_BID,
-    }),
+    // Register queues
+    BullModule.registerQueue(
+      { name: JOB_NAMES.PROCESS_BID },
+      { name: QUEUE_NAMES.AUCTION_FINALIZATION },
+    ),
   ],
   providers: [QueueService],
   // Export both QueueService AND BullModule so importing modules can use the queue

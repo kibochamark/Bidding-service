@@ -8,16 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var AuctionService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuctionService = void 0;
 const common_1 = require("@nestjs/common");
 const auction_repository_1 = require("./auction.repository");
 const bid_repository_1 = require("./bid.repository");
+const schedule_1 = require("@nestjs/schedule");
+const bullmq_1 = require("bullmq");
+const bullmq_2 = require("@nestjs/bullmq");
+const constants_1 = require("../../queue/constants");
+const prisma_service_1 = require("../../prisma/prisma.service");
 let AuctionService = AuctionService_1 = class AuctionService {
-    constructor(auctionRepository, bidRepository) {
+    constructor(auctionRepository, bidRepository, prisma, auctionQueue) {
         this.auctionRepository = auctionRepository;
         this.bidRepository = bidRepository;
+        this.prisma = prisma;
+        this.auctionQueue = auctionQueue;
         this.logger = new common_1.Logger(AuctionService_1.name);
     }
     async getActiveAuctions() {
@@ -99,11 +109,72 @@ let AuctionService = AuctionService_1 = class AuctionService {
             bidStatistics: statistics,
         };
     }
+    async endAuctions() {
+        const now = new Date();
+        this.logger.debug(`[CRON] Checking for ended auctions at ${now.toISOString()}`);
+        try {
+            const endedAuctions = await this.prisma.auction.findMany({
+                where: {
+                    status: 'ACTIVE',
+                    endDate: {
+                        lte: now
+                    }
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    endDate: true,
+                }
+            });
+            if (endedAuctions.length === 0) {
+                this.logger.debug('[CRON] No auctions to finalize');
+                return;
+            }
+            this.logger.log(`[CRON] Found ${endedAuctions.length} auction(s) to finalize`);
+            const auctionIds = endedAuctions.map(a => a.id);
+            await this.prisma.auction.updateMany({
+                where: {
+                    id: { in: auctionIds }
+                },
+                data: {
+                    status: 'ENDED'
+                }
+            });
+            this.logger.log(`[CRON] Updated ${auctionIds.length} auction(s) to ENDED status`);
+            for (const auction of endedAuctions) {
+                const job = await this.auctionQueue.add(constants_1.JOB_NAMES.FINALIZE_AUCTION, {
+                    auctionId: auction.id,
+                    title: auction.title,
+                    endDate: auction.endDate.toISOString(),
+                }, {
+                    jobId: `finalize-${auction.id}`,
+                    attempts: 3,
+                    backoff: {
+                        type: 'exponential',
+                        delay: 1000,
+                    },
+                });
+                this.logger.log(`[CRON] Queued finalization job ${job.id} for auction: ${auction.title} (ID: ${auction.id})`);
+            }
+        }
+        catch (error) {
+            this.logger.error(`[CRON] Error checking for ended auctions: ${error.message}`);
+        }
+    }
 };
 exports.AuctionService = AuctionService;
+__decorate([
+    (0, schedule_1.Cron)('0 * * * * *'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuctionService.prototype, "endAuctions", null);
 exports.AuctionService = AuctionService = AuctionService_1 = __decorate([
     (0, common_1.Injectable)(),
+    __param(3, (0, bullmq_2.InjectQueue)(constants_1.QUEUE_NAMES.AUCTION_FINALIZATION)),
     __metadata("design:paramtypes", [auction_repository_1.AuctionRepository,
-        bid_repository_1.BidRepository])
+        bid_repository_1.BidRepository,
+        prisma_service_1.PrismaService,
+        bullmq_1.Queue])
 ], AuctionService);
 //# sourceMappingURL=auction.service.js.map

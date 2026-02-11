@@ -81,8 +81,6 @@ export class BidRepository {
             }
         });
 
-        // Recalculate which bid is winning
-        await this.recalculateWinningBid(data.auctionId);
 
         this.logger.log(`Bid placed successfully. Is unique: ${isUnique}. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
 
@@ -93,79 +91,7 @@ export class BidRepository {
         };
     }
 
-    /**
-     * Place a bid in an auction (legacy method - without payment)
-     * This is the core logic for the Lowest Unique Bid system
-     */
-    async placeBid(data: PlaceBidDto) {
-        this.logger.log(`Placing bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
-
-        // Verify auction exists and is active
-        const auction = await this.prisma.auction.findUnique({
-            where: { id: data.auctionId },
-        });
-
-        if (!auction) {
-            throw new NotFoundException(`Auction with ID ${data.auctionId} not found`);
-        }
-
-        if (auction.status !== 'ACTIVE') {
-            throw new BadRequestException(`Auction is not active. Current status: ${auction.status}`);
-        }
-
-        if (new Date() > auction.endDate) {
-            throw new BadRequestException('Auction has ended');
-        }
-
-        // NOTE: Multiple bids per user are now allowed
-        // The old unique constraint has been removed from the schema
-
-        // Check if this bid amount already exists (to determine if it's unique)
-        const existingBidWithSameAmount = await this.prisma.bid.findFirst({
-            where: {
-                auctionId: data.auctionId,
-                bidAmount: data.bidAmount,
-            }
-        });
-
-        const isUnique = !existingBidWithSameAmount;
-
-        // Create the new bid
-        // const newBid = await this.prisma.bid.create({
-        //     data: {
-        //         auctionId: data.auctionId,
-        //         bidderId: data.bidderId,
-        //         bidderName: data.bidderName,
-        //         bidAmount: data.bidAmount,
-        //         isUnique: isUnique,
-        //     }
-        // });
-
-        // If a bid with the same amount already exists, mark it as NOT unique
-        if (existingBidWithSameAmount) {
-            await this.prisma.bid.update({
-                where: { id: existingBidWithSameAmount.id },
-                data: { isUnique: false }
-            });
-        }
-
-        // Update auction stats
-        await this.prisma.auction.update({
-            where: { id: data.auctionId },
-            data: {
-                totalBidsCount: { increment: 1 },
-                totalRevenue: { increment: auction.entryFee }
-            }
-        });
-
-        // Recalculate which bid is winning
-        await this.recalculateWinningBid(data.auctionId);
-
-        this.logger.log(`Bid placed successfully. Is unique: ${isUnique}`);
-        return {
-            
-        };
-    }
+    
 
     /**
      * Recalculate the winning bid for an auction

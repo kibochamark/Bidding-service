@@ -22,20 +22,7 @@ export class BidController {
         @Inject(STRIPE_CLIENT) private stripe: Stripe
     ) {}
 
-    /**
-     * Initiate a bid payment
-     * This creates a payment intent and returns payment details
-     */
-    
-    /**
-     * Place a new bid (legacy - without payment)
-     */
-    @Post()
-    @UseGuards(KindeAuthGuard)
-    async placeBid(@Body() placeBidDto: PlaceBidDto, @CurrentUser() user: KindeUser) {
-        this.logger.log(`Placing bid for auction ${placeBidDto.auctionId} by ${user.kindeId}`);
-        return await this.bidService.placeBid(placeBidDto);
-    }
+
 
     /**
      * Get all bids for a specific auction
@@ -87,7 +74,7 @@ export class BidController {
     @Post('stripe/webhook')
     async getStripePaymentEvent(@Req() req, @Res() res){
         /**
-         * verify stripe tokem
+         * verify stripe token
          *  extract event data
          * queue job for processing
          */

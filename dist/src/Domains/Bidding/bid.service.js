@@ -106,9 +106,6 @@ let BidService = BidService_1 = class BidService {
         }
         return paymentIntent;
     }
-    async placeBid(data) {
-        return await this.bidRepository.placeBid(data);
-    }
     async getBidsByAuctionId(auctionId) {
         return await this.bidRepository.getBidsByAuctionId(auctionId);
     }

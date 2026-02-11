@@ -1,42 +1,38 @@
 # ==============================================
 # Stage 1: Development/Build Stage
-# Purpose: Install dependencies and build the app
 # ==============================================
-FROM node:20-alpine as development
+FROM node:20-alpine AS development
 
-# Set working directory inside container
 WORKDIR /usr/src/app
 
-# Install pnpm (Alpine doesn't have it by default)
+# Install pnpm
 RUN npm install -g pnpm
 
-# Copy package files first (for Docker layer caching)
-# If these don't change, Docker reuses this layer = faster builds!
+# Copy package files
 COPY package.json pnpm-lock.yaml ./
-
-# Install ALL dependencies (including devDependencies for building)
 RUN pnpm install
 
-# Copy all source code
+# Copy source code
 COPY . .
 
-# Set dummy DATABASE_URL for prisma generate
-# Real DATABASE_URL will be provided at runtime by docker-compose/kubernetes
+# Set dummy DATABASE_URL for prisma generate only
 ENV DATABASE_URL="postgresql://dummy:dummy@dummy:5432/dummy?schema=public"
 
-# Generate Prisma Client (creates TypeScript types from schema)
+# Generate Prisma Client (doesn't need real DB)
 RUN npx prisma generate
 
-# Build the NestJS app (TypeScript → JavaScript in /dist folder)
+# Build the app
 RUN pnpm run build
+
+EXPOSE 4000
+
+CMD ["pnpm", "run", "start:dev"]
 
 # ==============================================
 # Stage 2: Production Stage
-# Purpose: Create minimal image with only what's needed to run
 # ==============================================
-FROM node:20-alpine as production
+FROM node:20-alpine AS production
 
-# Set working directory
 WORKDIR /usr/src/app
 
 # Install pnpm
@@ -45,26 +41,21 @@ RUN npm install -g pnpm
 # Copy package files
 COPY package.json pnpm-lock.yaml ./
 
-# Install ONLY production dependencies (smaller image, more secure)
+# Install ONLY production dependencies
 RUN pnpm install --prod
 
-# Copy Prisma schema (needed at runtime to connect to database)
-COPY prisma ./prisma
-
-# Set dummy DATABASE_URL for prisma generate
-# Real DATABASE_URL will be provided at runtime by docker-compose/kubernetes
-ENV DATABASE_URL="postgresql://dummy:dummy@dummy:5432/dummy?schema=public"
-
-# Generate Prisma Client for production
-RUN npx prisma generate
-
-# Copy compiled JavaScript code from development stage
-# We DON'T copy source .ts files - don't need them in production!
+# Copy built application from development stage
 COPY --from=development /usr/src/app/dist ./dist
 
-# Expose port 3000 (tells Docker which port the app uses)
-EXPOSE 3000
+# Copy Prisma schema and generate client in production
+COPY --from=development /usr/src/app/prisma ./prisma
 
-# Start the application
-# NestJS builds to dist/src/main.js (not dist/main.js)
-CMD ["node", "dist/src/main"]
+# Set dummy DATABASE_URL for prisma generate
+ENV DATABASE_URL="postgresql://dummy:dummy@dummy:5432/dummy?schema=public"
+
+# Generate Prisma Client in production
+RUN npx prisma generate
+
+EXPOSE 4000
+
+CMD ["node", "dist/src/main.js"]

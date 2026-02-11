@@ -1,11 +1,9 @@
 export const QUEUE_NAMES = {
     BID_PROCESSING: 'bid-processing',
-    // Add more queues here as needed
-    // EMAIL_NOTIFICATIONS: 'email-notifications',
-    // AUCTION_ENDING: 'auction-ending',
+    AUCTION_FINALIZATION: 'auction-finalization',
 } as const;
 
 export const JOB_NAMES = {
     PROCESS_BID: 'process-bid',
-    RECALCULATE_WINNER: 'recalculate-winner',
+    FINALIZE_AUCTION: 'finalize-auction',
 } as const;

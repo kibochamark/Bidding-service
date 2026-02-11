@@ -1,11 +1,15 @@
 import { AuctionRepository } from './auction.repository';
 import { BidRepository } from './bid.repository';
 import { CreateAuctionDto, UpdateAuctionDto } from '../../Controllers/Bidding/dto';
+import { Queue } from 'bullmq';
+import { PrismaService } from 'src/prisma/prisma.service';
 export declare class AuctionService {
     private auctionRepository;
     private bidRepository;
+    private prisma;
+    private auctionQueue;
     private readonly logger;
-    constructor(auctionRepository: AuctionRepository, bidRepository: BidRepository);
+    constructor(auctionRepository: AuctionRepository, bidRepository: BidRepository, prisma: PrismaService, auctionQueue: Queue);
     getActiveAuctions(): Promise<({
         product: {
             id: string;
@@ -377,4 +381,5 @@ export declare class AuctionService {
             bidders: string[];
         }[];
     }>;
+    endAuctions(): Promise<void>;
 }

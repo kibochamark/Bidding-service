@@ -2,6 +2,11 @@ import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { AuctionRepository } from './auction.repository';
 import { BidRepository } from './bid.repository';
 import { CreateAuctionDto, UpdateAuctionDto } from '../../Controllers/Bidding/dto';
+import { Cron } from '@nestjs/schedule';
+import { Queue } from 'bullmq';
+import { InjectQueue } from '@nestjs/bullmq';
+import { JOB_NAMES, QUEUE_NAMES } from 'src/queue/constants';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AuctionService {
@@ -10,6 +15,8 @@ export class AuctionService {
     constructor(
         private auctionRepository: AuctionRepository,
         private bidRepository: BidRepository,
+        private prisma: PrismaService,
+        @InjectQueue(QUEUE_NAMES.AUCTION_FINALIZATION) private auctionQueue: Queue,
     ) {}
 
     /**
@@ -142,5 +149,80 @@ export class AuctionService {
             } : null,
             bidStatistics: statistics,
         };
+    }
+
+
+
+    // Cron job to end auctions when time has expired (runs every minute)
+    @Cron('0 * * * * *')
+    async endAuctions() {
+        const now = new Date();
+
+        this.logger.debug(`[CRON] Checking for ended auctions at ${now.toISOString()}`);
+
+        try {
+            // Step 1: Find all active auctions that have passed their end date
+            const endedAuctions = await this.prisma.auction.findMany({
+                where: {
+                    status: 'ACTIVE',
+                    endDate: {
+                        lte: now
+                    }
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    endDate: true,
+                }
+            });
+
+            if (endedAuctions.length === 0) {
+                this.logger.debug('[CRON] No auctions to finalize');
+                return;
+            }
+
+            this.logger.log(`[CRON] Found ${endedAuctions.length} auction(s) to finalize`);
+
+            const auctionIds = endedAuctions.map(a => a.id);
+
+            // Step 2: Batch update all auctions to ENDED status
+            await this.prisma.auction.updateMany({
+                where: {
+                    id: { in: auctionIds }
+                },
+                data: {
+                    status: 'ENDED'
+                }
+            });
+
+            this.logger.log(`[CRON] Updated ${auctionIds.length} auction(s) to ENDED status`);
+
+            // Step 3: Queue a job for each auction to determine winner
+            for (const auction of endedAuctions) {
+                const job = await this.auctionQueue.add(
+                    JOB_NAMES.FINALIZE_AUCTION,
+                    {
+                        auctionId: auction.id,
+                        title: auction.title,
+                        endDate: auction.endDate.toISOString(),
+                    },
+                    {
+                        jobId: `finalize-${auction.id}`, // Prevents duplicate jobs
+                        attempts: 3,
+                        backoff: {
+                            type: 'exponential',
+                            delay: 1000,
+                        },
+                    }
+                );
+
+                this.logger.log(
+                    `[CRON] Queued finalization job ${job.id} for auction: ${auction.title} (ID: ${auction.id})`
+                );
+            }
+
+        } catch (error) {
+            this.logger.error(`[CRON] Error checking for ended auctions: ${error.message}`);
+        }
     }
 }

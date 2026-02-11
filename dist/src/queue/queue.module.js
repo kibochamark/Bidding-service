@@ -28,9 +28,7 @@ exports.QueueModule = QueueModule = __decorate([
                     removeOnFail: 2000,
                 },
             }),
-            bullmq_1.BullModule.registerQueue({
-                name: constants_1.JOB_NAMES.PROCESS_BID,
-            }),
+            bullmq_1.BullModule.registerQueue({ name: constants_1.JOB_NAMES.PROCESS_BID }, { name: constants_1.QUEUE_NAMES.AUCTION_FINALIZATION }),
         ],
         providers: [queue_service_1.QueueService],
         exports: [queue_service_1.QueueService, bullmq_1.BullModule],

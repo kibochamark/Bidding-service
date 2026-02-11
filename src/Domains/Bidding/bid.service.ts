@@ -132,9 +132,6 @@ export class BidService {
         return paymentIntent;
     }
 
-    async placeBid(data: PlaceBidDto) {
-        return await this.bidRepository.placeBid(data);
-    }
 
     async getBidsByAuctionId(auctionId: string) {
         return await this.bidRepository.getBidsByAuctionId(auctionId);
@@ -155,4 +152,8 @@ export class BidService {
     async getBidStatistics(auctionId: string) {
         return await this.bidRepository.getBidStatistics(auctionId);
     }
+
+
+
+    
 }

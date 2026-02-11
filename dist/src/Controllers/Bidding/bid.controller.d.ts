@@ -1,8 +1,9 @@
 import { BidService } from '../../Domains/Bidding/bid.service';
-import { BidParamDto, PlaceBidDto } from './dto';
+import { BidParamDto } from './dto';
 import { ConfigService } from '@nestjs/config';
 import Stripe from "stripe";
 import { Queue } from 'bullmq';
+import type { KindeUser } from '../../Guards/current-user.decorator';
 export declare class BidController {
     private bidService;
     private configService;
@@ -10,7 +11,6 @@ export declare class BidController {
     private stripe;
     private readonly logger;
     constructor(bidService: BidService, configService: ConfigService, bidQueue: Queue, stripe: Stripe);
-    placeBid(placeBidDto: PlaceBidDto): Promise<{}>;
     getBidsByAuctionId(auctionId: string): Promise<{
         id: string;
         auctionId: string;
@@ -25,7 +25,7 @@ export declare class BidController {
         isWinning: boolean;
         placedAt: Date;
     }[]>;
-    getBidsByBidderId(bidderId: string): Promise<({
+    getBidsByBidderId(bidderId: string, user: KindeUser): Promise<({
         auction: {
             id: string;
             title: string;

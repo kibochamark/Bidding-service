@@ -16,6 +16,7 @@ const bid_service_1 = require("./bid.service");
 const auction_repository_1 = require("./auction.repository");
 const bid_repository_1 = require("./bid.repository");
 const bid_processor_1 = require("./bid.processor");
+const auction_processor_1 = require("./auction.processor");
 const queue_module_1 = require("../../queue/queue.module");
 const stripe_provider_1 = require("../../providers/stripe.provider");
 let BiddingModule = class BiddingModule {
@@ -34,6 +35,7 @@ exports.BiddingModule = BiddingModule = __decorate([
             auction_repository_1.AuctionRepository,
             bid_repository_1.BidRepository,
             bid_processor_1.BidProcessor,
+            auction_processor_1.AuctionProcessor,
             stripe_provider_1.StripeProvider,
         ],
         exports: [auction_service_1.AuctionService, bid_service_1.BidService, auction_repository_1.AuctionRepository, bid_repository_1.BidRepository],

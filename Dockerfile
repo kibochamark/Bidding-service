@@ -54,4 +54,4 @@ COPY --from=builder /usr/src/app/generated ./generated
 
 EXPOSE 4000
 
-CMD ["sh", "-c", "npx prisma db push --config=dist/prisma.config.js && node dist/src/main.js"]
+CMD ["node", "dist/src/main.js"]

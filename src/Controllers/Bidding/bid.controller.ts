@@ -107,15 +107,40 @@ export class BidController {
 
                 this.logger.log(`event: ${JSON.stringify(event)}`)
 
-                const job = await this.bidQueue.add(JOB_NAMES.PROCESS_BID, { 
-                    paymentIntentId: event.data.object.id,
-                    ...event.data.object.metadata
-                }, {
-                    jobId: event.id, // Use payment intent ID as job ID (prevents duplicates)
-                });
+                if (event.data.object.type === "payment_intent.succeeded"){
+                    const job = await this.bidQueue.add(JOB_NAMES.PROCESS_BID, {
+                        paymentIntentId: event.data.object.id,
+                        ...event.data.object.metadata
+                    }, {
+                        jobId: event.id, // Use payment intent ID as job ID (prevents duplicates)
+                    });
 
-                this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+                    await this.bidQueue.add(`${JOB_NAMES.USER_NOTIFICATION}${event.data.object.metadata.bidderId}`, {
+                        
+                            type: "payment_success",
+                            ...event.data.object.metadata
+                        
+                    }, {
+                        jobId:event.data.object.metadata.bidderId, // Use payment intent ID as job ID (prevents duplicates)
+                    });
 
+                    this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+
+                }else{
+                    const job =await this.bidQueue.add(`${JOB_NAMES.USER_NOTIFICATION}${event.data.object.metadata.bidderId}`, {
+
+                        type: "payment_failed",
+                        ...event.data.object.metadata
+
+                    }, {
+                        jobId: event.data.object.metadata.bidderId, // Use payment intent ID as job ID (prevents duplicates)
+                    });
+
+                    this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+
+                }
+
+            
             } catch (err) {
                 console.log(`⚠️ Webhook signature verification failed.`, err.message);
                 return res.status(400).json({

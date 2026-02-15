@@ -43,11 +43,9 @@ let BidController = BidController_1 = class BidController {
         return await this.bidService.getBidsByBidderId(bidderId);
     }
     async getBidByKindeId(params) {
-        this.logger.log("secoind checj");
         return await this.bidService.getBidsByBidderId(params.kinde_id);
     }
     async getBidById(params) {
-        this.logger.log("we have arrive here");
         return await this.bidService.getBidById(params.id);
     }
     async getCurrentWinningBid(auctionId) {
@@ -68,10 +66,10 @@ let BidController = BidController_1 = class BidController {
                 this.logger.log("event received...proceeding to queue job");
                 this.logger.log(`event: ${JSON.stringify(event)}`);
                 const job = await this.bidQueue.add(constants_1.JOB_NAMES.PROCESS_BID, {
-                    paymentIntentId: event.data.object.payment_intent,
+                    paymentIntentId: event.data.object.id,
                     ...event.data.object.metadata
                 }, {
-                    jobId: event.paymentIntentId,
+                    jobId: event.id,
                 });
                 this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
             }

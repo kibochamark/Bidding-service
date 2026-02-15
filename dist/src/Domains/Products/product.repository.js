@@ -121,7 +121,12 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             isActive: filters.isActive !== undefined ? filters.isActive : true,
         };
         if (filters.categoryId) {
-            where.categoryId = filters.categoryId;
+            const category = await this.prisma.category.findFirst({
+                where: {
+                    name: filters.categoryId
+                }
+            });
+            where.categoryId = category?.id;
         }
         if (filters.condition) {
             where.condition = filters.condition;

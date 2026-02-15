@@ -1,6 +1,6 @@
 import { Body, Controller, ForbiddenException, Get, Inject, Logger, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { BidService } from '../../Domains/Bidding/bid.service';
-import { BidParamDto, PlaceBidDto, InitiateBidPaymentDto, ConfirmBidPaymentDto } from './dto';
+import { BidParamDto, PlaceBidDto, InitiateBidPaymentDto, ConfirmBidPaymentDto, BidUserParamDto } from './dto';
 import { ConfigService } from '@nestjs/config';
 import Stripe from "stripe"
 import { InjectQueue } from '@nestjs/bullmq';
@@ -52,9 +52,9 @@ export class BidController {
     }
 
 
-    @Get('my-bids/:id')
-    async getBidByKindeId(@Param() params: BidParamDto) {
-        return await this.bidService.getBidsByBidderId(params.id);
+    @Get('my-bids/:kinde_id')
+    async getBidByKindeId(@Param() params: BidUserParamDto) {
+        return await this.bidService.getBidsByBidderId(params.kinde_id);
     }
 
     /**

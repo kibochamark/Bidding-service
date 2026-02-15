@@ -15,15 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrismaService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("../../generated/prisma/client");
+const adapter_pg_1 = require("@prisma/adapter-pg");
 const config_1 = require("@nestjs/config");
-const adapter_neon_1 = require("@prisma/adapter-neon");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     constructor(config) {
         const connectionString = config?.get('DATABASE_URL') || process.env.DATABASE_URL;
         if (!connectionString) {
             throw new Error('DATABASE_URL is required');
         }
-        const adapter = new adapter_neon_1.PrismaNeon({ connectionString: connectionString });
+        const adapter = new adapter_pg_1.PrismaPg({ connectionString: connectionString });
         super({
             adapter,
         });

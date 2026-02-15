@@ -19,8 +19,8 @@ exports.QueueModule = QueueModule = __decorate([
         imports: [
             bullmq_1.BullModule.forRoot({
                 connection: {
-                    host: 'localhost',
-                    port: 6379,
+                    host: process.env.REDIS_HOST || 'redis-service',
+                    port: parseInt(process.env.REDIS_PORT) || 6379,
                 },
                 defaultJobOptions: {
                     attempts: 3,

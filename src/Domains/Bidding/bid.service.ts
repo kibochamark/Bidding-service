@@ -145,6 +145,8 @@ export class BidService {
         return await this.bidRepository.getBidsByBidderId(bidderId);
     }
 
+
+
     async getCurrentWinningBid(auctionId: string) {
         return await this.bidRepository.getCurrentWinningBid(auctionId);
     }

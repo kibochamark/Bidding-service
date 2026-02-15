@@ -64,3 +64,10 @@ export class BidParamDto {
     @IsUUID()
     id: string;
 }
+
+
+export class BidUserParamDto {
+    @IsNotEmpty()
+    @IsUUID()
+    kinde_id: string;
+}

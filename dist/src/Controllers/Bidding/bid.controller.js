@@ -42,7 +42,12 @@ let BidController = BidController_1 = class BidController {
     async getBidsByBidderId(bidderId, user) {
         return await this.bidService.getBidsByBidderId(bidderId);
     }
+    async getBidByKindeId(params) {
+        this.logger.log("secoind checj");
+        return await this.bidService.getBidsByBidderId(params.kinde_id);
+    }
     async getBidById(params) {
+        this.logger.log("we have arrive here");
         return await this.bidService.getBidById(params.id);
     }
     async getCurrentWinningBid(auctionId) {
@@ -103,6 +108,13 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], BidController.prototype, "getBidsByBidderId", null);
+__decorate([
+    (0, common_1.Get)('my-bids/:kinde_id'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.BidUserParamDto]),
+    __metadata("design:returntype", Promise)
+], BidController.prototype, "getBidByKindeId", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)()),

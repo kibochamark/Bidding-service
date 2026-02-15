@@ -1,5 +1,5 @@
 import { BidService } from '../../Domains/Bidding/bid.service';
-import { BidParamDto } from './dto';
+import { BidParamDto, BidUserParamDto } from './dto';
 import { ConfigService } from '@nestjs/config';
 import Stripe from "stripe";
 import { Queue } from 'bullmq';
@@ -26,6 +26,27 @@ export declare class BidController {
         placedAt: Date;
     }[]>;
     getBidsByBidderId(bidderId: string, user: KindeUser): Promise<({
+        auction: {
+            id: string;
+            title: string;
+            endDate: Date;
+            status: import("../../../generated/prisma/enums").AuctionStatus;
+        };
+    } & {
+        id: string;
+        auctionId: string;
+        bidderId: string;
+        bidderName: string;
+        bidAmount: import("@prisma/client-runtime-utils").Decimal;
+        entryFeePaid: import("@prisma/client-runtime-utils").Decimal;
+        totalPaid: import("@prisma/client-runtime-utils").Decimal;
+        paymentIntentId: string;
+        paymentStatus: import("../../../generated/prisma/enums").PaymentStatus;
+        isUnique: boolean;
+        isWinning: boolean;
+        placedAt: Date;
+    })[]>;
+    getBidByKindeId(params: BidUserParamDto): Promise<({
         auction: {
             id: string;
             title: string;

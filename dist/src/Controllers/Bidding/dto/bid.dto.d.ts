@@ -16,3 +16,6 @@ export declare class PlaceBidDto {
 export declare class BidParamDto {
     id: string;
 }
+export declare class BidUserParamDto {
+    kinde_id: string;
+}

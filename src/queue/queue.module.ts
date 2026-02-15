@@ -21,6 +21,7 @@ import { JOB_NAMES, QUEUE_NAMES } from './constants';
     BullModule.registerQueue(
       { name: JOB_NAMES.PROCESS_BID },
       { name: QUEUE_NAMES.AUCTION_FINALIZATION },
+      
     ),
   ],
   providers: [QueueService],

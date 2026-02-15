@@ -225,4 +225,69 @@ export class AuctionService {
             this.logger.error(`[CRON] Error checking for ended auctions: ${error.message}`);
         }
     }
+
+    /**
+     * Safety net cron: catches auctions stuck in ENDED status
+     * that never had their winner calculated (e.g. job failed, Redis was down).
+     * Runs every 5 minutes.
+     */
+    @Cron('0 */5 * * * *')
+    async finalizeStaleAuctions() {
+        const now = new Date();
+        // Only pick up auctions that ended at least 2 minutes ago
+        // to avoid racing with the main endAuctions cron
+        const staleThreshold = new Date(now.getTime() - 2 * 60 * 1000);
+
+        this.logger.debug(`[CRON:STALE] Checking for unfinalised auctions at ${now.toISOString()}`);
+
+        try {
+            const staleAuctions = await this.prisma.auction.findMany({
+                where: {
+                    status: 'ENDED',
+                    endDate: {
+                        lte: staleThreshold,
+                    },
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    endDate: true,
+                },
+            });
+
+            if (staleAuctions.length === 0) {
+                this.logger.debug('[CRON:STALE] No stale auctions found');
+                return;
+            }
+
+            this.logger.warn(
+                `[CRON:STALE] Found ${staleAuctions.length} auction(s) stuck in ENDED without winner calculation`,
+            );
+
+            for (const auction of staleAuctions) {
+                const job = await this.auctionQueue.add(
+                    JOB_NAMES.FINALIZE_AUCTION,
+                    {
+                        auctionId: auction.id,
+                        title: auction.title,
+                        endDate: auction.endDate.toISOString(),
+                    },
+                    {
+                        jobId: `finalize-stale-${auction.id}-${Date.now()}`,
+                        attempts: 3,
+                        backoff: {
+                            type: 'exponential',
+                            delay: 2000,
+                        },
+                    },
+                );
+
+                this.logger.log(
+                    `[CRON:STALE] Re-queued finalization job ${job.id} for auction: ${auction.title} (ID: ${auction.id})`,
+                );
+            }
+        } catch (error) {
+            this.logger.error(`[CRON:STALE] Error processing stale auctions: ${error.message}`);
+        }
+    }
 }

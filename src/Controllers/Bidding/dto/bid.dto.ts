@@ -68,6 +68,5 @@ export class BidParamDto {
 
 export class BidUserParamDto {
     @IsNotEmpty()
-    @IsUUID()
     kinde_id: string;
 }

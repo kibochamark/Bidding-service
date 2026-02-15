@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BidParamDto = exports.PlaceBidDto = exports.ConfirmBidPaymentDto = exports.InitiateBidPaymentDto = void 0;
+exports.BidUserParamDto = exports.BidParamDto = exports.PlaceBidDto = exports.ConfirmBidPaymentDto = exports.InitiateBidPaymentDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class InitiateBidPaymentDto {
@@ -78,4 +78,11 @@ __decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], BidParamDto.prototype, "id", void 0);
+class BidUserParamDto {
+}
+exports.BidUserParamDto = BidUserParamDto;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], BidUserParamDto.prototype, "kinde_id", void 0);
 //# sourceMappingURL=bid.dto.js.map

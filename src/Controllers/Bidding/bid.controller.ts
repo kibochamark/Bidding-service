@@ -43,6 +43,13 @@ export class BidController {
         return await this.bidService.getBidsByBidderId(bidderId);
     }
 
+
+    @Get('my-bids/:kinde_id')
+    async getBidByKindeId(@Param() params: BidUserParamDto) {
+        return await this.bidService.getBidsByBidderId(params.kinde_id);
+    }
+
+
     /**
      * Get a single bid by ID
      */
@@ -52,10 +59,7 @@ export class BidController {
     }
 
 
-    @Get('my-bids/:kinde_id')
-    async getBidByKindeId(@Param() params: BidUserParamDto) {
-        return await this.bidService.getBidsByBidderId(params.kinde_id);
-    }
+    
 
     /**
      * Get current winning bid for an auction

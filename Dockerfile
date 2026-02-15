@@ -15,10 +15,10 @@ RUN pnpm install
 # Copy source code
 COPY . .
 
-# Set DATABASE_URL as an ENV variable (not just ARG)
+# Set dummy DATABASE_URL for prisma generate
 ENV DATABASE_URL="postgresql://dummy:dummy@dummy:5432/dummy?schema=public"
 
-# Generate Prisma Client - now with DATABASE_URL set
+# Generate Prisma Client
 RUN npx prisma generate
 
 # Build the app
@@ -37,18 +37,20 @@ RUN npm install -g pnpm
 # Copy package files
 COPY package.json pnpm-lock.yaml ./
 
-# Install production dependencies
+# Install production dependencies ONLY (no dev dependencies)
 RUN pnpm install --prod
 
-# Copy built application from builder stage
+# Add prisma CLI for runtime migrations
+RUN pnpm add prisma
+
+# Copy built application
 COPY --from=builder /usr/src/app/dist ./dist
 
-# Copy Prisma schema from builder stage
+# Copy Prisma schema (needed for db push at runtime)
 COPY --from=builder /usr/src/app/prisma ./prisma
 
-# Copy the generated Prisma client
-COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /usr/src/app/node_modules/@prisma ./node_modules/@prisma
+# Copy generated Prisma client (output is at generated/prisma/ per schema config)
+COPY --from=builder /usr/src/app/generated ./generated
 
 EXPOSE 4000
 

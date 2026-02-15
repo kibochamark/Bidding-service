@@ -172,6 +172,7 @@ const CATEGORIES = [
 
 function buildProducts(categoryMap) {
   const futureDate = (days) => new Date(Date.now() + days * 86400000).toISOString();
+  const futureHours = (hours) => new Date(Date.now() + hours * 3600000).toISOString();
 
   return [
     // ── Smartphones ──
@@ -377,6 +378,75 @@ function buildProducts(categoryMap) {
       sellerName: 'AudioHub',
       specifications: { brand: 'Remarkable', model: 'Remarkable 2', display: '10.3" E-Ink', storage: '8GB', battery: '2 weeks', weight: '403g' },
       imageKeys: ['remarkable_1', 'remarkable_2'],
+    },
+
+    // ── Ending Soon (tomorrow) ──
+    {
+      title: 'iPhone 14 Pro 128GB Deep Purple',
+      description: 'iPhone 14 Pro in Deep Purple. A16 Bionic, Dynamic Island, 48MP camera. Used for 6 months, flawless condition. ENDING SOON!',
+      categoryId: categoryMap['smartphones'],
+      condition: 'EXCELLENT',
+      retailValue: 899.00,
+      entryFee: 3.00,
+      endDate: futureHours(18),
+      sellerId: 'seed-seller-002',
+      sellerName: 'MobileDeals',
+      specifications: { brand: 'Apple', model: 'iPhone 14 Pro', storage: '128GB', color: 'Deep Purple', chip: 'A16 Bionic', camera: '48MP' },
+      imageKeys: ['iphone_1', 'iphone_2'],
+    },
+    {
+      title: 'Sony WF-1000XM5 Earbuds',
+      description: 'Sony WF-1000XM5 truly wireless earbuds. Smallest and lightest Sony ANC earbuds ever. LDAC, 24-hour battery with case. Last chance!',
+      categoryId: categoryMap['headphones'],
+      condition: 'NEW',
+      retailValue: 299.99,
+      entryFee: 2.00,
+      endDate: futureHours(12),
+      sellerId: 'seed-seller-001',
+      sellerName: 'TechVault',
+      specifications: { brand: 'Sony', model: 'WF-1000XM5', type: 'In-ear TWS', connectivity: 'Bluetooth 5.3', battery: '8 hours (24 with case)', anc: true },
+      imageKeys: ['sony_hp_1', 'sony_hp_2'],
+    },
+    {
+      title: 'Apple Watch Series 9 45mm Midnight',
+      description: 'Apple Watch Series 9 GPS 45mm with Midnight Aluminum Case and Sport Band. Double Tap gesture. Barely worn. Ending tomorrow!',
+      categoryId: categoryMap['smartwatches'],
+      condition: 'MINT',
+      retailValue: 429.00,
+      entryFee: 2.00,
+      endDate: futureHours(20),
+      sellerId: 'seed-seller-003',
+      sellerName: 'AudioHub',
+      specifications: { brand: 'Apple', model: 'Watch Series 9', size: '45mm', material: 'Aluminum', chip: 'S9 SiP', connectivity: 'GPS' },
+      imageKeys: ['applewatch_1', 'applewatch_2'],
+    },
+
+    // ── Ending Soon (2 days) ──
+    {
+      title: 'MacBook Air 15" M3 16GB',
+      description: 'MacBook Air 15-inch M3, 16GB RAM, 512GB SSD in Starlight. Fanless design, 18-hour battery. Open box, never used. 2 days left!',
+      categoryId: categoryMap['laptops'],
+      condition: 'NEW',
+      retailValue: 1499.00,
+      entryFee: 5.00,
+      endDate: futureDate(2),
+      sellerId: 'seed-seller-001',
+      sellerName: 'TechVault',
+      specifications: { brand: 'Apple', model: 'MacBook Air 15"', chip: 'M3', ram: '16GB', storage: '512GB SSD', display: '15.3" Liquid Retina' },
+      imageKeys: ['macbook_1', 'macbook_2'],
+    },
+    {
+      title: 'Samsung Galaxy Z Flip 5 256GB',
+      description: 'Galaxy Z Flip 5 in Mint. Flex Window cover screen, Snapdragon 8 Gen 2. Light crease on display, otherwise perfect. Closing in 2 days!',
+      categoryId: categoryMap['smartphones'],
+      condition: 'GOOD',
+      retailValue: 999.99,
+      entryFee: 3.00,
+      endDate: futureDate(2),
+      sellerId: 'seed-seller-002',
+      sellerName: 'MobileDeals',
+      specifications: { brand: 'Samsung', model: 'Galaxy Z Flip 5', storage: '256GB', color: 'Mint', chip: 'Snapdragon 8 Gen 2', display: '6.7" Foldable AMOLED' },
+      imageKeys: ['samsung_1', 'samsung_2'],
     },
   ];
 }

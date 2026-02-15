@@ -1,5 +1,5 @@
 # ==============================================
-# Stage 1: Builder Stage (renamed from 'development')
+# Stage 1: Builder Stage
 # ==============================================
 FROM node:22-alpine AS builder
 
@@ -15,7 +15,10 @@ RUN pnpm install
 # Copy source code
 COPY . .
 
-# Generate Prisma Client
+# Set DATABASE_URL as an ENV variable (not just ARG)
+ENV DATABASE_URL="postgresql://dummy:dummy@dummy:5432/dummy?schema=public"
+
+# Generate Prisma Client - now with DATABASE_URL set
 RUN npx prisma generate
 
 # Build the app
@@ -37,14 +40,15 @@ COPY package.json pnpm-lock.yaml ./
 # Install production dependencies
 RUN pnpm install --prod
 
-# Copy built application from builder stage (fixed reference)
+# Copy built application from builder stage
 COPY --from=builder /usr/src/app/dist ./dist
 
-# Copy Prisma schema from builder stage (fixed reference)
+# Copy Prisma schema from builder stage
 COPY --from=builder /usr/src/app/prisma ./prisma
 
-# Generate Prisma Client in production stage
-RUN npx prisma generate
+# Copy the generated Prisma client
+COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /usr/src/app/node_modules/@prisma ./node_modules/@prisma
 
 EXPOSE 4000
 

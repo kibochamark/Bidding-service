@@ -8,8 +8,9 @@ import { JOB_NAMES, QUEUE_NAMES } from './constants';
     // forRoot configures the Redis connection globally (only call once in your app)
     BullModule.forRoot({
       connection: {
-        host: process.env.REDIS_HOST || 'redis-service', // Use env var with fallback
+        host: process.env.REDIS_HOST || 'redis-service',
         port: parseInt(process.env.REDIS_PORT as string) || 6379,
+        password: process.env.REDIS_PASSWORD || undefined,
       },
       defaultJobOptions: {
         attempts: 3,

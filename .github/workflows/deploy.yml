@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /opt/apps/biddingservice
+            cd /opt/apps/Bidding-service
             
             echo "==> Pulling latest code..."
             git pull origin main

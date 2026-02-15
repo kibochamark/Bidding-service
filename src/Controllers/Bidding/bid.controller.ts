@@ -115,27 +115,6 @@ export class BidController {
                         jobId: event.id, // Use payment intent ID as job ID (prevents duplicates)
                     });
 
-                    await this.bidQueue.add(`${JOB_NAMES.USER_NOTIFICATION}${event.data.object.metadata.bidderId}`, {
-                        
-                            type: "payment_success",
-                            ...event.data.object.metadata
-                        
-                    }, {
-                        jobId:event.data.object.metadata.bidderId, // Use payment intent ID as job ID (prevents duplicates)
-                    });
-
-                    this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
-
-                }else{
-                    const job =await this.bidQueue.add(`${JOB_NAMES.USER_NOTIFICATION}${event.data.object.metadata.bidderId}`, {
-
-                        type: "payment_failed",
-                        ...event.data.object.metadata
-
-                    }, {
-                        jobId: event.data.object.metadata.bidderId, // Use payment intent ID as job ID (prevents duplicates)
-                    });
-
                     this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
 
                 }

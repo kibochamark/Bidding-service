@@ -1,8 +1,12 @@
-import { IsString, IsNumber, IsDateString, IsUUID } from 'class-validator';
+import { IsString, IsNumber, IsDateString, IsUUID, IsOptional } from 'class-validator';
 
 export class BidJobDto {
     @IsString()
     paymentIntentId: string;
+
+    @IsString()
+    @IsOptional()
+    auctionTitle:string
 
     @IsUUID()
     auctionId: string;

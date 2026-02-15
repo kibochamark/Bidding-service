@@ -4,15 +4,23 @@ import { JOB_NAMES } from "../../queue/constants";
 import { Job } from "bullmq";
 import { BidJobDto } from "../../queue/dto/bid-dto";
 import { BidRepository } from "./bid.repository";
+import { Redis } from 'ioredis';
 
 @Processor(JOB_NAMES.PROCESS_BID)
 @Injectable()
 export class BidProcessor extends WorkerHost {
 
     private readonly logger = new Logger(BidProcessor.name)
+    private readonly publisher: Redis;
 
     constructor(private bidRepository: BidRepository) {
         super();
+        // Setup a publisher client
+        this.publisher = new Redis({
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT),
+            password: process.env.REDIS_PASSWORD,
+        });
     }
 
     async process(job: Job<BidJobDto, any, string>): Promise<any> {
@@ -34,6 +42,20 @@ export class BidProcessor extends WorkerHost {
                 );
             }
 
+            // Construct the channel name using the bidderId
+            const channelName = `payment:${job.data.bidderId}`;
+
+            const payload = {
+                type: "payment_success",
+                productId: job.data.auctionId,
+                productTitle: job.data.auctionTitle, // Ensure this exists in your DTO
+                message: "Your bid entry has been recorded."
+            };
+
+            await this.publisher.publish(channelName, JSON.stringify(payload));
+
+            this.logger.log(`Bid notification sent wiith channel : ${channelName}`)
+
             return {
                 success: true,
                 bidId: result.id,
@@ -44,6 +66,15 @@ export class BidProcessor extends WorkerHost {
             };
         } catch (error) {
             this.logger.error(`Failed to process bid job ${job.id}: ${error.message}`, error.stack);
+            // Publish failure if necessary
+            const failChannel = `payment:${job.data.bidderId}`;
+            await this.publisher.publish(failChannel, JSON.stringify({
+                type: "payment_failed",
+                message: error.message
+            }));
+
+            this.logger.error(`sending failure message`, error.stack);
+
             throw error;
         }
     }

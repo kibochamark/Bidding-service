@@ -1,7 +1,7 @@
 # ==============================================
 # Stage 1: Development/Build Stage
 # ==============================================
-FROM node:20-alpine AS development
+FROM node:22-alpine AS development
 
 WORKDIR /usr/src/app
 
@@ -31,7 +31,7 @@ CMD ["pnpm", "run", "start:dev"]
 # ==============================================
 # Stage 2: Production Stage
 # ==============================================
-FROM node:20-alpine AS production
+FROM node:22-alpine AS production
 
 WORKDIR /usr/src/app
 
@@ -43,6 +43,9 @@ COPY package.json pnpm-lock.yaml ./
 
 # Install ONLY production dependencies
 RUN pnpm install --prod
+
+
+
 
 # Copy built application from development stage
 COPY --from=development /usr/src/app/dist ./dist
@@ -58,4 +61,5 @@ RUN npx prisma generate
 
 EXPOSE 4000
 
-CMD ["node", "dist/src/main.js"]
+# At startup: push schema changes then start the app
+CMD ["sh", "-c", "npx prisma db push --skip-generate && node dist/src/main.js"]

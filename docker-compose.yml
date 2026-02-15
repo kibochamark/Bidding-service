@@ -22,42 +22,6 @@ services:
     networks:
       - bidding-network
 
-  prisma-migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: development
-    container_name: biddingservice-prisma-migrate
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-    env_file:
-      - .env
-    depends_on:
-      biddingservice:
-        condition: service_healthy
-    networks:
-      - bidding-network
-    healthcheck:
-      test: ["CMD-SHELL", 
-        "npx prisma migrate status || npx prisma db pull --force || exit 1"
-      ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    command: >
-      sh -c "
-        echo '🔄 Running database migrations...' &&
-        npx prisma db push --force-reset &&
-        echo '✅ Migrations completed successfully!' &&
-        echo '🔄 Generating Prisma client...' &&
-        npx prisma generate &&
-        echo '✅ Prisma client generated successfully!' &&
-        exit 0
-      "
-    restart: "no"  # Run once and exit
-  
-
   # ==============================================
   # NestJS Application Service
   # ==============================================

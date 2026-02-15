@@ -137,7 +137,7 @@ model Bid {
   bidAmount   Decimal  @db.Decimal(10, 2)
   entryFeePaid     Decimal       @db.Decimal(10, 2)
   totalPaid        Decimal       @db.Decimal(10, 2)
-  paymentIntentId  String        @unique  // Stripe payment intent ID
+  paymentIntentId  String          // Stripe payment intent ID
   paymentStatus    PaymentStatus @default(PAID)
   isUnique    Boolean  @default(true)
   isWinning   Boolean  @default(false)

@@ -108,10 +108,10 @@ export class BidController {
                 this.logger.log(`event: ${JSON.stringify(event)}`)
 
                 const job = await this.bidQueue.add(JOB_NAMES.PROCESS_BID, { 
-                    paymentIntentId: event.data.object.payment_intent,
+                    paymentIntentId: event.data.object.id,
                     ...event.data.object.metadata
                 }, {
-                    jobId: event.paymentIntentId, // Use payment intent ID as job ID (prevents duplicates)
+                    jobId: event.id, // Use payment intent ID as job ID (prevents duplicates)
                 });
 
                 this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);

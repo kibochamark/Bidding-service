@@ -53,6 +53,15 @@ export class UpdateAuctionDto {
     @IsOptional()
     @IsEnum(['ACTIVE', 'ENDED', 'CANCELLED', 'WINNER_DETERMINED'])
     status?: 'ACTIVE' | 'ENDED' | 'CANCELLED' | 'WINNER_DETERMINED';
+
+    @IsOptional()
+    @IsString()
+    winnerId?: string;
+
+    @IsOptional()
+    @IsNumber()
+    @Type(() => Number)
+    winningBidAmount?: any;
 }
 
 /**

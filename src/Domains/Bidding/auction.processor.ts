@@ -29,11 +29,22 @@ export class AuctionProcessor extends WorkerHost {
         this.logger.log(`[JOB ${job.id}] Processing finalization for auction: ${title} (${auctionId})`);
 
         try {
-            // Get the current winning bid (lowest unique bid)
-            const winningBid = await this.bidRepository.getCurrentWinningBid(auctionId);
+            // Skip if winner already determined
+            const auction = await this.auctionRepository.findAuctionById(auctionId);
+            if (auction.status === 'WINNER_DETERMINED') {
+                this.logger.log(`[JOB ${job.id}] Auction ${auctionId} already has a winner, skipping`);
+                return { success: true, auctionId, skipped: true, message: 'Winner already determined' };
+            }
+
+            // Step 1: Recalculate the winning bid (finds lowest unique bid and marks it)
+            const winningBid = await this.bidRepository.recalculateWinningBid(auctionId);
 
             if (!winningBid) {
                 this.logger.warn(`[JOB ${job.id}] No winner for auction ${auctionId} - no unique bids found`);
+
+                await this.auctionRepository.updateAuction(auctionId, {
+                    status: 'ENDED',
+                });
 
                 return {
                     success: true,
@@ -43,19 +54,17 @@ export class AuctionProcessor extends WorkerHost {
                 };
             }
 
-            // Update auction with winner information
+            // Step 2: Update auction with winner details
             await this.auctionRepository.updateAuction(auctionId, {
                 status: 'WINNER_DETERMINED',
+                winnerId: winningBid.bidderId,
+                winningBidAmount: winningBid.bidAmount,
             });
 
             this.logger.log(
                 `[JOB ${job.id}] Auction ${auctionId} finalized. ` +
                 `Winner: ${winningBid.bidderName} with bid $${winningBid.bidAmount}`
             );
-
-            // TODO: Emit events for notifications
-            // - Email to winner
-            // - Webhook to Next.js for revalidation
 
             return {
                 success: true,

@@ -176,6 +176,8 @@ export class BidRepository {
                         title: true,
                         status: true,
                         endDate: true,
+                        productId:true,
+                        prizeValue:true
                     }
                 }
             },

@@ -21,6 +21,11 @@ services:
       retries: 5
     networks:
       - bidding-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ==============================================
   # NestJS Application Service
@@ -60,6 +65,11 @@ services:
     # Remove or comment out this volume for production mode:
     # volumes:
     #   - ./src:/usr/src/app/src  # Use this for development mode only
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ==============================================
   # Redis Service
@@ -83,6 +93,11 @@ services:
       retries: 5
     networks:
       - bidding-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   bidding-network:

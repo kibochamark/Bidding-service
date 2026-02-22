@@ -161,6 +161,49 @@ let AuctionService = AuctionService_1 = class AuctionService {
             this.logger.error(`[CRON] Error checking for ended auctions: ${error.message}`);
         }
     }
+    async finalizeStaleAuctions() {
+        const now = new Date();
+        const staleThreshold = new Date(now.getTime() - 2 * 60 * 1000);
+        this.logger.debug(`[CRON:STALE] Checking for unfinalised auctions at ${now.toISOString()}`);
+        try {
+            const staleAuctions = await this.prisma.auction.findMany({
+                where: {
+                    status: 'ENDED',
+                    endDate: {
+                        lte: staleThreshold,
+                    },
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    endDate: true,
+                },
+            });
+            if (staleAuctions.length === 0) {
+                this.logger.debug('[CRON:STALE] No stale auctions found');
+                return;
+            }
+            this.logger.warn(`[CRON:STALE] Found ${staleAuctions.length} auction(s) stuck in ENDED without winner calculation`);
+            for (const auction of staleAuctions) {
+                const job = await this.auctionQueue.add(constants_1.JOB_NAMES.FINALIZE_AUCTION, {
+                    auctionId: auction.id,
+                    title: auction.title,
+                    endDate: auction.endDate.toISOString(),
+                }, {
+                    jobId: `finalize-stale-${auction.id}-${Date.now()}`,
+                    attempts: 3,
+                    backoff: {
+                        type: 'exponential',
+                        delay: 2000,
+                    },
+                });
+                this.logger.log(`[CRON:STALE] Re-queued finalization job ${job.id} for auction: ${auction.title} (ID: ${auction.id})`);
+            }
+        }
+        catch (error) {
+            this.logger.error(`[CRON:STALE] Error processing stale auctions: ${error.message}`);
+        }
+    }
 };
 exports.AuctionService = AuctionService;
 __decorate([
@@ -169,6 +212,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AuctionService.prototype, "endAuctions", null);
+__decorate([
+    (0, schedule_1.Cron)('0 */5 * * * *'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuctionService.prototype, "finalizeStaleAuctions", null);
 exports.AuctionService = AuctionService = AuctionService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(3, (0, bullmq_2.InjectQueue)(constants_1.QUEUE_NAMES.AUCTION_FINALIZATION)),

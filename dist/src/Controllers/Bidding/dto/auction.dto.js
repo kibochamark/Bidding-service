@@ -72,6 +72,17 @@ __decorate([
     (0, class_validator_1.IsEnum)(['ACTIVE', 'ENDED', 'CANCELLED', 'WINNER_DETERMINED']),
     __metadata("design:type", String)
 ], UpdateAuctionDto.prototype, "status", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateAuctionDto.prototype, "winnerId", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_transformer_1.Type)(() => Number),
+    __metadata("design:type", Object)
+], UpdateAuctionDto.prototype, "winningBidAmount", void 0);
 class AuctionParamDto {
 }
 exports.AuctionParamDto = AuctionParamDto;

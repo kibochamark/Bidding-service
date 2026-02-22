@@ -15,11 +15,17 @@ const bullmq_1 = require("@nestjs/bullmq");
 const common_1 = require("@nestjs/common");
 const constants_1 = require("../../queue/constants");
 const bid_repository_1 = require("./bid.repository");
+const ioredis_1 = require("ioredis");
 let BidProcessor = BidProcessor_1 = class BidProcessor extends bullmq_1.WorkerHost {
     constructor(bidRepository) {
         super();
         this.bidRepository = bidRepository;
         this.logger = new common_1.Logger(BidProcessor_1.name);
+        this.publisher = new ioredis_1.Redis({
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT),
+            password: process.env.REDIS_PASSWORD,
+        });
     }
     async process(job) {
         this.logger.log(`Processing bid job ${job.id} for auction ${job.data.auctionId}`);
@@ -31,6 +37,15 @@ let BidProcessor = BidProcessor_1 = class BidProcessor extends bullmq_1.WorkerHo
                 this.logger.warn(`Bid ${result.id} was placed after auction end but within grace period. ` +
                     `Auction: ${bidData.auctionId}, Bidder: ${bidData.bidderName}`);
             }
+            const channelName = `payment:${job.data.bidderId}`;
+            const payload = {
+                type: "payment_success",
+                productId: job.data.auctionId,
+                productTitle: job.data.auctionTitle,
+                message: "Your bid entry has been recorded."
+            };
+            await this.publisher.publish(channelName, JSON.stringify(payload));
+            this.logger.log(`Bid notification sent wiith channel : ${channelName}`);
             return {
                 success: true,
                 bidId: result.id,
@@ -42,6 +57,12 @@ let BidProcessor = BidProcessor_1 = class BidProcessor extends bullmq_1.WorkerHo
         }
         catch (error) {
             this.logger.error(`Failed to process bid job ${job.id}: ${error.message}`, error.stack);
+            const failChannel = `payment:${job.data.bidderId}`;
+            await this.publisher.publish(failChannel, JSON.stringify({
+                type: "payment_failed",
+                message: error.message
+            }));
+            this.logger.error(`sending failure message`, error.stack);
             throw error;
         }
     }

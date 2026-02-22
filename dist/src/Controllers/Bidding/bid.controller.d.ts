@@ -30,6 +30,8 @@ export declare class BidController {
             id: string;
             title: string;
             endDate: Date;
+            productId: string;
+            prizeValue: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums").AuctionStatus;
         };
     } & {
@@ -51,6 +53,8 @@ export declare class BidController {
             id: string;
             title: string;
             endDate: Date;
+            productId: string;
+            prizeValue: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums").AuctionStatus;
         };
     } & {

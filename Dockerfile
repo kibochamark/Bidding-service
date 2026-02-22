@@ -46,8 +46,9 @@ RUN pnpm add prisma
 # Copy built application
 COPY --from=builder /usr/src/app/dist ./dist
 
-# Copy Prisma schema (needed for db push at runtime)
+# Copy Prisma schema and config (needed for db push at runtime)
 COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/prisma.config.ts ./prisma.config.ts
 
 # Copy generated Prisma client (output is at generated/prisma/ per schema config)
 COPY --from=builder /usr/src/app/generated ./generated

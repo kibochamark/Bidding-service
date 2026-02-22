@@ -324,9 +324,13 @@ export class ProductRepository {
         }
 
         // Execute full-text search with relevance ranking
+        // Explicitly select columns to avoid tsvector deserialization error (Prisma adapter-pg can't handle tsvector)
         const products = await this.prisma.$queryRawUnsafe<any[]>(`
             SELECT
-                p.*,
+                p.id, p.title, p.description, p."categoryId", p.condition, p.images,
+                p."retailValue", p."entryFee", p."startDate", p."endDate", p."isActive",
+                p."sellerId", p."sellerName", p."sellerRating", p.rating, p."reviewCount",
+                p.specifications, p."createdAt", p."updatedAt",
                 ts_rank(p.search_vector, to_tsquery('english', $1)) as rank
             FROM "Product" p
             WHERE ${whereClause}

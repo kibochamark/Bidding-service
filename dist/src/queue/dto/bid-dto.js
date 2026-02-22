@@ -19,6 +19,11 @@ __decorate([
     __metadata("design:type", String)
 ], BidJobDto.prototype, "paymentIntentId", void 0);
 __decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], BidJobDto.prototype, "auctionTitle", void 0);
+__decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], BidJobDto.prototype, "auctionId", void 0);

@@ -95,7 +95,7 @@ export class BidController {
         if (endpoint_secret){
             this.logger.log("stripe secret present,....decoding event")
             const signature = req.headers['stripe-signature']
-            console.log(signature, "sig")
+            // console.log(signature, "sig")
             try {
                 event = this.stripe.webhooks.constructEvent(
                     req.rawBody,
@@ -107,7 +107,9 @@ export class BidController {
 
                 this.logger.log(`event: ${JSON.stringify(event)}`)
 
-                if (event.data.object.type === "payment_intent.succeeded"){
+                this.logger.log(event.data.object.status , "intent")
+
+                if (event.data.object.status === "succeeded"){
                     const job = await this.bidQueue.add(JOB_NAMES.PROCESS_BID, {
                         paymentIntentId: event.data.object.id,
                         ...event.data.object.metadata
@@ -116,8 +118,23 @@ export class BidController {
                     });
 
                     this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
-
+                    return res.status(200).json({
+                        status: "success",
+                        message: "payment succeeded and job added to queue for processing"
+                    });
                 }
+
+
+
+                return res.status(200).json({
+                    status: "sucess",
+                    message: "job failed to meet conditions, however we received stripe logs"
+                });
+
+
+
+
+
 
             
             } catch (err) {

@@ -65,13 +65,16 @@ let BidController = BidController_1 = class BidController {
                 event = this.stripe.webhooks.constructEvent(req.rawBody, signature.toString(), endpoint_secret);
                 this.logger.log("event received...proceeding to queue job");
                 this.logger.log(`event: ${JSON.stringify(event)}`);
-                const job = await this.bidQueue.add(constants_1.JOB_NAMES.PROCESS_BID, {
-                    paymentIntentId: event.data.object.id,
-                    ...event.data.object.metadata
-                }, {
-                    jobId: event.id,
-                });
-                this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+                this.logger.log(event.data.object.type, "intent");
+                if (event.data.object.type === "payment_intent.succeeded") {
+                    const job = await this.bidQueue.add(constants_1.JOB_NAMES.PROCESS_BID, {
+                        paymentIntentId: event.data.object.id,
+                        ...event.data.object.metadata
+                    }, {
+                        jobId: event.id,
+                    });
+                    this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+                }
             }
             catch (err) {
                 console.log(`⚠️ Webhook signature verification failed.`, err.message);

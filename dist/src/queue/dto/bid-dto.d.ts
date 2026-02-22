@@ -1,5 +1,6 @@
 export declare class BidJobDto {
     paymentIntentId: string;
+    auctionTitle: string;
     auctionId: string;
     bidderId: string;
     bidderName: string;

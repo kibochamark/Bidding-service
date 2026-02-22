@@ -27,9 +27,17 @@ let AuctionProcessor = AuctionProcessor_1 = class AuctionProcessor extends bullm
         const { auctionId, title } = job.data;
         this.logger.log(`[JOB ${job.id}] Processing finalization for auction: ${title} (${auctionId})`);
         try {
-            const winningBid = await this.bidRepository.getCurrentWinningBid(auctionId);
+            const auction = await this.auctionRepository.findAuctionById(auctionId);
+            if (auction.status === 'WINNER_DETERMINED') {
+                this.logger.log(`[JOB ${job.id}] Auction ${auctionId} already has a winner, skipping`);
+                return { success: true, auctionId, skipped: true, message: 'Winner already determined' };
+            }
+            const winningBid = await this.bidRepository.recalculateWinningBid(auctionId);
             if (!winningBid) {
                 this.logger.warn(`[JOB ${job.id}] No winner for auction ${auctionId} - no unique bids found`);
+                await this.auctionRepository.updateAuction(auctionId, {
+                    status: 'ENDED',
+                });
                 return {
                     success: true,
                     auctionId,
@@ -39,6 +47,8 @@ let AuctionProcessor = AuctionProcessor_1 = class AuctionProcessor extends bullm
             }
             await this.auctionRepository.updateAuction(auctionId, {
                 status: 'WINNER_DETERMINED',
+                winnerId: winningBid.bidderId,
+                winningBidAmount: winningBid.bidAmount,
             });
             this.logger.log(`[JOB ${job.id}] Auction ${auctionId} finalized. ` +
                 `Winner: ${winningBid.bidderName} with bid $${winningBid.bidAmount}`);

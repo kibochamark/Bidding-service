@@ -11,6 +11,8 @@ export declare class UpdateAuctionDto {
     description?: string;
     endDate?: string;
     status?: 'ACTIVE' | 'ENDED' | 'CANCELLED' | 'WINNER_DETERMINED';
+    winnerId?: string;
+    winningBidAmount?: any;
 }
 export declare class AuctionParamDto {
     id: string;

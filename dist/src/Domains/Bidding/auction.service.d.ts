@@ -382,4 +382,5 @@ export declare class AuctionService {
         }[];
     }>;
     endAuctions(): Promise<void>;
+    finalizeStaleAuctions(): Promise<void>;
 }

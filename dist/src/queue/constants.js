@@ -8,5 +8,6 @@ exports.QUEUE_NAMES = {
 exports.JOB_NAMES = {
     PROCESS_BID: 'process-bid',
     FINALIZE_AUCTION: 'finalize-auction',
+    USER_NOTIFICATION: 'payment:'
 };
 //# sourceMappingURL=constants.js.map

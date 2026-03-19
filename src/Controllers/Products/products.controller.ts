@@ -53,6 +53,8 @@ export class ProductsController {
      * GET /products/search
      * Search products with filters and pagination
      */
+
+    
     @Get('search')
     async searchProducts(@Query() filters: SearchProductsDto) {
         return await this.productService.searchProducts(filters);

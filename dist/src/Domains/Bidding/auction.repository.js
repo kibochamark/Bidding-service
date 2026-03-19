@@ -94,10 +94,7 @@ let AuctionRepository = AuctionRepository_1 = class AuctionRepository {
         }
         return await this.prisma.auction.update({
             where: { id },
-            data: {
-                ...data,
-                ...(data.endDate && { endDate: new Date(data.endDate) })
-            },
+            data: Object.assign(Object.assign({}, data), (data.endDate && { endDate: new Date(data.endDate) })),
             include: {
                 product: true,
             }
@@ -115,6 +112,7 @@ let AuctionRepository = AuctionRepository_1 = class AuctionRepository {
         });
     }
     async getAuctionStats(id) {
+        var _a, _b, _c;
         const auction = await this.findAuctionById(id);
         const stats = await this.prisma.bid.groupBy({
             by: ['auctionId'],
@@ -137,10 +135,10 @@ let AuctionRepository = AuctionRepository_1 = class AuctionRepository {
         });
         return {
             auction,
-            totalBids: stats[0]?._count.id || 0,
+            totalBids: ((_a = stats[0]) === null || _a === void 0 ? void 0 : _a._count.id) || 0,
             uniqueBids: uniqueBidsCount,
-            lowestBid: stats[0]?._min.bidAmount,
-            highestBid: stats[0]?._max.bidAmount,
+            lowestBid: (_b = stats[0]) === null || _b === void 0 ? void 0 : _b._min.bidAmount,
+            highestBid: (_c = stats[0]) === null || _c === void 0 ? void 0 : _c._max.bidAmount,
         };
     }
 };

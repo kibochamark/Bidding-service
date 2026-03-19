@@ -116,7 +116,7 @@ export declare class BidController {
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
-    } | null>;
+    }>;
     getBidStatistics(auctionId: string): Promise<{
         bidAmount: number;
         count: number;

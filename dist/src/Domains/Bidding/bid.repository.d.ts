@@ -33,7 +33,7 @@ export declare class BidRepository {
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
-    } | null>;
+    }>;
     getBidsByAuctionId(auctionId: string): Promise<{
         id: string;
         auctionId: string;
@@ -116,7 +116,7 @@ export declare class BidRepository {
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
-    } | null>;
+    }>;
     getBidStatistics(auctionId: string): Promise<{
         bidAmount: number;
         count: number;

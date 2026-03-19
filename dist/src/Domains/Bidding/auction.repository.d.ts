@@ -250,7 +250,7 @@ export declare class AuctionRepository {
         };
         totalBids: number;
         uniqueBids: number;
-        lowestBid: import("@prisma/client-runtime-utils").Decimal | null;
-        highestBid: import("@prisma/client-runtime-utils").Decimal | null;
+        lowestBid: import("@prisma/client-runtime-utils").Decimal;
+        highestBid: import("@prisma/client-runtime-utils").Decimal;
     }>;
 }

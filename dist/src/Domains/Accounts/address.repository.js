@@ -104,9 +104,7 @@ let AddressRepository = AddressRepository_1 = class AddressRepository {
         this.logger.log(`Address found for ID: ${id}, proceeding to update`);
         return await this.prisma.address.update({
             where: { id },
-            data: {
-                ...data
-            },
+            data: Object.assign({}, data),
         });
     }
     async deleteAddress(id) {

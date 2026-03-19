@@ -37,7 +37,7 @@ let S3moduleService = S3moduleService_1 = class S3moduleService {
                     this.logger.error('Cloudinary upload error:', error);
                     return reject(error);
                 }
-                this.logger.log(`File uploaded successfully: ${result?.secure_url}`);
+                this.logger.log(`File uploaded successfully: ${result === null || result === void 0 ? void 0 : result.secure_url}`);
                 resolve(result);
             });
             uploadStream.end(file.buffer);

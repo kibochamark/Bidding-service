@@ -6,18 +6,21 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
-import jwksClient from 'jwks-rsa';
+import { JwksClient } from 'jwks-rsa';
 
 @Injectable()
 export class KindeAuthGuard implements CanActivate {
-    private jwksClient: jwksClient.JwksClient;
+    private jwksClient: JwksClient;
 
     constructor() {
-        // Initialize JWKS client to fetch Kinde's public keys
-        this.jwksClient = jwksClient({
-            jwksUri: process.env.KINDE_JWKS_URI || `${process.env.KINDE_ISSUER_URL}/.well-known/jwks.json`,
+        this.jwksClient = new JwksClient({
+            jwksUri:
+                process.env.KINDE_JWKS_URI ||
+                `${process.env.KINDE_ISSUER_URL}/.well-known/jwks.json`,
             cache: true,
-            cacheMaxAge: 86400000, // 24 hours in ms
+            cacheMaxAge: 86400000, // 24 hours
+            rateLimit: true,
+            jwksRequestsPerMinute: 10,
         });
     }
 
@@ -30,26 +33,24 @@ export class KindeAuthGuard implements CanActivate {
         }
 
         try {
-            // Decode token to get the key id (kid) from header
-            const decoded = jwt.decode(token, { complete: true });
+            const decoded = jwt.decode(token, { complete: true }) as {
+                header?: { kid?: string };
+            };
 
-            if (!decoded || !decoded.header.kid) {
+            if (!decoded?.header?.kid) {
                 throw new UnauthorizedException('Invalid token format');
             }
 
-            // Get the signing key from Kinde's JWKS endpoint
             const key = await this.jwksClient.getSigningKey(decoded.header.kid);
             const publicKey = key.getPublicKey();
 
-            // Verify and decode the JWT
             const payload = jwt.verify(token, publicKey, {
                 audience: process.env.KINDE_CLIENT_ID,
                 issuer: process.env.KINDE_ISSUER_URL,
             }) as any;
 
-            // Extract user information from the JWT payload
             request['user'] = {
-                kindeId: payload.sub, // 'sub' is the standard JWT claim for user ID
+                kindeId: payload.sub,
                 email: payload.email,
                 givenName: payload.given_name,
                 familyName: payload.family_name,
@@ -59,13 +60,14 @@ export class KindeAuthGuard implements CanActivate {
             };
 
             return true;
-        } catch (error) {
+        } catch (error: any) {
             if (error.name === 'TokenExpiredError') {
                 throw new UnauthorizedException('Token has expired');
             }
             if (error.name === 'JsonWebTokenError') {
                 throw new UnauthorizedException('Invalid token');
             }
+
             throw new UnauthorizedException(
                 'Token validation failed: ' + error.message,
             );

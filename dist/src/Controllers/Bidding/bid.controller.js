@@ -11,9 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 var BidController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BidController = void 0;
@@ -21,7 +18,7 @@ const common_1 = require("@nestjs/common");
 const bid_service_1 = require("../../Domains/Bidding/bid.service");
 const dto_1 = require("./dto");
 const config_1 = require("@nestjs/config");
-const stripe_1 = __importDefault(require("stripe"));
+const stripe_1 = require("stripe");
 const bullmq_1 = require("@nestjs/bullmq");
 const bullmq_2 = require("bullmq");
 const constants_1 = require("../../queue/constants");
@@ -60,21 +57,25 @@ let BidController = BidController_1 = class BidController {
         if (endpoint_secret) {
             this.logger.log("stripe secret present,....decoding event");
             const signature = req.headers['stripe-signature'];
-            console.log(signature, "sig");
             try {
                 event = this.stripe.webhooks.constructEvent(req.rawBody, signature.toString(), endpoint_secret);
                 this.logger.log("event received...proceeding to queue job");
                 this.logger.log(`event: ${JSON.stringify(event)}`);
-                this.logger.log(event.data.object.type, "intent");
-                if (event.data.object.type === "payment_intent.succeeded") {
-                    const job = await this.bidQueue.add(constants_1.JOB_NAMES.PROCESS_BID, {
-                        paymentIntentId: event.data.object.id,
-                        ...event.data.object.metadata
-                    }, {
+                this.logger.log(event.data.object.status, "intent");
+                if (event.data.object.status === "succeeded") {
+                    const job = await this.bidQueue.add(constants_1.JOB_NAMES.PROCESS_BID, Object.assign({ paymentIntentId: event.data.object.id }, event.data.object.metadata), {
                         jobId: event.id,
                     });
                     this.logger.log(`Added bid processing job: ${job.id} for auction: ${event.id}`);
+                    return res.status(200).json({
+                        status: "success",
+                        message: "payment succeeded and job added to queue for processing"
+                    });
                 }
+                return res.status(200).json({
+                    status: "sucess",
+                    message: "job failed to meet conditions, however we received stripe logs"
+                });
             }
             catch (err) {
                 console.log(`⚠️ Webhook signature verification failed.`, err.message);

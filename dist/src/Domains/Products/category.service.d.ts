@@ -14,7 +14,7 @@ export declare class CategoryService {
             description: string | null;
             icon: string | null;
             parentId: string | null;
-        } | null;
+        };
         children: {
             id: string;
             createdAt: Date;
@@ -48,7 +48,7 @@ export declare class CategoryService {
             description: string | null;
             icon: string | null;
             parentId: string | null;
-        } | null;
+        };
         children: {
             id: string;
             createdAt: Date;
@@ -82,7 +82,7 @@ export declare class CategoryService {
             description: string | null;
             icon: string | null;
             parentId: string | null;
-        } | null;
+        };
         children: {
             id: string;
             createdAt: Date;
@@ -116,7 +116,7 @@ export declare class CategoryService {
             description: string | null;
             icon: string | null;
             parentId: string | null;
-        } | null;
+        };
         children: {
             id: string;
             createdAt: Date;
@@ -147,7 +147,7 @@ export declare class CategoryService {
             description: string | null;
             icon: string | null;
             parentId: string | null;
-        } | null;
+        };
         children: {
             id: string;
             createdAt: Date;

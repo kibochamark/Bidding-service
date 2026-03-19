@@ -18,7 +18,7 @@ export declare class AddressService {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    getAddressById(id: string): Promise<({
+    getAddressById(id: string): Promise<{
         account: {
             kindeId: string;
             id: string;
@@ -37,7 +37,7 @@ export declare class AddressService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-    }) | null>;
+    }>;
     createAddress(data: CreateAddressDto): Promise<{
         accountId: string;
         phone: string;

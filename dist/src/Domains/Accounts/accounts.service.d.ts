@@ -48,7 +48,7 @@ export declare class AccountsService {
             rating: import("@prisma/client-runtime-utils").Decimal;
             totalSales: number;
             responseRate: import("@prisma/client-runtime-utils").Decimal | null;
-        } | null;
+        };
     } & {
         kindeId: string;
         email: string | null;

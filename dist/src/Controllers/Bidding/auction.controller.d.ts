@@ -155,8 +155,8 @@ export declare class AuctionController {
         };
         totalBids: number;
         uniqueBids: number;
-        lowestBid: import("@prisma/client-runtime-utils").Decimal | null;
-        highestBid: import("@prisma/client-runtime-utils").Decimal | null;
+        lowestBid: import("@prisma/client-runtime-utils").Decimal;
+        highestBid: import("@prisma/client-runtime-utils").Decimal;
     }>;
     getAuctionLeaderboard(params: AuctionParamDto): Promise<{
         auction: {
@@ -169,7 +169,7 @@ export declare class AuctionController {
         currentWinner: {
             bidderName: string;
             bidAmount: import("@prisma/client-runtime-utils").Decimal;
-        } | null;
+        };
         bidStatistics: {
             bidAmount: number;
             count: number;
@@ -217,62 +217,6 @@ export declare class AuctionController {
         totalRevenue: import("@prisma/client-runtime-utils").Decimal;
     }>;
     finalizeAuction(params: AuctionParamDto): Promise<{
-        auction: {
-            product: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                rating: import("@prisma/client-runtime-utils").Decimal;
-                description: string;
-                title: string;
-                categoryId: string;
-                condition: import("../../../generated/prisma/enums").ProductCondition;
-                images: string[];
-                retailValue: import("@prisma/client-runtime-utils").Decimal;
-                entryFee: import("@prisma/client-runtime-utils").Decimal;
-                startDate: Date;
-                endDate: Date;
-                isActive: boolean;
-                sellerId: string;
-                sellerName: string;
-                sellerRating: import("@prisma/client-runtime-utils").Decimal;
-                reviewCount: number;
-                specifications: import("@prisma/client/runtime/client").JsonValue;
-            };
-            bids: {
-                id: string;
-                auctionId: string;
-                bidderId: string;
-                bidderName: string;
-                bidAmount: import("@prisma/client-runtime-utils").Decimal;
-                entryFeePaid: import("@prisma/client-runtime-utils").Decimal;
-                totalPaid: import("@prisma/client-runtime-utils").Decimal;
-                paymentIntentId: string;
-                paymentStatus: import("../../../generated/prisma/enums").PaymentStatus;
-                isUnique: boolean;
-                isWinning: boolean;
-                placedAt: Date;
-            }[];
-        } & {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            description: string;
-            title: string;
-            entryFee: import("@prisma/client-runtime-utils").Decimal;
-            startDate: Date;
-            endDate: Date;
-            productId: string;
-            prizeValue: import("@prisma/client-runtime-utils").Decimal;
-            status: import("../../../generated/prisma/enums").AuctionStatus;
-            winnerId: string | null;
-            winningBidAmount: import("@prisma/client-runtime-utils").Decimal | null;
-            totalBidsCount: number;
-            totalRevenue: import("@prisma/client-runtime-utils").Decimal;
-        };
-        winner: null;
-        message: string;
-    } | {
         auction: {
             product: {
                 id: string;

@@ -20,16 +20,12 @@ let CategoryService = CategoryService_1 = class CategoryService {
     }
     async createCategory(data) {
         this.logger.log(`Creating category: ${data.name}`);
-        let query_data = {
-            ...data
-        };
+        let query_data = Object.assign({}, data);
         if (data.parentId) {
             query_data["parentId"] = data.parentId;
         }
         return await this.prisma.category.create({
-            data: {
-                ...query_data
-            },
+            data: Object.assign({}, query_data),
             include: {
                 parent: true,
                 children: true,

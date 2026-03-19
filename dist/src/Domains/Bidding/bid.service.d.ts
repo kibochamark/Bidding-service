@@ -16,7 +16,7 @@ export declare class BidService {
         bidAmount: number;
         entryFee: number;
         totalAmount: number;
-        warning: string | undefined;
+        warning: string;
         auctionEndTime: Date;
     }>;
     confirmBidPayment(data: ConfirmBidPaymentDto): Promise<{
@@ -126,7 +126,7 @@ export declare class BidService {
         isUnique: boolean;
         isWinning: boolean;
         placedAt: Date;
-    } | null>;
+    }>;
     getBidStatistics(auctionId: string): Promise<{
         bidAmount: number;
         count: number;

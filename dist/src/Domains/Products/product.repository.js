@@ -22,18 +22,12 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
     }
     async createProduct(data) {
         this.logger.log(`Creating product: ${data.title}`);
-        let query_data = {
-            ...data,
-            endDate: new Date(data.endDate),
-        };
+        let query_data = Object.assign(Object.assign({}, data), { endDate: new Date(data.endDate) });
         if (data.images) {
             query_data["images"] = data.images;
         }
         return await this.prisma.product.create({
-            data: {
-                ...query_data,
-                specifications: data.specifications,
-            },
+            data: Object.assign(Object.assign({}, query_data), { specifications: data.specifications }),
             include: {
                 category: true
             },
@@ -66,9 +60,7 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
                         where: {
                             id
                         },
-                        data: {
-                            ...data
-                        },
+                        data: Object.assign({}, data),
                         select: {
                             auctions: {
                                 where: {
@@ -92,9 +84,7 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
             else {
                 return await this.prisma.product.update({
                     where: { id },
-                    data: {
-                        ...data
-                    },
+                    data: Object.assign({}, data),
                     include: {
                         category: true,
                     },
@@ -424,7 +414,7 @@ let ProductRepository = ProductRepository_1 = class ProductRepository {
         }
         this.logger.log(`Query object: ${JSON.stringify(query, null, 2)}`);
         const [products, total] = await Promise.all([
-            this.prisma.product.findMany({ ...query }),
+            this.prisma.product.findMany(Object.assign({}, query)),
             this.prisma.product.count({
                 where: {
                     isActive: true,

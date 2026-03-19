@@ -13,7 +13,7 @@ export declare class AccountsRepository {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    findAccountByKindeIdRaw(kindeId: string): Promise<({
+    findAccountByKindeIdRaw(kindeId: string): Promise<{
         addresses: {
             accountId: string;
             phone: string;
@@ -39,7 +39,7 @@ export declare class AccountsRepository {
             rating: import("@prisma/client-runtime-utils").Decimal;
             totalSales: number;
             responseRate: import("@prisma/client-runtime-utils").Decimal | null;
-        } | null;
+        };
     } & {
         kindeId: string;
         email: string | null;
@@ -48,7 +48,7 @@ export declare class AccountsRepository {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-    }) | null>;
+    }>;
     findAccountByKindeId(data: AccountParamDto): Promise<{
         addresses: {
             accountId: string;
@@ -75,7 +75,7 @@ export declare class AccountsRepository {
             rating: import("@prisma/client-runtime-utils").Decimal;
             totalSales: number;
             responseRate: import("@prisma/client-runtime-utils").Decimal | null;
-        } | null;
+        };
     } & {
         kindeId: string;
         email: string | null;

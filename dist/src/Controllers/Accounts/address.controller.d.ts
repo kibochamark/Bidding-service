@@ -19,7 +19,7 @@ export declare class AddressController {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    getAddressById(params: AddressParamDto): Promise<({
+    getAddressById(params: AddressParamDto): Promise<{
         account: {
             kindeId: string;
             id: string;
@@ -38,7 +38,7 @@ export declare class AddressController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-    }) | null>;
+    }>;
     createAddress(createAddressDto: CreateAddressDto): Promise<{
         accountId: string;
         phone: string;

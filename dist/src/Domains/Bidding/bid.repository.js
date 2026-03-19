@@ -71,11 +71,7 @@ let BidRepository = BidRepository_1 = class BidRepository {
             }
         });
         this.logger.log(`Bid placed successfully. Is unique: ${isUnique}. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
-        return {
-            ...newBid,
-            processedAfterAuctionEnd: isAfterAuctionEnd,
-            withinGracePeriod: isWithinGracePeriod,
-        };
+        return Object.assign(Object.assign({}, newBid), { processedAfterAuctionEnd: isAfterAuctionEnd, withinGracePeriod: isWithinGracePeriod });
     }
     async recalculateWinningBid(auctionId) {
         this.logger.log(`Recalculating winning bid for auction ${auctionId}`);

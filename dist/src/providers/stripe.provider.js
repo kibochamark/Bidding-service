@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StripeProvider = exports.STRIPE_CLIENT = void 0;
 const config_1 = require("@nestjs/config");
-const stripe_1 = __importDefault(require("stripe"));
+const stripe_1 = require("stripe");
 exports.STRIPE_CLIENT = 'STRIPE_CLIENT';
 exports.StripeProvider = {
     provide: exports.STRIPE_CLIENT,

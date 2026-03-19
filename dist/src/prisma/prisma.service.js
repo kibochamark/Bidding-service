@@ -19,7 +19,7 @@ const adapter_pg_1 = require("@prisma/adapter-pg");
 const config_1 = require("@nestjs/config");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     constructor(config) {
-        const connectionString = config?.get('DATABASE_URL') || process.env.DATABASE_URL;
+        const connectionString = (config === null || config === void 0 ? void 0 : config.get('DATABASE_URL')) || process.env.DATABASE_URL;
         if (!connectionString) {
             throw new Error('DATABASE_URL is required');
         }

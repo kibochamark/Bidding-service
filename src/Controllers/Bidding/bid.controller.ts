@@ -95,7 +95,10 @@ export class BidController {
         if (endpoint_secret){
             this.logger.log("stripe secret present,....decoding event")
             const signature = req.headers['stripe-signature']
-            // console.log(signature, "sig")
+            console.log(signature, "sig")
+            console.log(endpoint_secret, "endpoint secret")
+            console.log(req.rawBody, "raw body")
+            console.log(req.headers, "headers")
             try {
                 event = this.stripe.webhooks.constructEvent(
                     req.rawBody,

@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Inject, Logger, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Inject, Logger, Param, Post, Query, RawBody, Req, Res, UseGuards } from '@nestjs/common';
 import { BidService } from '../../Domains/Bidding/bid.service';
 import { BidParamDto, PlaceBidDto, InitiateBidPaymentDto, ConfirmBidPaymentDto, BidUserParamDto } from './dto';
 import { ConfigService } from '@nestjs/config';
@@ -82,7 +82,7 @@ export class BidController {
     // Get stripe payment event
 
     @Post('stripe/webhook')
-    async getStripePaymentEvent(@Req() req, @Res() res){
+    async getStripePaymentEvent(@Req() req, @Res() res, @RawBody() rawBody: Buffer) {
         /**
          * verify stripe token
          *  extract event data
@@ -94,14 +94,14 @@ export class BidController {
         // retrive stripe headers
         if (endpoint_secret){
             this.logger.log("stripe secret present,....decoding event")
-            const signature = req.headers['stripe-signature']
+            const signature = req.headers['stripe-signature'] as string;
             console.log(signature, "sig")
             console.log(endpoint_secret, "endpoint secret")
-            console.log(req.rawBody, "raw body")
+            console.log(rawBody, "raw body")
             console.log(req.headers, "headers")
             try {
                 event = this.stripe.webhooks.constructEvent(
-                    req.rawBody,
+                    rawBody,
                     signature.toString(),
                     endpoint_secret
                 );
@@ -140,7 +140,7 @@ export class BidController {
 
 
             
-            } catch (err) {
+            } catch (err:any) {
                 console.log(`⚠️ Webhook signature verification failed.`, err.message);
                 return res.status(400).json({
                     status:"failed",

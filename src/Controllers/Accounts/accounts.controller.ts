@@ -3,7 +3,7 @@ import type * as express from 'express';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
 import { AccountParamDto, CreateAccountDto, UpdateAccountDto } from './dto/index.js';
 import * as bodyParser from 'body-parser';
-import jwksClient from "jwks-rsa";
+import { JwksClient } from "jwks-rsa";
 import jwt from "jsonwebtoken";
 import { ConfigService } from '@nestjs/config';
 
@@ -37,7 +37,7 @@ export class AccountsController {
 
                 // console.log('Received webhook with token:', token);
 
-                const client = jwksClient({
+                const client = new JwksClient({
                     jwksUri: this.configService.get('KINDE_JWKS_URI', 'https://bidmarket.kinde.com/.well-known/jwks.json'),
                 });
 
@@ -75,9 +75,9 @@ export class AccountsController {
                         this.logger.warn(`Unhandled webhook event type: ${event.type}`);
                         return res.status(400).json({ error: 'Unhandled event type', type: event.type });
                 }
-            } catch (error) {
+            } catch (error: any) {
                 this.logger.error('Failed to process webhook', error);
-                return res.status(500).json({ error: 'Failed to process webhook', details: error.message });
+                return res.status(500).json({ error: 'Failed to process webhook', details: error?.message });
             }
         });
     }
@@ -93,7 +93,7 @@ export class AccountsController {
 
                 // console.log('Received webhook with token:', token);
 
-                const client = jwksClient({
+                const client = new JwksClient({
                     jwksUri: `https://bidmarket.kinde.com/.well-known/jwks.json`,
                 });
 
@@ -118,9 +118,9 @@ export class AccountsController {
                         this.logger.warn(`Unhandled webhook event type: ${event.type}`);
                         return res.status(400).json({ error: 'Unhandled event type', type: event.type });
                 }
-            } catch (error) {
+            } catch (error: any) {
                 this.logger.error('Failed to process webhook', error);
-                return res.status(500).json({ error: 'Failed to process webhook', details: error.message });
+                return res.status(500).json({ error: 'Failed to process webhook', details: error?.message });
             }
         });
     }

@@ -82,7 +82,7 @@ export class BidController {
     // Get stripe payment event
 
     @Post('stripe/webhook')
-    async getStripePaymentEvent(@Req() req, @Res() res, @RawBody() rawBody: Buffer) {
+    async getStripePaymentEvent(@RawBody() rawBody: Buffer, @Req() req, @Res() res) {
         /**
          * verify stripe token
          *  extract event data

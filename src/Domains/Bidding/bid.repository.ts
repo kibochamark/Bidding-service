@@ -179,7 +179,8 @@ export class BidRepository {
                         productId:true,
                         prizeValue:true
                     }
-                }
+                },
+                
             },
             orderBy: { placedAt: 'desc' }
         });

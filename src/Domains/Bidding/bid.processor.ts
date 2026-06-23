@@ -64,7 +64,7 @@ export class BidProcessor extends WorkerHost {
                 processedAfterAuctionEnd: result.processedAfterAuctionEnd,
                 withinGracePeriod: result.withinGracePeriod,
             };
-        } catch (error) {
+        } catch (error:any) {
             this.logger.error(`Failed to process bid job ${job.id}: ${error.message}`, error.stack);
             // Publish failure if necessary
             const failChannel = `payment:${job.data.bidderId}`;

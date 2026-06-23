@@ -4,7 +4,7 @@ import { AccountsService } from '../../../src/Domains/Accounts/accounts.service'
 import { AccountParamDto, CreateAccountDto, UpdateAccountDto } from './dto/index.js';
 import * as bodyParser from 'body-parser';
 import { JwksClient } from "jwks-rsa";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { ConfigService } from '@nestjs/config';
 
 @Controller('accounts')

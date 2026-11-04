@@ -9,11 +9,13 @@ export class BidRepository {
     constructor(private prisma: PrismaService) {}
 
     /**
-     * Place a bid with payment information (used by queue processor)
-     * This is the core logic for the Lowest Unique Bid system with payment tracking
+     * Place one or more bids from a single payment (used by queue processor).
+     * One payment can cover several lowest-unique-bid entries (bidAmounts),
+     * each becoming its own Bid row sharing the same paymentIntentId.
+     * This is the core logic for the Lowest Unique Bid system with payment tracking.
      */
-    async placeBidWithPayment(data: BidJobDto) {
-        this.logger.log(`Processing paid bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
+    async placeBidsWithPayment(data: BidJobDto) {
+        this.logger.log(`Processing ${data.bidAmounts.length} paid bid(s) for auction ${data.auctionId} by ${data.bidderName}`);
 
         // Verify auction exists and is ACTIVE
         const auction = await this.prisma.auction.findUnique({
@@ -39,53 +41,64 @@ export class BidRepository {
             throw new BadRequestException('Auction has ended and grace period expired. Bid cannot be placed.');
         }
 
-        // Check if this bid amount already exists (to determine if it's unique)
-        const existingBidWithSameAmount = await this.prisma.bid.findFirst({
-            where: {
-                auctionId: data.auctionId,
-                bidAmount: data.bidAmount,
+        // Each bid entry is attributed an equal share of the total payment.
+        const perBidShare = data.entryFee;
+
+        const newBids = await this.prisma.$transaction(async (tx) => {
+            const created = [];
+
+            for (const bidAmount of data.bidAmounts) {
+                // Checked against both existing rows AND rows created earlier in this
+                // same batch, since the batch can itself contain duplicate amounts.
+                const existingBidWithSameAmount = await tx.bid.findFirst({
+                    where: {
+                        auctionId: data.auctionId,
+                        bidAmount,
+                    }
+                });
+
+                const isUnique = !existingBidWithSameAmount;
+
+                const newBid = await tx.bid.create({
+                    data: {
+                        auctionId: data.auctionId,
+                        bidderId: data.bidderId,
+                        bidderName: data.bidderName,
+                        bidAmount,
+                        entryFeePaid: perBidShare,
+                        totalPaid: perBidShare,
+                        paymentIntentId: data.paymentIntentId,
+                        paymentStatus: 'PAID',
+                        isUnique,
+                    }
+                });
+
+                if (existingBidWithSameAmount) {
+                    await tx.bid.update({
+                        where: { id: existingBidWithSameAmount.id },
+                        data: { isUnique: false }
+                    });
+                }
+
+                created.push(newBid);
             }
+
+            return created;
         });
 
-        const isUnique = !existingBidWithSameAmount;
-
-        // Create the new bid with payment information
-        const newBid = await this.prisma.bid.create({
-            data: {
-                auctionId: data.auctionId,
-                bidderId: data.bidderId,
-                bidderName: data.bidderName,
-                bidAmount: data.bidAmount,
-                entryFeePaid: data.entryFee,
-                totalPaid: data.totalPaid,
-                paymentIntentId: data.paymentIntentId,
-                paymentStatus: 'PAID',
-                isUnique: isUnique,
-            }
-        });
-
-        // If a bid with the same amount already exists, mark it as NOT unique
-        if (existingBidWithSameAmount) {
-            await this.prisma.bid.update({
-                where: { id: existingBidWithSameAmount.id },
-                data: { isUnique: false }
-            });
-        }
-
-        // Update auction stats
+        // Update auction stats once for the whole batch, using the actual amount paid.
         await this.prisma.auction.update({
             where: { id: data.auctionId },
             data: {
-                totalBidsCount: { increment: 1 },
+                totalBidsCount: { increment: newBids.length },
                 totalRevenue: { increment: data.totalPaid }
             }
         });
 
-
-        this.logger.log(`Bid placed successfully. Is unique: ${isUnique}. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
+        this.logger.log(`${newBids.length} bid(s) placed successfully. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
 
         return {
-            ...newBid,
+            bids: newBids,
             processedAfterAuctionEnd: isAfterAuctionEnd,
             withinGracePeriod: isWithinGracePeriod,
         };

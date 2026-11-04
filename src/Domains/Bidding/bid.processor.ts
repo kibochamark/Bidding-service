@@ -24,20 +24,20 @@ export class BidProcessor extends WorkerHost {
     }
 
     async process(job: Job<BidJobDto, any, string>): Promise<any> {
-        this.logger.log(`Processing bid job ${job.id} for auction ${job.data.auctionId}`);
+        this.logger.log(`Processing bid job ${job.id} for auction ${job.data.auctionId} (${job.data.bidAmounts.length} entries)`);
 
         try {
             const bidData = job.data;
 
-            // Process the bid through the repository
-            const result = await this.bidRepository.placeBidWithPayment(bidData);
+            // Process every bid entry in this payment through the repository
+            const result = await this.bidRepository.placeBidsWithPayment(bidData);
 
-            this.logger.log(`Bid processed successfully: ${result.id}`);
+            this.logger.log(`${result.bids.length} bid(s) processed successfully: ${result.bids.map((b) => b.id).join(', ')}`);
 
-            // Check if the bid was placed after auction end
+            // Check if the bids were placed after auction end
             if (result.processedAfterAuctionEnd && result.withinGracePeriod) {
                 this.logger.warn(
-                    `Bid ${result.id} was placed after auction end but within grace period. ` +
+                    `Bids for payment ${bidData.paymentIntentId} were placed after auction end but within grace period. ` +
                     `Auction: ${bidData.auctionId}, Bidder: ${bidData.bidderName}`
                 );
             }
@@ -48,8 +48,10 @@ export class BidProcessor extends WorkerHost {
             const payload = {
                 type: "payment_success",
                 productId: job.data.auctionId,
-                productTitle: job.data.auctionTitle, // Ensure this exists in your DTO
-                message: "Your bid entry has been recorded."
+                productTitle: job.data.auctionTitle,
+                message: result.bids.length > 1
+                    ? `Your ${result.bids.length} bid entries have been recorded.`
+                    : "Your bid entry has been recorded.",
             };
 
             await this.publisher.publish(channelName, JSON.stringify(payload));
@@ -58,9 +60,9 @@ export class BidProcessor extends WorkerHost {
 
             return {
                 success: true,
-                bidId: result.id,
-                isUnique: result.isUnique,
-                isWinning: result.isWinning,
+                bidIds: result.bids.map((b) => b.id),
+                count: result.bids.length,
+                isUnique: result.bids.map((b) => b.isUnique),
                 processedAfterAuctionEnd: result.processedAfterAuctionEnd,
                 withinGracePeriod: result.withinGracePeriod,
             };

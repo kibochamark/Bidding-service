@@ -67,6 +67,21 @@ export class AccountsService {
         return await this.accountRepository.updateAccount(kindeId, data);
     }
 
+    async updateAccountRole(kindeId: string, roleName: string) {
+        const existingAccount = await this.accountRepository.findAccountByKindeIdRaw(
+            kindeId,
+        );
+
+        if (!existingAccount) {
+            this.logger.warn(`Account not found for Kinde ID: ${kindeId}`);
+            throw new BadRequestException(`Account not found for Kinde ID: ${kindeId}`);
+        }
+
+        this.logger.log(`Updating role for account ${kindeId} to ${roleName}`);
+
+        return await this.accountRepository.updateAccountRole(kindeId, roleName);
+    }
+
     async deleteAccountByKindeId(kindeId: string) {
         // check if id exists
         const existingAccount = await this.accountRepository.findAccountByKindeIdRaw(

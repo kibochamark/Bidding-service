@@ -56,6 +56,15 @@ export class AccountParamDto {
 }
 
 
+/**
+ * DTO for promoting/demoting an account's role (admin only)
+ */
+export class UpdateAccountRoleDto {
+    @IsNotEmpty()
+    @IsString()
+    roleName: string;
+}
+
 export class UpdateAccountDto {
     @IsOptional()
     @IsString()

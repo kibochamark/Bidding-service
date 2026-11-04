@@ -1,11 +1,12 @@
-import { Body, Controller, Get, Headers, Logger, Param, Patch, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Logger, Param, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import type * as express from 'express';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
-import { AccountParamDto, CreateAccountDto, UpdateAccountDto } from './dto/index.js';
+import { AccountParamDto, CreateAccountDto, UpdateAccountDto, UpdateAccountRoleDto } from './dto/index.js';
 import * as bodyParser from 'body-parser';
 import { JwksClient } from "jwks-rsa";
 import * as jwt from "jsonwebtoken";
 import { ConfigService } from '@nestjs/config';
+import { AdminGuard, KindeAuthGuard } from '../../Guards';
 
 @Controller('accounts')
 export class AccountsController {
@@ -136,6 +137,15 @@ export class AccountsController {
     @Patch(':kindeId')
     async updateAccountData(@Param() params: AccountParamDto, @Body() body: Partial<UpdateAccountDto>) {
         return await this.accountsService.updateAccount(params.kindeId, body);
+    }
+
+    /**
+     * Promote/demote an account's role. Admin only.
+     */
+    @Patch(':kindeId/role')
+    @UseGuards(KindeAuthGuard, AdminGuard)
+    async updateAccountRole(@Param() params: AccountParamDto, @Body() body: UpdateAccountRoleDto) {
+        return await this.accountsService.updateAccountRole(params.kindeId, body.roleName);
     }
 
 }

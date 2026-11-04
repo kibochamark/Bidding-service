@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Bid
@@ -302,7 +302,6 @@ export type BidOrderByWithRelationInput = {
 
 export type BidWhereUniqueInput = Prisma.AtLeast<{
   id?: string | runtime.Types.Skip
-  paymentIntentId?: string | runtime.Types.Skip
   AND?: Prisma.BidWhereInput | Prisma.BidWhereInput[] | runtime.Types.Skip
   OR?: Prisma.BidWhereInput[] | runtime.Types.Skip
   NOT?: Prisma.BidWhereInput | Prisma.BidWhereInput[] | runtime.Types.Skip
@@ -312,12 +311,13 @@ export type BidWhereUniqueInput = Prisma.AtLeast<{
   bidAmount?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   entryFeePaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
   totalPaid?: Prisma.DecimalFilter<"Bid"> | runtime.Decimal | runtime.DecimalJsLike | number | string | runtime.Types.Skip
+  paymentIntentId?: Prisma.StringFilter<"Bid"> | string | runtime.Types.Skip
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Bid"> | $Enums.PaymentStatus | runtime.Types.Skip
   isUnique?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip
   isWinning?: Prisma.BoolFilter<"Bid"> | boolean | runtime.Types.Skip
   placedAt?: Prisma.DateTimeFilter<"Bid"> | Date | string | runtime.Types.Skip
   auction?: Prisma.XOR<Prisma.AuctionScalarRelationFilter, Prisma.AuctionWhereInput> | runtime.Types.Skip
-}, "id" | "paymentIntentId">
+}, "id">
 
 export type BidOrderByWithAggregationInput = {
   id?: Prisma.SortOrder | runtime.Types.Skip

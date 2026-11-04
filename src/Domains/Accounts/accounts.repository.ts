@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { AccountParamDto } from "../../../src/Controllers/Accounts/dto";
 import { PrismaService } from "../../../src/prisma/prisma.service";
 
@@ -8,9 +8,7 @@ export class AccountsRepository {
     constructor(private prisma: PrismaService) {}
 
     async findAllAccounts() {
-        return await this.prisma.account.findMany({
-            include: { role: true },
-        });
+        return await this.prisma.account.findMany();
     }
 
     /**
@@ -23,7 +21,6 @@ export class AccountsRepository {
             include: {
                 sellerProfile: true,
                 addresses: true,
-                role: true,
             },
         });
     }
@@ -77,27 +74,6 @@ export class AccountsRepository {
         } catch (error) {
             if (error.code === 'P2025') {
                 throw new NotFoundException('Account to update not found.');
-            }
-            throw error;
-        }
-    }
-
-    /**
-     * Update an account's role by kindeId
-     */
-    async updateAccountRole(kindeId: string, roleName: string) {
-        try {
-            return await this.prisma.account.update({
-                where: { kindeId },
-                data: { roleName },
-                include: { role: true },
-            });
-        } catch (error) {
-            if (error.code === 'P2025') {
-                throw new NotFoundException('Account to update not found.');
-            }
-            if (error.code === 'P2003') {
-                throw new BadRequestException(`Role "${roleName}" does not exist.`);
             }
             throw error;
         }

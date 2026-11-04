@@ -8,11 +8,11 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Account.js'
-export type * from './models/SellerDetails.js'
-export type * from './models/Address.js'
-export type * from './models/Category.js'
-export type * from './models/Product.js'
-export type * from './models/Auction.js'
-export type * from './models/Bid.js'
-export type * from './commonInputTypes.js'
+export type * from './models/Account'
+export type * from './models/SellerDetails'
+export type * from './models/Address'
+export type * from './models/Category'
+export type * from './models/Product'
+export type * from './models/Auction'
+export type * from './models/Bid'
+export type * from './commonInputTypes'

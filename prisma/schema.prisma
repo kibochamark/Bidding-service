@@ -16,24 +16,13 @@ model Account {
   email         String?         @unique
   contact       String?
   fullName      String?
-  roleName      String         @default("USER")
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   addresses     Address[]
   sellerProfile SellerDetails?
-  role          Role           @relation(fields: [roleName], references: [name])
-
-  @@index([roleName])
 }
 
-model Role {
-  id          String    @id @default(uuid())
-  name        String    @unique
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  accounts    Account[]
-}
+
 
 model SellerDetails {
   id           String   @id @default(uuid())

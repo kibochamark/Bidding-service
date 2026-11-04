@@ -395,7 +395,8 @@ export const ModelName = {
   Category: 'Category',
   Product: 'Product',
   Auction: 'Auction',
-  Bid: 'Bid'
+  Bid: 'Bid',
+  ProcessedPayment: 'ProcessedPayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "sellerDetails" | "address" | "category" | "product" | "auction" | "bid"
+    modelProps: "account" | "sellerDetails" | "address" | "category" | "product" | "auction" | "bid" | "processedPayment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -933,6 +934,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProcessedPayment: {
+      payload: Prisma.$ProcessedPaymentPayload<ExtArgs>
+      fields: Prisma.ProcessedPaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProcessedPaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProcessedPaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.ProcessedPaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProcessedPaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>
+        }
+        findMany: {
+          args: Prisma.ProcessedPaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>[]
+        }
+        create: {
+          args: Prisma.ProcessedPaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>
+        }
+        createMany: {
+          args: Prisma.ProcessedPaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProcessedPaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.ProcessedPaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>
+        }
+        update: {
+          args: Prisma.ProcessedPaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProcessedPaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProcessedPaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProcessedPaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProcessedPaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProcessedPaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.ProcessedPaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProcessedPayment>
+        }
+        groupBy: {
+          args: Prisma.ProcessedPaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProcessedPaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProcessedPaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProcessedPaymentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1105,6 +1180,22 @@ export const BidScalarFieldEnum = {
 export type BidScalarFieldEnum = (typeof BidScalarFieldEnum)[keyof typeof BidScalarFieldEnum]
 
 
+export const ProcessedPaymentScalarFieldEnum = {
+  id: 'id',
+  idempotencyKey: 'idempotencyKey',
+  paymentIntentId: 'paymentIntentId',
+  auctionId: 'auctionId',
+  bidderId: 'bidderId',
+  bidCount: 'bidCount',
+  totalPaid: 'totalPaid',
+  sourceEventId: 'sourceEventId',
+  sourceEventType: 'sourceEventType',
+  processedAt: 'processedAt'
+} as const
+
+export type ProcessedPaymentScalarFieldEnum = (typeof ProcessedPaymentScalarFieldEnum)[keyof typeof ProcessedPaymentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1227,6 +1318,19 @@ export const BidOrderByRelevanceFieldEnum = {
 } as const
 
 export type BidOrderByRelevanceFieldEnum = (typeof BidOrderByRelevanceFieldEnum)[keyof typeof BidOrderByRelevanceFieldEnum]
+
+
+export const ProcessedPaymentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  idempotencyKey: 'idempotencyKey',
+  paymentIntentId: 'paymentIntentId',
+  auctionId: 'auctionId',
+  bidderId: 'bidderId',
+  sourceEventId: 'sourceEventId',
+  sourceEventType: 'sourceEventType'
+} as const
+
+export type ProcessedPaymentOrderByRelevanceFieldEnum = (typeof ProcessedPaymentOrderByRelevanceFieldEnum)[keyof typeof ProcessedPaymentOrderByRelevanceFieldEnum]
 
 
 
@@ -1453,6 +1557,7 @@ export type GlobalOmitConfig = {
   product?: Prisma.ProductOmit
   auction?: Prisma.AuctionOmit
   bid?: Prisma.BidOmit
+  processedPayment?: Prisma.ProcessedPaymentOmit
 }
 
 /* Types for Logging */

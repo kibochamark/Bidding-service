@@ -51,6 +51,20 @@ export class AuctionRepository {
     }
 
     /**
+     * Find the active auction for a product (checkout-session payment flows only
+     * carry productId in their metadata, not auctionId)
+     */
+    async findActiveAuctionByProductId(productId: string) {
+        this.logger.log(`Fetching active auction for product ID: ${productId}`);
+        return await this.prisma.auction.findFirst({
+            where: {
+                productId,
+                status: 'ACTIVE',
+            },
+        });
+    }
+
+    /**
      * Create a new auction
      */
     async createAuction(data: CreateAuctionDto) {

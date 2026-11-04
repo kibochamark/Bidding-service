@@ -9,11 +9,18 @@ export class BidRepository {
     constructor(private prisma: PrismaService) {}
 
     /**
-     * Place a bid with payment information (used by queue processor)
-     * This is the core logic for the Lowest Unique Bid system with payment tracking
+     * Place one or more bids from a single payment (used by queue processor).
+     * One payment can cover several lowest-unique-bid entries (bidAmounts),
+     * each becoming its own Bid row sharing the same paymentIntentId.
+     * This is the core logic for the Lowest Unique Bid system with payment tracking.
+     *
+     * Exactly-once per data.idempotencyKey: Stripe fires several events for one
+     * payment (payment_intent.succeeded + charge.succeeded, redeliveries), and this
+     * is the durable guard against processing the same payment's bids twice. See
+     * ProcessedPayment and src/queue/utils/resolve-stripe-payment.ts.
      */
-    async placeBidWithPayment(data: BidJobDto) {
-        this.logger.log(`Processing paid bid for auction ${data.auctionId} by ${data.bidderName} with amount ${data.bidAmount}`);
+    async placeBidsWithPayment(data: BidJobDto) {
+        this.logger.log(`Processing ${data.bidAmounts.length} paid bid(s) for auction ${data.auctionId} by ${data.bidderName}`);
 
         // Verify auction exists and is ACTIVE
         const auction = await this.prisma.auction.findUnique({
@@ -39,56 +46,116 @@ export class BidRepository {
             throw new BadRequestException('Auction has ended and grace period expired. Bid cannot be placed.');
         }
 
-        // Check if this bid amount already exists (to determine if it's unique)
-        const existingBidWithSameAmount = await this.prisma.bid.findFirst({
-            where: {
-                auctionId: data.auctionId,
-                bidAmount: data.bidAmount,
-            }
+        // Fast path: this payment was already turned into bids (duplicate webhook
+        // event, or a retry of this same job after the bids already committed).
+        const alreadyProcessed = await this.prisma.processedPayment.findUnique({
+            where: { idempotencyKey: data.idempotencyKey },
         });
 
-        const isUnique = !existingBidWithSameAmount;
-
-        // Create the new bid with payment information
-        const newBid = await this.prisma.bid.create({
-            data: {
-                auctionId: data.auctionId,
-                bidderId: data.bidderId,
-                bidderName: data.bidderName,
-                bidAmount: data.bidAmount,
-                entryFeePaid: data.entryFee,
-                totalPaid: data.totalPaid,
-                paymentIntentId: data.paymentIntentId,
-                paymentStatus: 'PAID',
-                isUnique: isUnique,
-            }
-        });
-
-        // If a bid with the same amount already exists, mark it as NOT unique
-        if (existingBidWithSameAmount) {
-            await this.prisma.bid.update({
-                where: { id: existingBidWithSameAmount.id },
-                data: { isUnique: false }
-            });
+        if (alreadyProcessed) {
+            this.logger.warn(`Payment ${data.paymentIntentId} (idempotencyKey=${data.idempotencyKey}) already processed at ${alreadyProcessed.processedAt.toISOString()} (${alreadyProcessed.bidCount} bid(s)); skipping duplicate.`);
+            const bids = await this.prisma.bid.findMany({ where: { paymentIntentId: data.paymentIntentId } });
+            return {
+                bids,
+                alreadyProcessed: true,
+                processedAfterAuctionEnd: isAfterAuctionEnd,
+                withinGracePeriod: isWithinGracePeriod,
+            };
         }
 
-        // Update auction stats
-        await this.prisma.auction.update({
-            where: { id: data.auctionId },
-            data: {
-                totalBidsCount: { increment: 1 },
-                totalRevenue: { increment: data.totalPaid }
+        // Each bid entry is attributed an equal share of the total payment.
+        const perBidShare = data.entryFee;
+
+        try {
+            const newBids = await this.prisma.$transaction(async (tx) => {
+                // Claim this payment first. A concurrent duplicate (two workers racing
+                // on the same payment) blocks on the unique index here and then fails
+                // with P2002 once this transaction commits.
+                await tx.processedPayment.create({
+                    data: {
+                        idempotencyKey: data.idempotencyKey,
+                        paymentIntentId: data.paymentIntentId,
+                        auctionId: data.auctionId,
+                        bidderId: data.bidderId,
+                        bidCount: data.bidAmounts.length,
+                        totalPaid: data.totalPaid,
+                        sourceEventId: data.stripeEventId,
+                        sourceEventType: data.stripeEventType,
+                    },
+                });
+
+                const created = [];
+
+                for (const bidAmount of data.bidAmounts) {
+                    // Checked against both existing rows AND rows created earlier in this
+                    // same batch, since the batch can itself contain duplicate amounts.
+                    const existingBidWithSameAmount = await tx.bid.findFirst({
+                        where: {
+                            auctionId: data.auctionId,
+                            bidAmount,
+                        }
+                    });
+
+                    const isUnique = !existingBidWithSameAmount;
+
+                    const newBid = await tx.bid.create({
+                        data: {
+                            auctionId: data.auctionId,
+                            bidderId: data.bidderId,
+                            bidderName: data.bidderName,
+                            bidAmount,
+                            entryFeePaid: perBidShare,
+                            totalPaid: perBidShare,
+                            paymentIntentId: data.paymentIntentId,
+                            paymentStatus: 'PAID',
+                            isUnique,
+                        }
+                    });
+
+                    if (existingBidWithSameAmount) {
+                        await tx.bid.update({
+                            where: { id: existingBidWithSameAmount.id },
+                            data: { isUnique: false }
+                        });
+                    }
+
+                    created.push(newBid);
+                }
+
+                // Update auction stats inside the same transaction as the bid rows
+                // they count, so a failure here rolls back the bids too.
+                await tx.auction.update({
+                    where: { id: data.auctionId },
+                    data: {
+                        totalBidsCount: { increment: created.length },
+                        totalRevenue: { increment: data.totalPaid }
+                    }
+                });
+
+                return created;
+            });
+
+            this.logger.log(`${newBids.length} bid(s) placed successfully. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
+
+            return {
+                bids: newBids,
+                alreadyProcessed: false,
+                processedAfterAuctionEnd: isAfterAuctionEnd,
+                withinGracePeriod: isWithinGracePeriod,
+            };
+        } catch (error: any) {
+            if (error?.code === 'P2002') {
+                this.logger.warn(`Concurrent duplicate detected for payment ${data.paymentIntentId} (idempotencyKey=${data.idempotencyKey}); treating as already processed.`);
+                const bids = await this.prisma.bid.findMany({ where: { paymentIntentId: data.paymentIntentId } });
+                return {
+                    bids,
+                    alreadyProcessed: true,
+                    processedAfterAuctionEnd: isAfterAuctionEnd,
+                    withinGracePeriod: isWithinGracePeriod,
+                };
             }
-        });
-
-
-        this.logger.log(`Bid placed successfully. Is unique: ${isUnique}. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
-
-        return {
-            ...newBid,
-            processedAfterAuctionEnd: isAfterAuctionEnd,
-            withinGracePeriod: isWithinGracePeriod,
-        };
+            throw error;
+        }
     }
 
     

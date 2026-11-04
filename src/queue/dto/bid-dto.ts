@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDateString, IsUUID, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsDateString, IsUUID, IsOptional, IsArray, ArrayMinSize } from 'class-validator';
 
 export class BidJobDto {
     @IsString()
@@ -17,15 +17,24 @@ export class BidJobDto {
     @IsString()
     bidderName: string;
 
-    @IsNumber()
-    bidAmount: number;
+    /**
+     * One payment can cover multiple bid entries (lowest-unique-bid guesses).
+     * One Bid row is created per amount, each attributed entryFee of the total.
+     */
+    @IsArray()
+    @ArrayMinSize(1)
+    @IsNumber({}, { each: true })
+    bidAmounts: number[];
 
+    /** Entry fee per bid, i.e. the share of totalPaid attributable to one bid. */
     @IsNumber()
     entryFee: number;
 
+    /** Total amount actually paid for this payment (entryFee * bidAmounts.length). */
     @IsNumber()
     totalPaid: number;
 
     @IsDateString()
+    @IsOptional()
     paidAt: Date;
 }

@@ -12,6 +12,9 @@ export class AccountsService {
         return await this.accountRepository.findAllAccounts();
     }
 
+    async getAccountById(id: string) {
+        return await this.accountRepository.findAccountByKindeIdRaw(id);
+    }
     /**
      * Handle Kinde webhook for user creation
      * Syncs user from Kinde to local database

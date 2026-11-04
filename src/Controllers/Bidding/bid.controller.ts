@@ -12,6 +12,7 @@ import { KindeAuthGuard } from '../../Guards/kinde-auth.guard';
 import { CurrentUser } from '../../Guards/current-user.decorator';
 import type { KindeUser } from '../../Guards/current-user.decorator';
 import { decodeBidAmounts } from '../../queue/utils/decode-bid-amounts';
+import { resolveCanonicalPayment } from '../../queue/utils/resolve-stripe-payment';
 
 @Controller('bids')
 export class BidController {
@@ -86,126 +87,115 @@ export class BidController {
 
     @Post('stripe/webhook')
     async getStripePaymentEvent(@RawBody() rawBody: Buffer, @Req() req, @Res() res) {
-        /**
-         * verify stripe token
-         *  extract event data
-         * queue job for processing
-         */
+        const endpoint_secret = this.configService.get("ENDPOINT_SECRET");
 
-        const endpoint_secret= this.configService.get("ENDPOINT_SECRET")
-        let event
-        // retrive stripe headers
-        if (endpoint_secret){
-            this.logger.log("stripe secret present,....decoding event")
-            const signature = req.headers['stripe-signature'] as string;
-            console.log(signature, "sig")
-            console.log(endpoint_secret, "endpoint secret")
-            console.log(rawBody, "raw body")
-            console.log(req.headers, "headers")
-            try {
-                event = this.stripe.webhooks.constructEvent(
-                    rawBody,
-                    signature.toString(),
-                    endpoint_secret
-                );
-
-                this.logger.log("event received...proceeding to queue job")
-
-                this.logger.log(`event: ${JSON.stringify(event)}`)
-
-                this.logger.log(event.data.object.status , "intent")
-
-                // PaymentIntent (bid-payment-modal flow) reports "succeeded";
-                // Checkout Session (standalone /product/[id]/bid flow) reports "complete".
-                const paymentObject = event.data.object as any;
-                const isPaymentSucceeded = paymentObject.status === "succeeded" || paymentObject.status === "complete";
-
-                if (isPaymentSucceeded){
-                    const metadata = (paymentObject.metadata ?? {}) as Record<string, string | undefined>;
-
-                    let bidAmounts: number[];
-                    try {
-                        bidAmounts = decodeBidAmounts(metadata);
-                    } catch (decodeError: any) {
-                        this.logger.error(`Failed to decode bidAmounts for event ${event.id}: ${decodeError.message}`);
-                        return res.status(200).json({
-                            status: "failed",
-                            message: `Could not decode bidAmounts metadata: ${decodeError.message}`,
-                        });
-                    }
-
-                    if (bidAmounts.length === 0) {
-                        this.logger.warn(`Event ${event.id} has no bidAmounts metadata, skipping`);
-                        return res.status(200).json({
-                            status: "ignored",
-                            message: "no bid amounts present in metadata",
-                        });
-                    }
-
-                    // The checkout-session flow only carries productId, not auctionId.
-                    let auctionId = metadata.auctionId;
-                    if (!auctionId && metadata.productId) {
-                        const auction = await this.auctionRepository.findActiveAuctionByProductId(metadata.productId);
-                        if (!auction) {
-                            this.logger.error(`No active auction found for product ${metadata.productId} (event ${event.id})`);
-                            return res.status(200).json({
-                                status: "failed",
-                                message: `No active auction found for product ${metadata.productId}`,
-                            });
-                        }
-                        auctionId = auction.id;
-                    }
-
-                    const entryFee = Number(metadata.entryFee ?? metadata.biddingFee);
-                    const totalPaid = Number(metadata.totalPaid ?? metadata.totalAmount);
-
-                    const job = await this.bidQueue.add(JOB_NAMES.PROCESS_BID, {
-                        paymentIntentId: paymentObject.id,
-                        auctionId,
-                        auctionTitle: metadata.productTitle,
-                        bidderId: metadata.bidderId,
-                        bidderName: metadata.bidderName,
-                        entryFee,
-                        totalPaid,
-                        bidAmounts,
-                    }, {
-                        jobId: event.id, // Use the Stripe event ID as job ID (prevents duplicates)
-                    });
-
-                    this.logger.log(`Added bid processing job: ${job.id} for auction: ${auctionId} (${bidAmounts.length} entries)`);
-                    return res.status(200).json({
-                        status: "success",
-                        message: "payment succeeded and job added to queue for processing"
-                    });
-                }
-
-
-
-                return res.status(200).json({
-                    status: "sucess",
-                    message: "job failed to meet conditions, however we received stripe logs"
-                });
-
-
-
-
-
-
-            
-            } catch (err:any) {
-                console.log(`⚠️ Webhook signature verification failed.`, err.message);
-                return res.status(400).json({
-                    status:"failed",
-                    message:err.message
-                });
-            }
-        }else{
+        if (!endpoint_secret) {
             return res.status(403).json({
                 status: "forbidden",
                 message: new ForbiddenException("stripe secret key not provided")
             });
         }
 
+        const signature = req.headers['stripe-signature'] as string | undefined;
+        if (!signature) {
+            return res.status(400).json({ status: "failed", message: "Missing stripe-signature header" });
+        }
 
+        let event: Stripe.Event;
+        try {
+            event = this.stripe.webhooks.constructEvent(rawBody, signature, endpoint_secret);
+        } catch (err: any) {
+            this.logger.warn(`⚠️ Webhook signature verification failed: ${err.message}`);
+            return res.status(400).json({ status: "failed", message: err.message });
+        }
+
+        this.logger.log(`event received: ${event.id} (${event.type})`);
+
+        // Stripe fires several event types per real payment (payment_intent.succeeded,
+        // charge.succeeded, charge.updated, mandate.updated, ...) — only two actually
+        // represent "the payment succeeded, go create bids". Everything else is an echo
+        // we deliberately ignore, with a 200 (not 400/403) so Stripe doesn't retry it.
+        const resolved = resolveCanonicalPayment(event);
+        // Note: narrowing via `!resolved.ok` alone doesn't work reliably under this
+        // project's `strictNullChecks: false` tsconfig, so check for the `reason`
+        // field (only present on the failure branch) instead.
+        if ('reason' in resolved) {
+            this.logger.log(`Ignoring event ${event.id} (${event.type}): ${resolved.reason}`);
+            return res.status(200).json({ status: "ignored", reason: resolved.reason, type: event.type });
+        }
+
+        return await this.handleSuccessfulBidPayment(event, resolved, res);
+    }
+
+    private async handleSuccessfulBidPayment(
+        event: Stripe.Event,
+        resolved: Extract<ReturnType<typeof resolveCanonicalPayment>, { ok: true }>,
+        res: any,
+    ) {
+        const paymentObject = event.data.object as any;
+        const metadata = (paymentObject.metadata ?? {}) as Record<string, string | undefined>;
+
+        let bidAmounts: number[];
+        try {
+            bidAmounts = decodeBidAmounts(metadata);
+        } catch (decodeError: any) {
+            this.logger.error(`Failed to decode bidAmounts for event ${event.id}: ${decodeError.message}`);
+            return res.status(200).json({
+                status: "failed",
+                message: `Could not decode bidAmounts metadata: ${decodeError.message}`,
+            });
+        }
+
+        if (bidAmounts.length === 0) {
+            this.logger.warn(`Event ${event.id} has no bidAmounts metadata, skipping`);
+            return res.status(200).json({
+                status: "ignored",
+                message: "no bid amounts present in metadata",
+            });
+        }
+
+        // The checkout-session flow only carries productId, not auctionId.
+        let auctionId = metadata.auctionId;
+        if (!auctionId && metadata.productId) {
+            const auction = await this.auctionRepository.findActiveAuctionByProductId(metadata.productId);
+            if (!auction) {
+                this.logger.error(`No active auction found for product ${metadata.productId} (event ${event.id})`);
+                return res.status(200).json({
+                    status: "failed",
+                    message: `No active auction found for product ${metadata.productId}`,
+                });
+            }
+            auctionId = auction.id;
+        }
+
+        const entryFee = Number(metadata.entryFee ?? metadata.biddingFee);
+        const totalPaid = Number(metadata.totalPaid ?? metadata.totalAmount);
+
+        const job = await this.bidQueue.add(JOB_NAMES.PROCESS_BID, {
+            paymentIntentId: resolved.canonicalPaymentId,
+            idempotencyKey: resolved.idempotencyKey,
+            stripeEventId: event.id,
+            stripeEventType: event.type,
+            auctionId,
+            auctionTitle: metadata.productTitle,
+            bidderId: metadata.bidderId,
+            bidderName: metadata.bidderName,
+            entryFee,
+            totalPaid,
+            bidAmounts,
+        }, {
+            // Dedup key, not just a label: payment_intent.succeeded and charge.succeeded
+            // for the same payment share this idempotencyKey, so both collapse into one
+            // job even though the event-type filter above should already drop the charge
+            // event. This is a first-line filter only — BullMQ forgets completed job ids
+            // once removeOnComplete evicts them, so ProcessedPayment is the durable guard.
+            jobId: resolved.idempotencyKey,
+        });
+
+        this.logger.log(`Added bid processing job: ${job.id} for auction: ${auctionId} (${bidAmounts.length} entries, payment ${resolved.canonicalPaymentId})`);
+        return res.status(200).json({
+            status: "success",
+            message: "payment succeeded and job added to queue for processing"
+        });
     }
 }

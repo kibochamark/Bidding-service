@@ -52,3 +52,12 @@ export type Auction = Prisma.AuctionModel
  * 
  */
 export type Bid = Prisma.BidModel
+/**
+ * Model ProcessedPayment
+ * One row per canonical Stripe payment that has been turned into Bid rows.
+ * The unique constraint on idempotencyKey is the durable exactly-once guarantee
+ * for the Stripe webhook pipeline (Stripe sends several events per payment, e.g.
+ * payment_intent.succeeded + charge.succeeded, and redeliveries). See
+ * BidRepository.placeBidsWithPayment.
+ */
+export type ProcessedPayment = Prisma.ProcessedPaymentModel

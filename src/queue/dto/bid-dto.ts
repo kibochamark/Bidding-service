@@ -1,8 +1,25 @@
 import { IsString, IsNumber, IsDateString, IsUUID, IsOptional, IsArray, ArrayMinSize } from 'class-validator';
 
 export class BidJobDto {
+    /** Canonical Stripe PaymentIntent id (falls back to a Checkout Session id if none exists). */
     @IsString()
     paymentIntentId: string;
+
+    /**
+     * Dedup token: Stripe's own request.idempotency_key when present (shared across
+     * payment_intent.succeeded and charge.succeeded for one confirm call), else the
+     * same value as paymentIntentId. Enforced unique via ProcessedPayment.
+     */
+    @IsString()
+    idempotencyKey: string;
+
+    @IsString()
+    @IsOptional()
+    stripeEventId?: string;
+
+    @IsString()
+    @IsOptional()
+    stripeEventType?: string;
 
     @IsString()
     @IsOptional()

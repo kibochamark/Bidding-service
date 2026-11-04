@@ -32,7 +32,11 @@ export class BidProcessor extends WorkerHost {
             // Process every bid entry in this payment through the repository
             const result = await this.bidRepository.placeBidsWithPayment(bidData);
 
-            this.logger.log(`${result.bids.length} bid(s) processed successfully: ${result.bids.map((b) => b.id).join(', ')}`);
+            if (result.alreadyProcessed) {
+                this.logger.log(`Payment ${bidData.paymentIntentId} was already processed; job ${job.id} is a no-op duplicate.`);
+            } else {
+                this.logger.log(`${result.bids.length} bid(s) processed successfully: ${result.bids.map((b) => b.id).join(', ')}`);
+            }
 
             // Check if the bids were placed after auction end
             if (result.processedAfterAuctionEnd && result.withinGracePeriod) {
@@ -60,6 +64,7 @@ export class BidProcessor extends WorkerHost {
 
             return {
                 success: true,
+                deduped: result.alreadyProcessed,
                 bidIds: result.bids.map((b) => b.id),
                 count: result.bids.length,
                 isUnique: result.bids.map((b) => b.isUnique),

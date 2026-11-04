@@ -147,6 +147,29 @@ model Bid {
   @@index([auctionId, bidAmount])
   @@index([auctionId, isUnique, bidAmount])
   @@index([bidderId])
+  @@index([paymentIntentId])
+}
+
+/// One row per canonical Stripe payment that has been turned into Bid rows.
+/// The unique constraint on idempotencyKey is the durable exactly-once guarantee
+/// for the Stripe webhook pipeline (Stripe sends several events per payment, e.g.
+/// payment_intent.succeeded + charge.succeeded, and redeliveries). See
+/// BidRepository.placeBidsWithPayment.
+model ProcessedPayment {
+  id              String   @id @default(uuid())
+  idempotencyKey  String   @unique
+  paymentIntentId String
+  auctionId       String
+  bidderId        String
+  bidCount        Int
+  totalPaid       Decimal  @db.Decimal(10, 2)
+  sourceEventId   String?
+  sourceEventType String?
+  processedAt     DateTime @default(now())
+
+  @@index([paymentIntentId])
+  @@index([auctionId])
+  @@index([bidderId])
 }
 
 enum PaymentStatus {

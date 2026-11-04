@@ -1,8 +1,10 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { KindeAuthGuard } from './Guards';
 import { useNestTreblle } from "treblle";
+
 
 
 
@@ -27,6 +29,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // strips out properties that are not expected
   })); 
+
+  // app.setGlobalPrefix('api'); // Set a global prefix for all routes
 
   app.enableCors({
     origin: ['https://biddingapp-v2.vercel.app/', 'http://localhost:3000', 'https://bidmarket.kinde.com'], // Specify allowed origins

@@ -62,6 +62,9 @@ export class ProductRepository {
                 auctions:{
                     orderBy:{
                         status:"asc"
+                    },
+                    include:{
+                        bids:true
                     }
                 }
             },

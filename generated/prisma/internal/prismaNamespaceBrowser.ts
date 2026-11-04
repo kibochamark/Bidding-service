@@ -57,7 +57,8 @@ export const ModelName = {
   Category: 'Category',
   Product: 'Product',
   Auction: 'Auction',
-  Bid: 'Bid'
+  Bid: 'Bid',
+  ProcessedPayment: 'ProcessedPayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -209,6 +210,22 @@ export const BidScalarFieldEnum = {
 export type BidScalarFieldEnum = (typeof BidScalarFieldEnum)[keyof typeof BidScalarFieldEnum]
 
 
+export const ProcessedPaymentScalarFieldEnum = {
+  id: 'id',
+  idempotencyKey: 'idempotencyKey',
+  paymentIntentId: 'paymentIntentId',
+  auctionId: 'auctionId',
+  bidderId: 'bidderId',
+  bidCount: 'bidCount',
+  totalPaid: 'totalPaid',
+  sourceEventId: 'sourceEventId',
+  sourceEventType: 'sourceEventType',
+  processedAt: 'processedAt'
+} as const
+
+export type ProcessedPaymentScalarFieldEnum = (typeof ProcessedPaymentScalarFieldEnum)[keyof typeof ProcessedPaymentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -331,4 +348,17 @@ export const BidOrderByRelevanceFieldEnum = {
 } as const
 
 export type BidOrderByRelevanceFieldEnum = (typeof BidOrderByRelevanceFieldEnum)[keyof typeof BidOrderByRelevanceFieldEnum]
+
+
+export const ProcessedPaymentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  idempotencyKey: 'idempotencyKey',
+  paymentIntentId: 'paymentIntentId',
+  auctionId: 'auctionId',
+  bidderId: 'bidderId',
+  sourceEventId: 'sourceEventId',
+  sourceEventType: 'sourceEventType'
+} as const
+
+export type ProcessedPaymentOrderByRelevanceFieldEnum = (typeof ProcessedPaymentOrderByRelevanceFieldEnum)[keyof typeof ProcessedPaymentOrderByRelevanceFieldEnum]
 

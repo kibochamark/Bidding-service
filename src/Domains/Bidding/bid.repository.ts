@@ -13,6 +13,11 @@ export class BidRepository {
      * One payment can cover several lowest-unique-bid entries (bidAmounts),
      * each becoming its own Bid row sharing the same paymentIntentId.
      * This is the core logic for the Lowest Unique Bid system with payment tracking.
+     *
+     * Exactly-once per data.idempotencyKey: Stripe fires several events for one
+     * payment (payment_intent.succeeded + charge.succeeded, redeliveries), and this
+     * is the durable guard against processing the same payment's bids twice. See
+     * ProcessedPayment and src/queue/utils/resolve-stripe-payment.ts.
      */
     async placeBidsWithPayment(data: BidJobDto) {
         this.logger.log(`Processing ${data.bidAmounts.length} paid bid(s) for auction ${data.auctionId} by ${data.bidderName}`);
@@ -41,67 +46,116 @@ export class BidRepository {
             throw new BadRequestException('Auction has ended and grace period expired. Bid cannot be placed.');
         }
 
+        // Fast path: this payment was already turned into bids (duplicate webhook
+        // event, or a retry of this same job after the bids already committed).
+        const alreadyProcessed = await this.prisma.processedPayment.findUnique({
+            where: { idempotencyKey: data.idempotencyKey },
+        });
+
+        if (alreadyProcessed) {
+            this.logger.warn(`Payment ${data.paymentIntentId} (idempotencyKey=${data.idempotencyKey}) already processed at ${alreadyProcessed.processedAt.toISOString()} (${alreadyProcessed.bidCount} bid(s)); skipping duplicate.`);
+            const bids = await this.prisma.bid.findMany({ where: { paymentIntentId: data.paymentIntentId } });
+            return {
+                bids,
+                alreadyProcessed: true,
+                processedAfterAuctionEnd: isAfterAuctionEnd,
+                withinGracePeriod: isWithinGracePeriod,
+            };
+        }
+
         // Each bid entry is attributed an equal share of the total payment.
         const perBidShare = data.entryFee;
 
-        const newBids = await this.prisma.$transaction(async (tx) => {
-            const created = [];
-
-            for (const bidAmount of data.bidAmounts) {
-                // Checked against both existing rows AND rows created earlier in this
-                // same batch, since the batch can itself contain duplicate amounts.
-                const existingBidWithSameAmount = await tx.bid.findFirst({
-                    where: {
-                        auctionId: data.auctionId,
-                        bidAmount,
-                    }
-                });
-
-                const isUnique = !existingBidWithSameAmount;
-
-                const newBid = await tx.bid.create({
+        try {
+            const newBids = await this.prisma.$transaction(async (tx) => {
+                // Claim this payment first. A concurrent duplicate (two workers racing
+                // on the same payment) blocks on the unique index here and then fails
+                // with P2002 once this transaction commits.
+                await tx.processedPayment.create({
                     data: {
+                        idempotencyKey: data.idempotencyKey,
+                        paymentIntentId: data.paymentIntentId,
                         auctionId: data.auctionId,
                         bidderId: data.bidderId,
-                        bidderName: data.bidderName,
-                        bidAmount,
-                        entryFeePaid: perBidShare,
-                        totalPaid: perBidShare,
-                        paymentIntentId: data.paymentIntentId,
-                        paymentStatus: 'PAID',
-                        isUnique,
+                        bidCount: data.bidAmounts.length,
+                        totalPaid: data.totalPaid,
+                        sourceEventId: data.stripeEventId,
+                        sourceEventType: data.stripeEventType,
+                    },
+                });
+
+                const created = [];
+
+                for (const bidAmount of data.bidAmounts) {
+                    // Checked against both existing rows AND rows created earlier in this
+                    // same batch, since the batch can itself contain duplicate amounts.
+                    const existingBidWithSameAmount = await tx.bid.findFirst({
+                        where: {
+                            auctionId: data.auctionId,
+                            bidAmount,
+                        }
+                    });
+
+                    const isUnique = !existingBidWithSameAmount;
+
+                    const newBid = await tx.bid.create({
+                        data: {
+                            auctionId: data.auctionId,
+                            bidderId: data.bidderId,
+                            bidderName: data.bidderName,
+                            bidAmount,
+                            entryFeePaid: perBidShare,
+                            totalPaid: perBidShare,
+                            paymentIntentId: data.paymentIntentId,
+                            paymentStatus: 'PAID',
+                            isUnique,
+                        }
+                    });
+
+                    if (existingBidWithSameAmount) {
+                        await tx.bid.update({
+                            where: { id: existingBidWithSameAmount.id },
+                            data: { isUnique: false }
+                        });
+                    }
+
+                    created.push(newBid);
+                }
+
+                // Update auction stats inside the same transaction as the bid rows
+                // they count, so a failure here rolls back the bids too.
+                await tx.auction.update({
+                    where: { id: data.auctionId },
+                    data: {
+                        totalBidsCount: { increment: created.length },
+                        totalRevenue: { increment: data.totalPaid }
                     }
                 });
 
-                if (existingBidWithSameAmount) {
-                    await tx.bid.update({
-                        where: { id: existingBidWithSameAmount.id },
-                        data: { isUnique: false }
-                    });
-                }
+                return created;
+            });
 
-                created.push(newBid);
+            this.logger.log(`${newBids.length} bid(s) placed successfully. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
+
+            return {
+                bids: newBids,
+                alreadyProcessed: false,
+                processedAfterAuctionEnd: isAfterAuctionEnd,
+                withinGracePeriod: isWithinGracePeriod,
+            };
+        } catch (error: any) {
+            if (error?.code === 'P2002') {
+                this.logger.warn(`Concurrent duplicate detected for payment ${data.paymentIntentId} (idempotencyKey=${data.idempotencyKey}); treating as already processed.`);
+                const bids = await this.prisma.bid.findMany({ where: { paymentIntentId: data.paymentIntentId } });
+                return {
+                    bids,
+                    alreadyProcessed: true,
+                    processedAfterAuctionEnd: isAfterAuctionEnd,
+                    withinGracePeriod: isWithinGracePeriod,
+                };
             }
-
-            return created;
-        });
-
-        // Update auction stats once for the whole batch, using the actual amount paid.
-        await this.prisma.auction.update({
-            where: { id: data.auctionId },
-            data: {
-                totalBidsCount: { increment: newBids.length },
-                totalRevenue: { increment: data.totalPaid }
-            }
-        });
-
-        this.logger.log(`${newBids.length} bid(s) placed successfully. After auction end: ${isAfterAuctionEnd}, Within grace: ${isWithinGracePeriod}`);
-
-        return {
-            bids: newBids,
-            processedAfterAuctionEnd: isAfterAuctionEnd,
-            withinGracePeriod: isWithinGracePeriod,
-        };
+            throw error;
+        }
     }
 
     

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Logger, Param, Patch, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Logger, Param, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import type * as express from 'express';
 import { AccountsService } from '../../../src/Domains/Accounts/accounts.service';
 import { AccountParamDto, CreateAccountDto, UpdateAccountDto } from './dto/index.js';
@@ -6,6 +6,8 @@ import * as bodyParser from 'body-parser';
 import { JwksClient } from "jwks-rsa";
 import * as jwt from "jsonwebtoken";
 import { ConfigService } from '@nestjs/config';
+import { KindeAuthGuard } from 'src/Guards/kinde-auth.guard';
+import { RequirePermissions } from 'src/Guards/permissions.decorator';
 
 @Controller('accounts')
 export class AccountsController {
@@ -19,8 +21,17 @@ export class AccountsController {
      * TODO: Add pagination, filtering, and authentication
      */
     @Get()
+    @UseGuards(KindeAuthGuard)
     async getAllAccounts() {
         return await this.accountsService.getAllAccounts();
+    }
+
+    @Get(':id')
+    @UseGuards(KindeAuthGuard)
+    @RequirePermissions('manage:accounts') // Only allow users with 'admin' permission to access this endpoint
+    async getAccount(@Param('id') id: string) {
+        console.log('Fetching account with ID:', id);
+        return await this.accountsService.getAccountById(id);
     }
 
     /**
